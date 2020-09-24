@@ -16,7 +16,6 @@ issuer:
             region:
             hostedZoneID:
             role:
-
 cert:
   metadata:
     namespace:
