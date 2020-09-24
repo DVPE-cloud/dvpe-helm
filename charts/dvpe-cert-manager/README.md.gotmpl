@@ -1,0 +1,53 @@
+{{ template "chart.header" . }}
+{{ template "chart.description" . }}
+
+{{ template "chart.versionLine" . }}
+
+## Installation
+Installs [jetstack's cert-manager](https://cert-manager.io) resources (`ClusterIssuer` and `Certificate) on an existing Kubernetes cluster.
+
+### Add Helm repository
+
+```shell
+helm repo add dvpe https://dvpe-cloud.github.io/dvpe-helm
+helm repo update
+```
+
+## Install dvpe-cert-manager chart
+
+Using config from a file:
+
+```bash
+helm install `HELM_RELEASE_NAME` `HELM_CHART_REPO` -f config.yaml
+```
+
+**Note**: The structure of `config.yaml` needs to look like the following:
+
+```yaml
+issuer:
+  metadata:
+    namespace:
+  spec:
+    acme:
+      email:
+      solvers:
+        dns01:
+          route53:
+            region:
+            hostedZoneID:
+            role:
+        selector:
+          dnsZones:
+cert:
+  metadata:
+    namespace:
+  spec:
+    commonName:
+    dnsNames:
+```
+
+## Configuration
+
+The following table lists the configurable parameters of the chart and the default values.
+
+{{ template "chart.valuesSection" . }}
