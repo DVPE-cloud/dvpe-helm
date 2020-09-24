@@ -1,0 +1,33 @@
+{{- $serviceName := include "service.name" . -}}
+
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: apigw-issuer
+  namespace: {{ .Values.issuer.metadata.namespace }}
+spec:
+  acme:
+    {{- if .Values.issuer.spec.acme.server.useProd }}
+    server: {{ .Values.issuer.spec.acme.server.prod }}
+    {{- else }}
+    server: {{ .Values.issuer.spec.acme.server.staging }}
+    {{- end}}
+    email: {{ .Values.issuer.spec.acme.email }}
+    privateKeySecretRef:
+      {{- if .Values.issuer.spec.acme.server.useProd }}
+      name: {{ $serviceName }}-issuer-prod-secret
+      {{- else }}
+      name: {{ $serviceName }}-issuer-staging-secret
+      {{- end}}
+    solvers:
+        - selector:
+            dnsZones:
+              {{- range .Values.issuer.spec.acme.solvers.selector.dnsZones }}
+              - {{ . | quote }}
+              {{- end }}
+          dns01:
+            route53:
+              region: {{ .Values.issuer.spec.acme.solvers.dns01.route53.region }}
+              hostedZoneID: {{ .Values.issuer.spec.acme.solvers.dns01.route53.hostedZoneID }}
+              role: {{ .Values.issuer.spec.acme.solvers.dns01.route53.role }}

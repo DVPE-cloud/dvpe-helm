@@ -1,0 +1,25 @@
+issuer:
+  metadata:
+    namespace:
+  spec:
+    acme:
+      server:
+        useProd: false
+        staging: https://acme-staging-v02.api.letsencrypt.org/directory
+        prod: https://acme-v02.api.letsencrypt.org/directory
+      email:
+      solvers:
+        selector:
+          dnsZones:
+        dns01:
+          route53:
+            region:
+            hostedZoneID:
+            role:
+
+cert:
+  metadata:
+    namespace:
+  spec:
+    commonName:
+    dnsNames:
