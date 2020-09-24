@@ -2,7 +2,7 @@
 
 Helm chart for installing jetstack cert manager resources, to be used in Kubernetes automation scripts.
 
-Current chart version is `0.0.1`
+Current chart version is `0.0.2`
 
 **Homepage:** <https://github.com/dvpe-cloud/dvpe-helm>
 
