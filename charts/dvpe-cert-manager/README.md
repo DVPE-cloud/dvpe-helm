@@ -4,8 +4,6 @@ Helm chart for installing jetstack cert manager resources, to be used in Kuberne
 
 Current chart version is `0.0.2`
 
-**Homepage:** <https://github.com/dvpe-cloud/dvpe-helm>
-
 ## Installation
 Installs [jetstack's cert-manager](https://cert-manager.io) resources (`ClusterIssuer` and `Certificate) on an existing Kubernetes cluster.
 
