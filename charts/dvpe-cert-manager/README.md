@@ -1,8 +1,8 @@
 # dvpe-cert-manager
 
-Helm chart for installing jetstack cert manager resources, to be used in Kubernetes automation scripts.
+![Version: 0.0.3](https://img.shields.io/badge/Version-0.0.3-informational?style=flat-square)
 
-Current chart version is `0.0.2`
+Helm chart for installing jetstack cert manager resources, to be used in Kubernetes automation scripts.
 
 ## Installation
 Installs [jetstack's cert-manager](https://cert-manager.io) resources (`ClusterIssuer` and `Certificate`) on an existing Kubernetes cluster.
@@ -23,7 +23,7 @@ helm install `HELM_RELEASE_NAME` `HELM_CHART_REPO` -f config.yaml
 ```
 
 **Note**: The structure of `config.yaml` needs adhere to the chart's value fields (see below) and can be used as
-default helm values file.
+simple helm values file.
 
 ## Configuration
 
