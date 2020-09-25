@@ -1,11 +1,29 @@
-# dvpe-cert-manager
+# dvpe-cluster-issuer
 
-![Version: 0.0.3](https://img.shields.io/badge/Version-0.0.3-informational?style=flat-square)
+![Version: 0.0.1](https://img.shields.io/badge/Version-0.0.1-informational?style=flat-square)
 
 Helm chart for installing jetstack cert manager resources, to be used in Kubernetes automation scripts.
 
 ## Installation
-Installs [jetstack's cert-manager](https://cert-manager.io) resources (`ClusterIssuer` and `Certificate`) on an existing Kubernetes cluster.
+Installs [jetstack's cert-manager](https://cert-manager.io) resources `ClusterIssuer` and `Certificate` on an existing Kubernetes cluster.
+
+The ClusterIssuer and Certificate deployed with this chart should mainly be used for issuing Certificates for a wildcard DNS domain name. This can be useful for an initial
+setup of cert-manager where a service's domain name can then arbitrarily be chosen based upon the Certificate's wildcard DNS name.
+If Certificates should be issued individually for an application then you have to deploy the certificate together with the application and you should not use this chart.
+
+See [Certificate Spec](https://cert-manager.io/docs/usage/certificate/) for details.
+
+### Example
+
+Assume you defined the following DNS configuration:
+
+```
+issuer.spec.acme.solvers.selector.dnsZones  = "mydomain.cloud"
+cert.spec.dnsNames                          = "*.mydomain.cloud"
+```
+
+You will then be able to point your service to an arbitrary URL, i.e. `myservice.mydomain.cloud` without any further configuration. cert-manager will then
+issue a new certificate at deployment time.
 
 ### Add Helm repository
 
@@ -14,7 +32,7 @@ helm repo add dvpe https://dvpe-cloud.github.io/dvpe-helm
 helm repo update
 ```
 
-## Install dvpe-cert-manager chart
+## Install dvpe-cluster-issuer chart
 
 Using config from a file:
 
@@ -28,11 +46,6 @@ simple helm values file.
 ## Configuration
 
 The following table lists the configurable parameters of the chart and its default values.
-
-**Note**: the cert installed with this chart should be a wildcard certificate allowing
-services to be deployed with arbitrary DNS host prefixes. If certificates should be issued
-individually for an application then you have to deploy the certificate together with the application.
-see https://cert-manager.io/docs/usage/certificate/ for details
 
 ## Values
 
