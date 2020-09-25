@@ -3,6 +3,25 @@ entries:
   dvpe-cert-manager:
   - apiVersion: v1
     appVersion: "1.1"
+    created: "2020-09-25T09:59:57.153478029Z"
+    description: Helm chart for installing jetstack cert manager resources, to be
+      used in Kubernetes automation scripts.
+    digest: 6223ca1dfa9a7053e8d971d72c43fed3b249caefdf6b9c7b85e8bc34ecb57a24
+    home: https://github.com/dvpe-cloud/dvpe-helm
+    keywords:
+    - dvpe-helm
+    - automation
+    - gitops
+    maintainers:
+    - name: mithie
+    - name: herrLierb
+    - name: christodo
+    name: dvpe-cert-manager
+    urls:
+    - https://github.com/DVPE-cloud/dvpe-helm/releases/download/dvpe-cert-manager-0.0.3/dvpe-cert-manager-0.0.3.tgz
+    version: 0.0.3
+  - apiVersion: v1
+    appVersion: "1.1"
     created: "2020-09-24T15:39:38.530848277Z"
     description: Helm chart for installing jetstack cert manager resources, to be
       used in Kubernetes automation scripts.
