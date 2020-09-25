@@ -39,4 +39,24 @@ entries:
     urls:
     - https://github.com/DVPE-cloud/dvpe-helm/releases/download/dvpe-cert-manager-0.0.2/dvpe-cert-manager-0.0.2.tgz
     version: 0.0.2
+  dvpe-cluster-issuer:
+  - apiVersion: v1
+    appVersion: "1.1"
+    created: "2020-09-25T12:24:35.963107684Z"
+    description: Helm chart for installing jetstack cert manager resources, to be
+      used in Kubernetes automation scripts.
+    digest: 3354bacc72533dcb48d3c3601afe35fe245671189a109868746319e615bd2dfe
+    home: https://github.com/dvpe-cloud/dvpe-helm
+    keywords:
+    - dvpe-helm
+    - automation
+    - gitops
+    maintainers:
+    - name: mithie
+    - name: herrLierb
+    - name: christodo
+    name: dvpe-cluster-issuer
+    urls:
+    - https://github.com/DVPE-cloud/dvpe-helm/releases/download/dvpe-cluster-issuer-0.0.1/dvpe-cluster-issuer-0.0.1.tgz
+    version: 0.0.1
 generated: "2020-09-24T15:39:38.438126546Z"
