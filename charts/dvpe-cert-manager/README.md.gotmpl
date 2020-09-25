@@ -1,10 +1,10 @@
 {{ template "chart.header" . }}
+{{ template "chart.versionBadge" . }}
+
 {{ template "chart.description" . }}
 
-{{ template "chart.versionLine" . }}
-
 ## Installation
-Installs [jetstack's cert-manager](https://cert-manager.io) resources (`ClusterIssuer` and `Certificate) on an existing Kubernetes cluster.
+Installs [jetstack's cert-manager](https://cert-manager.io) resources (`ClusterIssuer` and `Certificate`) on an existing Kubernetes cluster.
 
 ### Add Helm repository
 
@@ -21,33 +21,16 @@ Using config from a file:
 helm install `HELM_RELEASE_NAME` `HELM_CHART_REPO` -f config.yaml
 ```
 
-**Note**: The structure of `config.yaml` needs to look like the following:
-
-```yaml
-issuer:
-  metadata:
-    namespace:
-  spec:
-    acme:
-      email:
-      solvers:
-        dns01:
-          route53:
-            region:
-            hostedZoneID:
-            role:
-        selector:
-          dnsZones:
-cert:
-  metadata:
-    namespace:
-  spec:
-    commonName:
-    dnsNames:
-```
+**Note**: The structure of `config.yaml` needs adhere to the chart's value fields (see below) and can be used as
+simple helm values file.
 
 ## Configuration
 
-The following table lists the configurable parameters of the chart and the default values.
+The following table lists the configurable parameters of the chart and its default values.
+
+**Note**: the cert installed with this chart should be a wildcard certificate allowing
+services to be deployed with arbitrary DNS host prefixes. If certificates should be issued
+individually for an application then you have to deploy the certificate together with the application.
+see https://cert-manager.io/docs/usage/certificate/ for details
 
 {{ template "chart.valuesSection" . }}
