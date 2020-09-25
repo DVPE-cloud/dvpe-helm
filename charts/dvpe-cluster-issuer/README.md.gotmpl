@@ -1,0 +1,49 @@
+{{ template "chart.header" . }}
+{{ template "chart.versionBadge" . }}
+
+{{ template "chart.description" . }}
+
+## Installation
+Installs [jetstack's cert-manager](https://cert-manager.io) resources `ClusterIssuer` and `Certificate` on an existing Kubernetes cluster.
+
+The ClusterIssuer and Certificate deployed with this chart should mainly be used for issuing Certificates for a wildcard DNS domain name. This can be useful for an initial
+setup of cert-manager where a service's domain name can then arbitrarily be chosen based upon the Certificate's wildcard DNS name.
+If Certificates should be issued individually for an application then you have to deploy the certificate together with the application and you should not use this chart.
+
+See [Certificate Spec](https://cert-manager.io/docs/usage/certificate/) for details.
+
+### Example
+
+Assume you defined the following DNS configuration:
+
+```
+issuer.spec.acme.solvers.selector.dnsZones  = "mydomain.cloud"
+cert.spec.dnsNames                          = "*.mydomain.cloud"
+```
+
+You will then be able to point your service to an arbitrary URL, i.e. `myservice.mydomain.cloud` without any further configuration. cert-manager will then
+issue a new certificate at deployment time.
+
+### Add Helm repository
+
+```shell
+helm repo add dvpe https://dvpe-cloud.github.io/dvpe-helm
+helm repo update
+```
+
+## Install dvpe-cluster-issuer chart
+
+Using config from a file:
+
+```bash
+helm install `HELM_RELEASE_NAME` `HELM_CHART_REPO` -f config.yaml
+```
+
+**Note**: The structure of `config.yaml` needs adhere to the chart's value fields (see below) and can be used as
+simple helm values file.
+
+## Configuration
+
+The following table lists the configurable parameters of the chart and its default values.
+
+{{ template "chart.valuesSection" . }}
