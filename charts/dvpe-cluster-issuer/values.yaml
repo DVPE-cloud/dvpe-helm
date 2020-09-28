@@ -1,7 +1,7 @@
 issuer:
   metadata:
     # issuer.metadata.name -- The name of the ClusterIssuer
-    name:
+    name: default
     # issuer.metadata.namespace -- The name of the namespace the ClusterIssuer should be installed to
     namespace:
   spec:
