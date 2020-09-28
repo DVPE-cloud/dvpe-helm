@@ -42,7 +42,7 @@ The following table lists the configurable parameters of the chart and its defau
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| issuer.metadata.name | string | `nil` | The name of the ClusterIssuer |
+| issuer.metadata.name | string | `"default"` | The name of the ClusterIssuer |
 | issuer.metadata.namespace | string | `nil` | The name of the namespace the ClusterIssuer should be installed to |
 | issuer.spec.acme.email | string | `nil` | Email for cert update notifications |
 | issuer.spec.acme.server.prod | string | `"https://acme-v02.api.letsencrypt.org/directory"` | URL to ACME prod environment |

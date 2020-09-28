@@ -38,7 +38,7 @@ The following table lists the configurable parameters of the chart and its defau
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| cert.metadata.name | string | `nil` | The name of the certificate to create |
+| cert.metadata.name | string | `"default"` | The name of the certificate to create |
 | cert.metadata.namespace | string | `nil` | The name of the namespace the certificate should be installed to |
 | cert.spec.commonName | string | `nil` | The commonName field can also be omitted. If so, the first element in the dnsNames list will be the common name. |
 | cert.spec.dnsNames | string | `nil` | List of Subject Alternative Names associated with the certificate |
