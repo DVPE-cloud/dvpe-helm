@@ -1,7 +1,7 @@
 cert:
   metadata:
     # cert.metadata.name -- The name of the certificate to create
-    name:
+    name: default
     # cert.metadata.namespace -- The name of the namespace the certificate should be installed to
     namespace:
   spec:

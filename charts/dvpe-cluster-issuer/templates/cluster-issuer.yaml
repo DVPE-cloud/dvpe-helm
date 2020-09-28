@@ -3,7 +3,7 @@
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
-  #name: {{ .Values.issuer.metadata.name }}
+  name: {{ .Values.issuer.metadata.name }}
   namespace: {{ .Values.issuer.metadata.namespace }}
 spec:
   acme:
