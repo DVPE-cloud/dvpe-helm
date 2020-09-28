@@ -1,8 +1,8 @@
 apiVersion: v1
 appVersion: "1.1"
-description: Helm chart for installing cert-manager's ClusterIssuer resource, to be used in Kubernetes automation scripts.
-name: dvpe-cluster-issuer
-version: 0.0.2
+description: Helm chart for installing cert-manager's Certificate resource, to be used in Kubernetes automation scripts.
+name: dvpe-certificate
+version: 0.0.1
 home: https://github.com/dvpe-cloud/dvpe-helm
 keywords:
   - dvpe-helm

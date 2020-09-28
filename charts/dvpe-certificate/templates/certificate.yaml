@@ -2,13 +2,13 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: apigw-common-cert
+  name: {{ .Values.cert.metadata.name }}
   namespace: {{ .Values.cert.metadata.namespace }}
 spec:
-  secretName: apigw-tls
+  secretName: {{ .Values.cert.spec.secretName }}
   issuerRef:
     kind: ClusterIssuer
-    name: apigw-issuer
+    name: {{ .Values.cert.spec.issuerRef.name }}
   commonName: {{ .Values.cert.spec.commonName | quote }}
   dnsNames:
     {{- range .Values.cert.spec.dnsNames }}

@@ -1,5 +1,7 @@
 issuer:
   metadata:
+    # issuer.metadata.name -- The name of the ClusterIssuer
+    name:
     # issuer.metadata.namespace -- The name of the namespace the ClusterIssuer should be installed to
     namespace:
   spec:
@@ -25,12 +27,3 @@ issuer:
             hostedZoneID:
             # issuer.spec.acme.solvers.dns01.route53.role -- AWS Route53 hosted zone id to use for DNS challenges
             role:
-cert:
-  metadata:
-    # cert.metadata.namespace -- The name of the namespace the certificate should be installed to
-    namespace:
-  spec:
-    # cert.spec.commonName -- The commonName field can also be omitted. If so, the first element in the dnsNames list will be the common name.
-    commonName:
-    # cert.spec.dnsNames -- List of Subject Alternative Names associated with the certificate
-    dnsNames:
