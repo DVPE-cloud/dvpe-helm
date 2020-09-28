@@ -1,0 +1,36 @@
+{{ template "chart.header" . }}
+{{ template "chart.versionBadge" . }}
+
+{{ template "chart.description" . }}
+
+## Installation
+Installs [jetstack cert-manager's](https://cert-manager.io) `Certificate` resource on an existing Kubernetes cluster.
+
+Supposed you have the relevant `RBAC` permissions on your Kubernetes cluster, this chart's `Certificate` can be deployed into an arbitrary namespace.
+Before deploying this resource make sure that a cert-manager `Issuer` resource (`ClusterIssuer` or `Issuer` kind) has already been deployed on your cluster.
+
+See [Certificate Spec](https://cert-manager.io/docs/usage/certificate/) for details.
+
+### Add Helm repository
+
+```shell
+helm repo add dvpe https://dvpe-cloud.github.io/dvpe-helm
+helm repo update
+```
+
+## Install dvpe-certificate chart
+
+Using config from a file:
+
+```bash
+helm install -f config.yaml --namespace `TARGET_K8S_NAMESPACE` `HELM_RELEASE_NAME` dvpe/dvpe-certificate
+```
+
+**Note**: The structure of `config.yaml` needs to adhere to the chart's value fields (see config section below). `config.yaml` can be defined as a default helm
+values file.
+
+## Configuration
+
+The following table lists the configurable parameters of the chart and its default values.
+
+{{ template "chart.valuesSection" . }}
