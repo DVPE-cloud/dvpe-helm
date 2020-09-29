@@ -23,6 +23,25 @@ entries:
   dvpe-cluster-issuer:
   - apiVersion: v1
     appVersion: "1.1"
+    created: "2020-09-29T12:32:32.9340007Z"
+    description: Helm chart for installing cert-manager's ClusterIssuer resource,
+      to be used in Kubernetes automation scripts.
+    digest: 4a5a33279bb5913493d46da01242a9af9643f10aa19ceccfca091d626436e275
+    home: https://github.com/dvpe-cloud/dvpe-helm
+    keywords:
+    - dvpe-helm
+    - automation
+    - gitops
+    maintainers:
+    - name: mithie
+    - name: herrLierb
+    - name: christodo
+    name: dvpe-cluster-issuer
+    urls:
+    - https://github.com/DVPE-cloud/dvpe-helm/releases/download/dvpe-cluster-issuer-0.0.3/dvpe-cluster-issuer-0.0.3.tgz
+    version: 0.0.3
+  - apiVersion: v1
+    appVersion: "1.1"
     created: "2020-09-28T15:11:01.967702696Z"
     description: Helm chart for installing cert-manager's ClusterIssuer resource,
       to be used in Kubernetes automation scripts.
