@@ -1,0 +1,18 @@
+apiVersion: gateway.solo.io/v1
+kind: VirtualService
+metadata:
+  name: {{ .Values.gloo.virtualservice.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  sslConfig:
+    secretRef:
+      name: {{ .Values.gloo.virtualservice.spec.sslConfig.secretRef.name }}
+      namespace: {{ .Values.gloo.virtualservice.spec.sslConfig.secretRef.namespace }}
+  virtualHost:
+    domains:
+      {{- range .Values.gloo.virtualservice.spec.virtualHost.domains }}
+      - {{ . | quote }}
+      {{- end }}
+    routes:
+      {{- toYaml .Values.gloo.virtualservice.spec.virtualHost.routes | nindent 6 }}
+

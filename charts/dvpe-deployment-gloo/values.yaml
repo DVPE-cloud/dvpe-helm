@@ -1,0 +1,83 @@
+#-------------------------------#
+# deployment.yaml value section #
+#-------------------------------#
+deployment:
+  spec:
+    replicas: 2
+    serviceAccountName: default
+    image:
+      repository:
+      tag: latest
+      pullPolicy: Always
+    containers:
+      readinessProbe:
+        httpGet:
+          path:
+          port:
+          scheme: HTTP
+        initialDelaySeconds: 5
+        periodSeconds: 10
+        timeoutSeconds: 1
+        successThreshold: 1
+        failureThreshold: 3
+    connection:
+      http:
+        port: 8080
+    resources:
+      limits:
+        cpu: 200m
+        memory: 235M
+      requests:
+        cpu: 150m
+        memory: 200M
+
+#-------------------------------#
+# service.yaml value section    #
+#-------------------------------#
+service:
+  spec:
+    type: ClusterIP
+    ports:
+      http:
+        port: 80
+        targetPort: 80
+      https:
+        port: 443
+        targetPort: 80
+
+#----------------------------------#
+# Extension params value section   #
+# see deployment.yaml and          #
+#     configmap.yaml               #
+#----------------------------------#
+additionalparameters:
+  configMapApplied: false
+  secretsApplied: false
+  yamlConfigFileApplied: false
+  yamlConfigFile:
+    configFileProp:
+      sub:
+        value
+    anotherConfigFileProp: 1
+
+#-----------------------------------#
+# virtualservice.yaml value section #
+#-----------------------------------#
+gloo:
+  virtualservice:
+    name:
+    spec:
+      sslConfig:
+        secretRef:
+          name:
+          namespace:
+      virtualHost:
+        domains:
+        routes:
+          - matchers:
+              - prefix:
+            routeAction:
+              single:
+                upstream:
+                  name:
+                  namespace:

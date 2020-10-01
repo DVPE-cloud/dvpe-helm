@@ -1,0 +1,68 @@
+{{ template "chart.header" . }}
+{{ template "chart.versionBadge" . }}
+
+{{ template "chart.description" . }}
+
+## Installation
+Installs a Microservice Project as gloo enabled VirtualService.
+
+### Add Helm repository
+
+```shell
+helm repo add dvpe https://dvpe-cloud.github.io/dvpe-helm
+helm repo update
+```
+
+## Install dvpe-deployment-gloo chart
+
+### Preconditions
+
+Before installing this chart you need to make sure that
+
+* a K8S secret exists on the cluster containing the `certificate` and corresponding `secret key` of the TLS certificate you want to use
+for your service deployment. This secret will then be referenced in your VirtualService section of this chart.
+You can create this secret with the following `kubectl` command:
+  ```bash
+  kubectl create secret tls sample_secret \
+    --key <PATH_TO_CERT_SECRET_KEY> \
+    --cert <PATH_TO_CERT> \
+    -n sample_namespace
+  ```
+  The relevant section in your helm config file would then be:
+  ```yaml
+  gloo:
+    virtualservice:
+      name: sample_service
+      spec:
+        sslConfig:
+          secretRef:
+            name: sample_secret
+            namespace: sample_namespace
+  ```
+
+* a K8S secret with name `docker-reg-secret` exists in the same namespace as the one in which your service is going to be deployed. This secret needs to contain
+the credential information for accessing the docker registry you are using for deployment.
+You can create this secret with the following `kubectl` command:
+  ```bash
+  kubectl create secret --namespace <SERVICE_NAMESPACE> docker-registry docker-reg-secret \
+    --docker-server=<URL_TO_DOCKER_REGISTRY> \
+    --docker-username=<DOCKER_USERNAME> \
+    --docker-password=<DOCKER_PASSWORD> \
+    --docker-email=<DOCKER_EMAIL>
+  ```
+
+### Using config from a file:
+
+```bash
+helm install -f config.yaml --namespace `TARGET_K8S_NAMESPACE` `HELM_RELEASE_NAME` dvpe/dvpe-deployment-gloo
+```
+
+#### Notes on gloo VirtualService definitions
+**Note**: The structure of `config.yaml` needs to adhere to the chart's value fields (see config section below). `config.yaml` can be defined as a default helm
+values file.
+
+## Configuration
+
+The following table lists the configurable parameters of the chart and its default values.
+
+{{ template "chart.valuesSection" . }}
