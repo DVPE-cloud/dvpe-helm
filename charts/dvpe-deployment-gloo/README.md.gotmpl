@@ -5,7 +5,7 @@
 
 ## Installation
 Installs a Microservice Project as [gloo](https://www.solo.io/products/gloo/) enabled VirtualService.
-Note that this chart assumes that [gloo Enterprise](https://docs.solo.io/gloo/latest/installation/enterprise/) has already been installed and configured on your K8S cluster.
+Note that this chart assumes that [gloo Api Gateway](https://docs.solo.io/gloo/latest/installation/preparation/) has already been installed and configured on your K8S cluster.
 
 ### Add Helm repository
 
@@ -20,9 +20,9 @@ helm repo update
 
 Before installing this chart you need to make sure that
 
-* [gloo API Gateway Enterprise](https://docs.solo.io/gloo/latest/installation/enterprise/) has already been installed on the K8S cluster
-* a namespace has already been created on the K8S cluster
-* a K8S secret exists on the cluster containing the `certificate` and corresponding `secret key` of the TLS certificate you want to use
+* [gloo API Gateway](https://docs.solo.io/gloo/latest/installation/preparation/) has already been installed on the K8S cluster.
+* a namespace where the service shall be installed into has already been created on the K8S cluster.
+* a K8S secret exists on the cluster containing the `certificate` and corresponding `secret key` of the TLS certificate you want to use.
 for your service deployment. This secret will then be referenced in your VirtualService section of this chart.
 You can create this secret with the following `kubectl` command:
   ```bash
