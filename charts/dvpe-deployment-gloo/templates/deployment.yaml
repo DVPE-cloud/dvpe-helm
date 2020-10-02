@@ -1,0 +1,71 @@
+{{- $serviceName := include "service.name" . -}}
+{{- $imageUrl := include "image.url" . -}}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $serviceName }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.deployment.spec.replicas }}
+  selector:
+    matchLabels:
+      app: {{ $serviceName }}
+  template:
+    metadata:
+      labels:
+        app: {{ $serviceName }}
+    spec:
+      imagePullSecrets:
+        - name: docker-reg-secret
+      serviceAccountName: {{ .Values.deployment.spec.serviceAccountName }}
+      containers:
+        - name: {{ $serviceName }}
+          imagePullPolicy: {{ .Values.deployment.spec.image.pullPolicy }}
+          image: {{ $imageUrl }}
+          env:
+          {{- if .Values.additionalparameters.configMapApplied }}
+          {{- range $key, $value := .Values.additionalparameters.config }}
+          - name: "{{$key}}"
+            valueFrom:
+              configMapKeyRef:
+                name:  {{ $serviceName }}-additional-parametes
+                key: {{$key}}
+          {{- end}}
+          {{- end}}
+          {{- if .Values.additionalparameters.secretsApplied }}
+          {{- range $key, $value := .Values.additionalparameters.secrets }}
+          - name: "{{$key}}"
+            valueFrom:
+              secretKeyRef:
+                name:  {{ $serviceName }}-additional-secrets
+                key: {{$key}}
+          {{- end}}
+          {{- end}}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.deployment.spec.containers.readinessProbe.httpGet.path }}
+              port: {{ .Values.deployment.spec.containers.readinessProbe.httpGet.port }}
+              scheme: {{ .Values.deployment.spec.containers.readinessProbe.httpGet.scheme }}
+            initialDelaySeconds: {{ .Values.deployment.spec.containers.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.deployment.spec.containers.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.deployment.spec.containers.readinessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.deployment.spec.containers.readinessProbe.successThreshold }}
+            failureThreshold: {{ .Values.deployment.spec.containers.readinessProbe.failureThreshold }}
+          resources:
+            limits:
+              cpu: {{ .Values.deployment.spec.resources.limits.cpu }}
+              memory: {{ .Values.deployment.spec.resources.limits.memory }}
+            requests:
+              cpu: {{ .Values.deployment.spec.resources.requests.cpu }}
+              memory: {{ .Values.deployment.spec.resources.requests.memory }}
+      {{- if .Values.additionalparameters.yamlConfigFileApplied }}
+          volumeMounts:
+            - name: yaml-config-volume
+              mountPath: /etc/config
+      volumes:
+        - name: yaml-config-volume
+          configMap:
+            name: {{ $serviceName }}-additional-config-yaml
+      {{ end }}
