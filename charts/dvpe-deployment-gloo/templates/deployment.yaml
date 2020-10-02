@@ -1,4 +1,5 @@
 {{- $serviceName := include "service.name" . -}}
+{{- $imageUrl := include "image.url" . -}}
 
 ---
 apiVersion: apps/v1
@@ -20,9 +21,9 @@ spec:
         - name: docker-reg-secret
       serviceAccountName: {{ .Values.deployment.spec.serviceAccountName }}
       containers:
-        - image: {{ include "image.url" . }}
+        - name: {{ $serviceName }}
           imagePullPolicy: {{ .Values.deployment.spec.image.pullPolicy }}
-          name: {{ $serviceName }}
+          image: {{ $imageUrl }}
           ports:
             - name: http
               containerPort: 80
