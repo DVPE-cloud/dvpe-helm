@@ -15,9 +15,9 @@ deployment:
       readinessProbe:
         httpGet:
           # deployment.spec.containers.readinessProbe.httpGet.path -- Service's http path on which to execute a readinessProbe
-          path:
+          path: /
           # deployment.spec.containers.readinessProbe.httpGet.port -- Service's http port on which to execute a readinessProbe
-          port:
+          port: 80
           # deployment.spec.containers.readinessProbe.httpGet.scheme -- Http Scheme to use for readinesProbe. Can be either `HTTP` or `HTTPS`.
           scheme: HTTP
         # deployment.spec.containers.readinessProbe.initialDelaySeconds -- Amount of time to wait before performing the first probe.

@@ -24,11 +24,6 @@ spec:
         - name: {{ $serviceName }}
           imagePullPolicy: {{ .Values.deployment.spec.image.pullPolicy }}
           image: {{ $imageUrl }}
-          ports:
-            - name: http
-              containerPort: 80
-            - name: https
-              containerPort: 443
           env:
           {{- if .Values.additionalparameters.configMapApplied }}
           {{- range $key, $value := .Values.additionalparameters.config }}
@@ -51,7 +46,7 @@ spec:
           readinessProbe:
             httpGet:
               path: {{ .Values.deployment.spec.containers.readinessProbe.httpGet.path }}
-              port: {{ .Values.deployment.spec.containers.readinessProbe.httpGet.port | quote }}
+              port: {{ .Values.deployment.spec.containers.readinessProbe.httpGet.port }}
               scheme: {{ .Values.deployment.spec.containers.readinessProbe.httpGet.scheme }}
             initialDelaySeconds: {{ .Values.deployment.spec.containers.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.deployment.spec.containers.readinessProbe.periodSeconds }}
