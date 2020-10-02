@@ -78,4 +78,24 @@ entries:
     urls:
     - https://github.com/DVPE-cloud/dvpe-helm/releases/download/dvpe-cluster-issuer-0.0.1/dvpe-cluster-issuer-0.0.1.tgz
     version: 0.0.1
+  dvpe-deployment-gloo:
+  - apiVersion: v1
+    appVersion: "1.1"
+    created: "2020-10-02T11:38:28.994794413Z"
+    description: Helm chart for installing microservices as gloo enabled VirtualService
+      definitions.
+    digest: 01983bd078017b342409fe8881b6aeaef0a1270ca216bf78f6b7d2ae1057e153
+    home: https://github.com/dvpe-cloud/dvpe-helm
+    keywords:
+    - dvpe-helm
+    - automation
+    - gitops
+    maintainers:
+    - name: mithie
+    - name: herrLierb
+    - name: christodo
+    name: dvpe-deployment-gloo
+    urls:
+    - https://github.com/DVPE-cloud/dvpe-helm/releases/download/dvpe-deployment-gloo-0.0.1/dvpe-deployment-gloo-0.0.1.tgz
+    version: 0.0.1
 generated: "2020-09-24T15:39:38.438126546Z"
