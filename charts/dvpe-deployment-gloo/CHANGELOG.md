@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 * External Secrets will be added in next release
 * Pod Autoscaling will be added in next release
+* Fix yaml linter
 
 ## [0.0.1] - 2020-10-02
 
