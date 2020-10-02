@@ -4,7 +4,8 @@
 {{ template "chart.description" . }}
 
 ## Installation
-Installs a Microservice Project as gloo enabled VirtualService.
+Installs a Microservice Project as [gloo](https://www.solo.io/products/gloo/) enabled VirtualService.
+Note that this chart assumes that [gloo Enterprise](https://docs.solo.io/gloo/latest/installation/enterprise/) has already been installed and configured on your K8S cluster.
 
 ### Add Helm repository
 
@@ -19,6 +20,8 @@ helm repo update
 
 Before installing this chart you need to make sure that
 
+* [gloo API Gateway Enterprise](https://docs.solo.io/gloo/latest/installation/enterprise/) has already been installed on the K8S cluster
+* a namespace has already been created on the K8S cluster
 * a K8S secret exists on the cluster containing the `certificate` and corresponding `secret key` of the TLS certificate you want to use
 for your service deployment. This secret will then be referenced in your VirtualService section of this chart.
 You can create this secret with the following `kubectl` command:
@@ -56,12 +59,72 @@ You can create this secret with the following `kubectl` command:
 ```bash
 helm install -f config.yaml --namespace `TARGET_K8S_NAMESPACE` `HELM_RELEASE_NAME` dvpe/dvpe-deployment-gloo
 ```
-
-#### Notes on gloo VirtualService definitions
 **Note**: The structure of `config.yaml` needs to adhere to the chart's value fields (see config section below). `config.yaml` can be defined as a default helm
 values file.
 
-## Configuration
+#### Notes on gloo VirtualService definitions
+
+The `VirtualService` kind in gloo allows to define a set of routing rules to services deployed on K8S. A `VirtualService` always comes with an `Upstream`
+automatically deployed in a pre-defined namespace on the cluster. An `Upstream` in turn specifies the destination to the service inside the cluster.
+See [gloo concepts](https://docs.solo.io/gloo/1.1.0/introduction/concepts/) for further details.
+
+`Upstreams` have a special syntax you need to use when you define a `VirtualService` for deployment:
+
+Upstream Name = <K8S_NAMESPACE_NAME>-<K8S_SERVICE_NAME>-<K8S_SERVICE_PORT>
+
+Assume you have a K8S service specified in the following way:
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample-svc
+  namespace: sample
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+    - name: https
+      protocol: TCP
+      port: 443
+      targetPort: 80
+  selector:
+    app: sample
+```
+
+Then the `Upstreams` created by gloo will be:
+
+* `sample-sample-svc-80`
+* `sample-sample-svc-443`
+
+The corresponding gloo `VirtualService` spec could then look like the following:
+
+```yaml
+gloo:
+  virtualservice:
+    name: sample-vs
+    spec:
+      sslConfig:
+        secretRef:
+          name: gloo-tls
+          namespace: gloo-system
+      virtualHost:
+        domains:
+          - 'sample.my.domain.name'
+        routes:
+          - matchers:
+              - prefix: /
+            routeAction:
+              single:
+                upstream:
+                  name: sample-sample-svc-80
+                  namespace: gloo-system
+```
+
+## Chart Configuration Parameters
 
 The following table lists the configurable parameters of the chart and its default values.
 

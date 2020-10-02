@@ -3,32 +3,46 @@
 #-------------------------------#
 deployment:
   spec:
+    # deployment.spec.replicas -- The number of service instances to deploy.
     replicas: 2
+    # deployment.spec.serviceAccountName -- The ServiceAccount this service will be associated with.
     serviceAccountName: default
     image:
+      # deployment.spec.image.repository -- The docker repository to pull the service image from.
       repository:
+      # deployment.spec.image.tag -- The image version to use.
       tag: latest
+      # deployment.spec.image.pullPolicy -- The default rule for downloading images.
       pullPolicy: Always
     containers:
       readinessProbe:
         httpGet:
+          # deployment.spec.containers.readinessProbe.httpGet.path -- Service's http path on which to execute a readinessProbe
           path:
+          # deployment.spec.containers.readinessProbe.httpGet.port -- Service's http port on which to execute a readinessProbe
           port:
+          # deployment.spec.containers.readinessProbe.httpGet.scheme -- Http Scheme to use for readinesProbe. Can be either `HTTP` or `HTTPS`.
           scheme: HTTP
+        # deployment.spec.containers.readinessProbe.initialDelaySeconds -- Amount of time to wait before performing the first probe.
         initialDelaySeconds: 5
+        # deployment.spec.containers.readinessProbe.periodSeconds -- How often to perform the probe (in seconds).
         periodSeconds: 10
+        # deployment.spec.containers.readinessProbe.timeoutSeconds -- Number of seconds after which the probe times out.
         timeoutSeconds: 1
+        # deployment.spec.containers.readinessProbe.successThreshold -- Threshold to be considered successful after having failed.
         successThreshold: 1
+        # deployment.spec.containers.readinessProbe.failureThreshold -- Number of times to retry the probe before giving up.
         failureThreshold: 3
-    connection:
-      http:
-        port: 8080
     resources:
       limits:
+        # deployment.spec.resources.limits.cpu -- Total amount of CPU time that a container can use every 100 ms. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage.
         cpu: 200m
+        # deployment.spec.resources.limits.memory -- The memory limit for a Pod. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage.
         memory: 235M
       requests:
+        # deployment.spec.resources.requests.cpu -- Fractional amount of CPU allowed for a Pod. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage.
         cpu: 150m
+        # deployment.spec.resources.requests.memory -- Amount of memory reserved for a Pod. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage.
         memory: 200M
 
 #-------------------------------#
@@ -36,13 +50,18 @@ deployment:
 #-------------------------------#
 service:
   spec:
+    # service.spec.type -- Specify what kind of service to deploy. See [Kubernetes Service Spec](https://kubernetes.io/docs/concepts/services-networking/service/) for details
     type: ClusterIP
     ports:
       http:
+        # service.spec.ports.http.port -- The http port the service is exposed to in the cluster.
         port: 80
+        # service.spec.ports.http.targetPort -- The http port the service listens to and to which requests will be sent.
         targetPort: 80
       https:
+        # service.spec.ports.https.port -- The https port the service is exposed to in the cluster.
         port: 443
+        # service.spec.ports.https.targetPort -- The http port the service listens to and to which requests will be sent.
         targetPort: 80
 
 #----------------------------------#
@@ -51,33 +70,29 @@ service:
 #     configmap.yaml               #
 #----------------------------------#
 additionalparameters:
+  # additionalparameters.configMapApplied -- Set to `true` if you want to add a custom `ConfigMap` for your deployment.
   configMapApplied: false
+  # additionalparameters.secretsApplied -- Set to `true` if you want to add a custom `Secret` for your deployment.
   secretsApplied: false
+  # additionalparameters.yamlConfigFileApplied -- Set to `true` if you want to add a custom yaml configuration for your deployment.
   yamlConfigFileApplied: false
-  yamlConfigFile:
-    configFileProp:
-      sub:
-        value
-    anotherConfigFileProp: 1
 
 #-----------------------------------#
 # virtualservice.yaml value section #
 #-----------------------------------#
 gloo:
   virtualservice:
+    # gloo.virtualservice.name -- Name of the `VirtualService` to deploy
     name:
     spec:
       sslConfig:
         secretRef:
+          # gloo.virtualservice.spec.sslConfig.secretRef.name -- Name of the secret containing the certificate information for this deployment.
           name:
+          # gloo.virtualservice.spec.sslConfig.secretRef.namespace -- Name of the namespace where the secret is located.
           namespace:
       virtualHost:
+        # gloo.virtualservice.spec.virtualHost.domains -- List of DNS domain names this service will be published to.
         domains:
+        # gloo.virtualservice.spec.virtualHost.routes -- List of route configurations for this `VirtualService`. See [gloo VirtualService Specification](https://docs.solo.io/gloo/1.1.0/introduction/concepts/#virtual-services) for details
         routes:
-          - matchers:
-              - prefix:
-            routeAction:
-              single:
-                upstream:
-                  name:
-                  namespace:
