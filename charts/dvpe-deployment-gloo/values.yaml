@@ -69,7 +69,7 @@ additionalparameters:
 gloo:
   virtualservice:
     # gloo.virtualservice.name -- Name of the `VirtualService` to deploy
-    name:
+    name: servicename
     spec:
       sslConfig:
         secretRef:
