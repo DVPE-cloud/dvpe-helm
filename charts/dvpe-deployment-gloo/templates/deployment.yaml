@@ -51,7 +51,7 @@ spec:
           readinessProbe:
             httpGet:
               path: {{ .Values.deployment.spec.containers.readinessProbe.httpGet.path }}
-              port: {{ .Values.deployment.spec.containers.readinessProbe.httpGet.port }}
+              port: {{ .Values.deployment.spec.containers.readinessProbe.httpGet.port | quote }}
               scheme: {{ .Values.deployment.spec.containers.readinessProbe.httpGet.scheme }}
             initialDelaySeconds: {{ .Values.deployment.spec.containers.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.deployment.spec.containers.readinessProbe.periodSeconds }}
