@@ -10,6 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Pod Autoscaling will be added in next release
 * Fix yaml linter
 
+## [0.0.2] - 2020-10-06
+
+### Added
+
+* Additional deployment flag to allow disabling VirtualService deployment 
+
 ## [0.0.1] - 2020-10-02
 
 ### Added
@@ -18,6 +24,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Contains K8S Resources: Deployment, Service, Secret, ConfigMap
 * Contains gloo Resources: VirtualService
 
-
+[0.0.2]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-0.0.2/charts/dvpe-deployment-gloo
 [0.0.1]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-0.0.1/charts/dvpe-deployment-gloo
          

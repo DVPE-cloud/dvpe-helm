@@ -1,3 +1,7 @@
+settings:
+  # settings.deploymentOnly -- When set to true only the application's deployment resources will be installed with this chart. Can be used to explicitly avoid deploying a VirtualService resource.
+  deploymentOnly: false
+
 deployment:
   spec:
     # deployment.spec.replicas -- The number of service instances to deploy.
