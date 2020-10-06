@@ -1,6 +1,6 @@
 # dvpe-deployment-gloo
 
-![Version: 0.0.1](https://img.shields.io/badge/Version-0.0.1-informational?style=flat-square)
+![Version: 0.0.2](https://img.shields.io/badge/Version-0.0.2-informational?style=flat-square)
 
 Helm chart for installing microservices as gloo enabled VirtualService definitions.
 
@@ -163,3 +163,4 @@ The following table lists the configurable parameters of the chart and its defau
 | service.spec.ports.https.port | int | `443` | The https port the service is exposed to in the cluster. |
 | service.spec.ports.https.targetPort | int | `80` | The http port the service listens to and to which requests will be sent. |
 | service.spec.type | string | `"ClusterIP"` | Specify what kind of service to deploy. See [Kubernetes Service Spec](https://kubernetes.io/docs/concepts/services-networking/service/) for details |
+| settings.deploymentOnly | bool | `false` | When set to true only the application's deployment resources will be installed with this chart. Can be used to explicitly avoid deploying a VirtualService resource. |
