@@ -1,4 +1,4 @@
-{{- if not .Values.settings.deploymentOnly }}
+{{- if .Values.gloo.enabled }}
 
 apiVersion: gateway.solo.io/v1
 kind: VirtualService
@@ -16,6 +16,19 @@ spec:
       - {{ . | quote }}
       {{- end }}
     routes:
-      {{- toYaml .Values.gloo.virtualservice.spec.virtualHost.routes | nindent 6 }}
-
+      - matchers:
+        - prefix: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath }}
+        routeAction:
+          single:
+            upstream:
+              name: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.upstream.name }}
+              namespace: {{ .Release.Namespace }}
+    {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.additionalRoutes }}
+      {{- toYaml .Values.gloo.virtualservice.spec.virtualHost.routes.additionalRoutes | nindent 6 }}
+    {{- end }}
+    options:
+      extauth:
+        configRef:
+          name: {{ .Values.gloo.authConfig.name }}
+          namespace: {{ .Values.gloo.authConfig.namespace }}
 {{- end }}

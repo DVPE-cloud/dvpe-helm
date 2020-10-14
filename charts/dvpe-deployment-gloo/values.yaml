@@ -101,8 +101,22 @@ additionalparameters:
   secretsApplied: false
   # additionalparameters.yamlConfigFileApplied -- Set to `true` if you want to add a custom yaml configuration for your deployment.
   yamlConfigFileApplied: false
+  config:
+    PLACEHOLDER: "placeholder"
+  secrets:
+    PLACEHOLDER: "placeholder"
+  yamlConfigFile:
+    configFileProp:
+      sub:
+        value
+    anotherConfigFileProp: 1
 
+#-------------------------------------#
+# Gloo (api gateway) value section       #
+#-------------------------------------#
 gloo:
+  # gloo.enabled -- When set to true only the application's deployment resources will be installed with this chart. Can be used to explicitly avoid deploying a VirtualService resource.
+  enabled: true
   virtualservice:
     # gloo.virtualservice.name -- Name of the `VirtualService` to deploy
     name:
@@ -116,5 +130,58 @@ gloo:
       virtualHost:
         # gloo.virtualservice.spec.virtualHost.domains -- List of DNS domain names this service will be published to.
         domains:
-        # gloo.virtualservice.spec.virtualHost.routes -- List of route configurations for this `VirtualService`. See [gloo VirtualService Specification](https://docs.solo.io/gloo/1.1.0/introduction/concepts/#virtual-services) for details
         routes:
+          # gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath -- Path to callback url which needs to be registered at the Identity Provider.
+          callbackUrlPath: /callback
+          upstream:
+            # gloo.virtualservice.spec.virtualHost.routes.upstream.name -- Upstream k8s service to handle the incoming request after the authentication.
+            name:
+            # gloo.virtualservice.spec.virtualHost.routes.upstream.upstream.namespace -- Namespace where the upstream k8s service is located.
+            namespace:
+        # gloo.virtualservice.spec.virtualHost.routes.additionalRoutes -- List of route configurations for this `VirtualService`. See [gloo VirtualService Specification](https://docs.solo.io/gloo/1.1.0/introduction/concepts/#virtual-services) for details
+          additionalRoutes:
+
+  authConfig:
+    # gloo.authConfig.name -- Name of the `Auth Config Plugin`
+    name: auth-plugin
+    # gloo.authConfig.namespace -- Namespace where the `Auth Config Plugin` is located
+    namespace: default
+    spec:
+      configs:
+        oauth:
+          # gloo.authConfig.spec.configs.oauth.app_url -- `BaseUrl` of the app
+          app_url: https://petstore.auth-sandbox.viper.bmw.cloud
+          # gloo.authConfig.spec.configs.oauth.callback_path --  Registered `RedirectUrl` at the IDP
+          callback_path: /callback
+          # gloo.authConfig.spec.configs.oauth.client_id -- Registered `ClientID` at the IDP
+          client_id: XXX
+          client_secret_ref:
+            # gloo.authConfig.spec.configs.oauth.client_secret_ref.name -- Name of the `Secret`. Gloo expects a k8s secret with the key `oauth`
+            name: webeam-oidc
+            # gloo.authConfig.spec.configs.oauth.client_secret_ref.namespace -- Namespace were the `Secret` is located
+            namespace: default
+          # gloo.authConfig.spec.configs.oauth.issuer_url -- Discovery URL to the Identity Provider
+          issuer_url: https://auth-i.bmwgroup.net/auth/oauth2/realms/root/realms/intranetb2x/.well-known/openid-configuration
+          # gloo.authConfig.spec.configs.oauth.scopes -- List of OIDC scopes. `openid` is set per default by Gloo and don't need to add here
+          scopes:
+        cachePlugin:
+          # gloo.authConfig.spec.configs.cachePlugin.name -- `Name` of the cache plugin
+          name: AuthFlow
+          config:
+            # gloo.authConfig.spec.configs.cachePlugin.config.CacheTableName -- `CacheTableName` of the auth cache
+            CacheTableName: auth-cache-dev
+            # gloo.authConfig.spec.configs.cachePlugin.config.AwsRegion -- `AwsRegion` where the cache is located
+            AwsRegion: eu-west-1
+        # gloo.authConfig.spec.configs.additionalPlugins -- List of plugins which should be added to the plugin chain. Expected format is a valid yaml with the `pluginAuth`. See [gloo Plugin Auth](https://docs.solo.io/gloo/latest/guides/security/auth/extauth/plugin_auth/#create-an-authconfig-resource) for details
+        additionalPlugins:
+
+#-------------------------------------#
+# DataDog value section #
+#-------------------------------------#
+datadog:
+  # datadog.enabled -- When set to true Datadog is enabled and all logs, metrics and traces will be sent to Datadog.
+  enabled: true
+  # datadog.source -- Defines the source which creates log outputs. Source defines the log format and triggers Datadog parser pipelines
+  source:
+  # datadog.team -- Label in Datadog for the responsible team
+  team:
