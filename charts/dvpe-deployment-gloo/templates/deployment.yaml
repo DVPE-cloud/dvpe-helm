@@ -16,15 +16,37 @@ spec:
     metadata:
       labels:
         app: {{ $serviceName }}
+      annotations:
+        {{- if .Values.datadog.enabled }}
+        ad.datadoghq.com/{{ $serviceName }}.check_names: '["{{ $serviceName }}"]'
+        ad.datadoghq.com/{{ $serviceName }}.init_configs: '[{}]'
+        ad.datadoghq.com/{{ $serviceName }}.logs: '[{"source":"{{ .Values.datadog.source }}", "service":"{{ $serviceName }}" }]'
+        ad.datadoghq.com/{{ $serviceName }}.tags: '{"team": "{{ .Values.datadog.team }}"}'
+        {{- end}}
     spec:
       imagePullSecrets:
-        - name: docker-reg-secret
+        - name: {{ .Values.deployment.spec.imagePullSecrets }}
       serviceAccountName: {{ .Values.deployment.spec.serviceAccountName }}
       containers:
         - name: {{ $serviceName }}
           imagePullPolicy: {{ .Values.deployment.spec.image.pullPolicy }}
           image: {{ $imageUrl }}
+          envFrom:
+            {{- if .Values.externalSecrets.enabled }}
+            - secretRef:
+                name: {{ $serviceName }}-service-secrets
+            {{- end }}
           env:
+          {{- if .Values.datadog.enabled }}
+          - name: "ENABLE_DATADOG"
+            value: {{ quote .Values.datadog.enabled }}
+          - name: "DD_AGENT_HOST"
+            valueFrom:
+              fieldRef:
+                fieldPath: status.hostIP
+          - name: "DD_SERVICE_NAME"
+            value: {{ $serviceName }}
+          {{- end}}
           {{- if .Values.additionalparameters.configMapApplied }}
           {{- range $key, $value := .Values.additionalparameters.config }}
           - name: "{{$key}}"

@@ -1,16 +1,31 @@
-settings:
-  # settings.deploymentOnly -- When set to true only the application's deployment resources will be installed with this chart. Can be used to explicitly avoid deploying a VirtualService resource.
-  deploymentOnly: false
+# Values for default microservice projects
 
+#-------------------------------#
+# secret.yaml value section     #
+#-------------------------------#
+externalSecrets:
+  # externalSecrets.enabled -- When set to true external secrets can be added and will create k8s secrets which will be injected into the container. If the container doesn't have any sensitive data this can be set to false.
+  enabled: true
+  service:
+    # externalSecrets.service.key -- `Key` to AWS Secret Manager object where all sensitive data needed by your application should be stored. Each key in the Secret Manager Object should be named like your needed environment variable
+    key:
+
+#-------------------------------#
+# deployment.yaml value section #
+#-------------------------------#
 deployment:
   spec:
     # deployment.spec.replicas -- The number of service instances to deploy.
-    replicas: 2
+    replicas: 1
     # deployment.spec.serviceAccountName -- The ServiceAccount this service will be associated with.
     serviceAccountName: default
+    # deployment.spec.imagePullSecrets -- Image Pull Secret to access docker registry.
+    imagePullSecrets:
     image:
       # deployment.spec.image.repository -- The docker repository to pull the service image from.
       repository:
+      # deployment.spec.image.name -- The image name to use.
+      name:
       # deployment.spec.image.tag -- The image version to use.
       tag: latest
       # deployment.spec.image.pullPolicy -- The default rule for downloading images.
@@ -46,6 +61,9 @@ deployment:
         # deployment.spec.resources.requests.memory -- Amount of memory reserved for a Pod. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage.
         memory: 200M
 
+#-------------------------------#
+# service.yaml value section    #
+#-------------------------------#
 service:
   spec:
     # service.spec.type -- Specify what kind of service to deploy. See [Kubernetes Service Spec](https://kubernetes.io/docs/concepts/services-networking/service/) for details
