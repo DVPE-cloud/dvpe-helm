@@ -80,6 +80,20 @@ service:
         # service.spec.ports.https.targetPort -- The http port the service listens to and to which requests will be sent.
         targetPort: 80
 
+#--------------------------------#
+# autoscaling.yaml value section #
+#--------------------------------#
+autoscaling:
+  maxReplicas: 5
+  minReplicas: 1
+  metrics:
+    resource:
+      cpu:
+        targetAverageUtilization: 80
+
+#-------------------------------------#
+# Extension param value section       #
+#-------------------------------------#
 additionalparameters:
   # additionalparameters.configMapApplied -- Set to `true` if you want to add a custom `ConfigMap` for your deployment.
   configMapApplied: false
