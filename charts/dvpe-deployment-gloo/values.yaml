@@ -112,7 +112,7 @@ additionalparameters:
     anotherConfigFileProp: 1
 
 #-------------------------------------#
-# Gloo (api gateway) value section       #
+# Gloo (api gateway) value section    #
 #-------------------------------------#
 gloo:
   # gloo.enabled -- When set to true only the application's deployment resources will be installed with this chart. Can be used to explicitly avoid deploying a VirtualService resource.
@@ -176,7 +176,7 @@ gloo:
         additionalPlugins:
 
 #-------------------------------------#
-# DataDog value section #
+# DataDog value section               #
 #-------------------------------------#
 datadog:
   # datadog.enabled -- When set to true Datadog is enabled and all logs, metrics and traces will be sent to Datadog.
