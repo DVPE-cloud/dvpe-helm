@@ -4,8 +4,6 @@
 # secret.yaml value section     #
 #-------------------------------#
 externalSecrets:
-  # externalSecrets.enabled -- When set to true external secrets can be added and will create k8s secrets which will be injected into the container. If the container doesn't have any sensitive data this can be set to false.
-  enabled: true
   service:
     # externalSecrets.service.key -- `Key` to AWS Secret Manager object where all sensitive application data should be stored. Each key in the Secret Manager Object should be named like your needed environment variable
     key:
@@ -109,15 +107,6 @@ additionalparameters:
   secretsApplied: false
   # additionalparameters.yamlConfigFileApplied -- Set to `true` if you want to add a custom yaml configuration for your deployment.
   yamlConfigFileApplied: false
-  config:
-    PLACEHOLDER: "placeholder"
-  secrets:
-    PLACEHOLDER: "placeholder"
-  yamlConfigFile:
-    configFileProp:
-      sub:
-        value
-    anotherConfigFileProp: 1
 
 #-------------------------------------#
 # Gloo (api gateway) value section    #
@@ -126,8 +115,6 @@ gloo:
   # gloo.enabled -- When set to true only the application's deployment resources will be installed with this chart. Can be used to explicitly avoid deploying a VirtualService resource.
   enabled: true
   virtualservice:
-    # gloo.virtualservice.name -- Name of the `VirtualService` to deploy
-    name:
     spec:
       sslConfig:
         secretRef:
