@@ -23,6 +23,9 @@ spec:
         ad.datadoghq.com/{{ $serviceName }}.logs: '[{"source":"{{ .Values.datadog.source }}", "service":"{{ $serviceName }}" }]'
         ad.datadoghq.com/{{ $serviceName }}.tags: '{"team": "{{ .Values.datadog.team }}"}'
         {{- end}}
+        {{- if .Values.deployment.podAnnotations }}
+          {{- toYaml .Values.deployment.podAnnotations | nindent 8 }}
+        {{- end }}
     spec:
       imagePullSecrets:
         - name: {{ .Values.deployment.spec.imagePullSecrets }}
@@ -32,7 +35,7 @@ spec:
           imagePullPolicy: {{ .Values.deployment.spec.image.pullPolicy }}
           image: {{ $imageUrl }}
           envFrom:
-            {{- if .Values.externalSecrets.enabled }}
+            {{- if .Values.externalSecrets.service.key }}
             - secretRef:
                 name: {{ $serviceName }}-service-secrets
             {{- end }}

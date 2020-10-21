@@ -7,20 +7,25 @@ externalSecrets:
   # externalSecrets.enabled -- When set to true external secrets can be added and will create k8s secrets which will be injected into the container. If the container doesn't have any sensitive data this can be set to false.
   enabled: true
   service:
-    # externalSecrets.service.key -- `Key` to AWS Secret Manager object where all sensitive data needed by your application should be stored. Each key in the Secret Manager Object should be named like your needed environment variable
+    # externalSecrets.service.key -- `Key` to AWS Secret Manager object where all sensitive application data should be stored. Each key in the Secret Manager Object should be named like your needed environment variable
+    key:
+  auth:
+    # externalSecrets.auth.key -- `Key` to AWS Secret Manager object where all sensitive authentication data should be stored. Each key in the Secret Manager Object should be named like your needed environment variable
     key:
 
 #-------------------------------#
 # deployment.yaml value section #
 #-------------------------------#
 deployment:
+  # deployment.podAnnotations -- List of additional `podAnnotations`.
+  podAnnotations:
   spec:
     # deployment.spec.replicas -- The number of service instances to deploy.
     replicas: 1
     # deployment.spec.serviceAccountName -- The ServiceAccount this service will be associated with.
     serviceAccountName: default
     # deployment.spec.imagePullSecrets -- Image Pull Secret to access docker registry.
-    imagePullSecrets:
+    imagePullSecrets: docker-reg-secret
     image:
       # deployment.spec.image.repository -- The docker repository to pull the service image from.
       repository:
@@ -71,24 +76,27 @@ service:
     ports:
       http:
         # service.spec.ports.http.port -- The http port the service is exposed to in the cluster.
-        port: 80
+        port: "80"
         # service.spec.ports.http.targetPort -- The http port the service listens to and to which requests will be sent.
-        targetPort: 80
+        targetPort: "80"
       https:
         # service.spec.ports.https.port -- The https port the service is exposed to in the cluster.
-        port: 443
+        port: "443"
         # service.spec.ports.https.targetPort -- The http port the service listens to and to which requests will be sent.
-        targetPort: 80
+        targetPort: "80"
 
 #--------------------------------#
 # autoscaling.yaml value section #
 #--------------------------------#
 autoscaling:
+  # autoscaling.maxReplicas -- Defines `maxReplicas` of Pods scaled automatically by Horizontal Pod Autoscaler (HPA).
   maxReplicas: 5
+  # autoscaling.minReplicas -- Defines `minReplicas` of Pods scaled automatically by Horizontal Pod Autoscaler (HPA).
   minReplicas: 1
   metrics:
     resource:
       cpu:
+        # autoscaling.metrics.resource.cpu.targetAverageUtilization -- Defines cpu utilization threshold in % for the HPA to scale up new pods.
         targetAverageUtilization: 80
 
 #-------------------------------------#
@@ -124,44 +132,40 @@ gloo:
       sslConfig:
         secretRef:
           # gloo.virtualservice.spec.sslConfig.secretRef.name -- Name of the secret containing the certificate information for this deployment.
-          name:
+          name: gloo-public-tls
           # gloo.virtualservice.spec.sslConfig.secretRef.namespace -- Name of the namespace where the secret is located.
-          namespace:
+          namespace: gloo-system
       virtualHost:
-        # gloo.virtualservice.spec.virtualHost.domains -- List of DNS domain names this service will be published to.
+        # gloo.virtualservice.spec.virtualHost.domains -- List of DNS domain names this service will be published to. TODO: Check if more than one domain is necessary. Dependencies to app_url in auth config and sslconfig.secretRef
         domains:
         routes:
-          # gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath -- Path to callback url which needs to be registered at the Identity Provider.
+          # gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath -- Path to `callbackUrl` which needs to be registered at the Identity Provider. Pre-defined route in `VirtualService`.
           callbackUrlPath: /callback
-          upstream:
-            # gloo.virtualservice.spec.virtualHost.routes.upstream.name -- Upstream k8s service to handle the incoming request after the authentication.
-            name:
-            # gloo.virtualservice.spec.virtualHost.routes.upstream.upstream.namespace -- Namespace where the upstream k8s service is located.
-            namespace:
-        # gloo.virtualservice.spec.virtualHost.routes.additionalRoutes -- List of route configurations for this `VirtualService`. See [gloo VirtualService Specification](https://docs.solo.io/gloo/1.1.0/introduction/concepts/#virtual-services) for details
+          # gloo.virtualservice.spec.virtualHost.routes.appPath -- Path to `appUrl` where the service can be accessed. Pre-defined route in `VirtualService`.
+          appPath: /
+          upstreamNamespace: gloo-system
+          # gloo.virtualservice.spec.virtualHost.routes.additionalRoutes -- List of route configurations for this `VirtualService`. See [gloo VirtualService Specification](https://docs.solo.io/gloo/1.1.0/introduction/concepts/#virtual-services) for details
           additionalRoutes:
 
   authConfig:
-    # gloo.authConfig.name -- Name of the `Auth Config Plugin`
+    # gloo.authConfig.name -- Prefix of the `Auth Config Plugin`. Final name will be <prefix>-<service-name>
     name: auth-plugin
-    # gloo.authConfig.namespace -- Namespace where the `Auth Config Plugin` is located
-    namespace: default
+    # gloo.authConfig.namespace -- Namespace where the `Auth Config Plugin` is located. If nothing is specified `Auth Config Plugin` will be created in service namespace.
+    namespace:
     spec:
       configs:
         oauth:
           # gloo.authConfig.spec.configs.oauth.app_url -- `BaseUrl` of the app
-          app_url: https://petstore.auth-sandbox.viper.bmw.cloud
-          # gloo.authConfig.spec.configs.oauth.callback_path --  Registered `RedirectUrl` at the IDP
-          callback_path: /callback
+          app_url:
           # gloo.authConfig.spec.configs.oauth.client_id -- Registered `ClientID` at the IDP
-          client_id: XXX
+          client_id:
           client_secret_ref:
-            # gloo.authConfig.spec.configs.oauth.client_secret_ref.name -- Name of the `Secret`. Gloo expects a k8s secret with the key `oauth`
+            # gloo.authConfig.spec.configs.oauth.client_secret_ref.name -- Name of the `Secret`. Gloo expects a k8s secret with the key `oauth` and base64 encoded value `clientSecret: secretValue`
             name: webeam-oidc
-            # gloo.authConfig.spec.configs.oauth.client_secret_ref.namespace -- Namespace were the `Secret` is located
-            namespace: default
-          # gloo.authConfig.spec.configs.oauth.issuer_url -- Discovery URL to the Identity Provider
-          issuer_url: https://auth-i.bmwgroup.net/auth/oauth2/realms/root/realms/intranetb2x/.well-known/openid-configuration
+            # gloo.authConfig.spec.configs.oauth.client_secret_ref.namespace -- Namespace were the `Secret` is located. If empty, secret will be saved in release namespace
+            namespace:
+          # gloo.authConfig.spec.configs.oauth.issuer_url -- Issuer URL to the Identity Provider. Gloo adds `.well-known/openid-configuration` to the url automatically
+          issuer_url:
           # gloo.authConfig.spec.configs.oauth.scopes -- List of OIDC scopes. `openid` is set per default by Gloo and don't need to add here
           scopes:
         cachePlugin:

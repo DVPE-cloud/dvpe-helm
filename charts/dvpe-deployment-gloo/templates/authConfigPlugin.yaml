@@ -1,32 +1,34 @@
+{{- $serviceName := include "service.name" . -}}
+
 {{- if .Values.gloo.enabled }}
 
 apiVersion: enterprise.gloo.solo.io/v1
 kind: AuthConfig
 metadata:
-  name: {{ .Values.gloo.authConfig.name }}
-  namespace: {{ .Values.gloo.authConfig.namespace }}
+  name: {{ $serviceName}}-{{ .Values.gloo.authConfig.name }}
+  namespace: {{default .Release.Namespace .Values.gloo.authConfig.namespace }}
 spec:
   configs:
-  - oauth:
-      app_url: {{ .Values.gloo.authConfig.spec.configs.oauth.app_url }}
-      callback_path: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath }}
-      client_id: {{ .Values.gloo.authConfig.spec.configs.oauth.client_id }}
-      client_secret_ref:
-        name: {{ .Values.gloo.authConfig.spec.configs.oauth.client_secret_ref.name }}
-        namespace: {{ .Values.gloo.authConfig.spec.configs.oauth.client_secret_ref.namespace }}
-      issuer_url: {{ .Values.gloo.authConfig.spec.configs.oauth.issuer_url }}
-      scopes:
-      {{- if .Values.gloo.authConfig.spec.configs.oauth.scopes }}
-        {{- toYaml .Values.gloo.authConfig.spec.configs.oauth.scopes | nindent 8 }}
-      {{- end }}
-  - pluginAuth:
-      name: {{- .Values.gloo.authConfig.spec.configs.cachePlugin.name }}
-      pluginFileName: {{- .Values.gloo.authConfig.spec.configs.cachePlugin.name }}.so
-      exportedSymbolName: Plugin
-      config:
-        CacheTableName: {{- .Values.gloo.authConfig.spec.configs.cachePlugin.config.CacheTableName }}
-        AwsRegion: {{- .Values.gloo.authConfig.spec.configs.cachePlugin.config.AwsRegion }}
-  {{- if .Values.gloo.authConfig.spec.configs.additionalPlugins }}
-    {{- toYaml .Values.gloo.authConfig.spec.configs.additionalPlugins | nindent 2 }}
-  {{- end }}
+    - oauth:
+        app_url: {{ .Values.gloo.authConfig.spec.configs.oauth.app_url }}
+        callback_path: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath }}
+        client_id: {{ .Values.gloo.authConfig.spec.configs.oauth.client_id }}
+        client_secret_ref:
+          name: {{ .Values.gloo.authConfig.spec.configs.oauth.client_secret_ref.name }}
+          namespace: {{default .Release.Namespace .Values.gloo.authConfig.spec.configs.oauth.client_secret_ref.namespace }}
+        issuer_url: {{ .Values.gloo.authConfig.spec.configs.oauth.issuer_url }}
+        scopes:
+        {{- if .Values.gloo.authConfig.spec.configs.oauth.scopes }}
+          {{- toYaml .Values.gloo.authConfig.spec.configs.oauth.scopes | nindent 8 }}
+        {{- end }}
+    - pluginAuth:
+        name: {{ .Values.gloo.authConfig.spec.configs.cachePlugin.name }}
+        pluginFileName: {{ .Values.gloo.authConfig.spec.configs.cachePlugin.name }}.so
+        exportedSymbolName: Plugin
+        config:
+          CacheTableName: {{ .Values.gloo.authConfig.spec.configs.cachePlugin.config.CacheTableName }}
+          AwsRegion:  {{ .Values.gloo.authConfig.spec.configs.cachePlugin.config.AwsRegion }}
+    {{- if .Values.gloo.authConfig.spec.configs.additionalPlugins }}
+      {{- toYaml .Values.gloo.authConfig.spec.configs.additionalPlugins | nindent 4 }}
+    {{- end }}
 {{- end }}

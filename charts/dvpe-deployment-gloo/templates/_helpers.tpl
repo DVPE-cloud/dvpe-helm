@@ -5,8 +5,15 @@
 {{- default .Release.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
-{{/* Expand AWS ECR image url. */}}
+{{/* Expand Nexus image url. */}}
 {{- define "image.url" -}}
-{{- $serviceName := default .Release.Name .Values.deployment.spec.image.name -}}
-{{- printf "\"%s/%s:%s\"" .Values.deployment.spec.image.repository $serviceName .Values.deployment.spec.image.tag -}}
+{{- printf "\"%s/%s:%s\"" .Values.deployment.spec.image.repository .Values.deployment.spec.image.name .Values.deployment.spec.image.tag -}}
 {{- end -}}
+
+{{/* Expand Gloo upstream.name */}}
+{{- define "upstream.name" -}}
+{{- $serviceName := include "service.name" . -}}
+{{- printf "%s-%s-svc-%s" .Release.Namespace $serviceName .Values.service.spec.ports.http.port -}}
+{{- end -}}
+
+
