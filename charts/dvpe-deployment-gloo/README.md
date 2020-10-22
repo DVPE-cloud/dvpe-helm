@@ -54,6 +54,31 @@ You can create this secret with the following `kubectl` command:
     --docker-password=<DOCKER_PASSWORD> \
     --docker-email=<DOCKER_EMAIL>
   ```
+  If you like to use a different name, please adjust the name of the secret in your `values.yaml`
+
+* a K8S secret with name `webeam-oidc` exists in the same namespace in which your service is going to be deployed.
+This secret needs to contain the client_secret information as base64 encoded string.
+Gloo expects a trailing newline at the secret string.
+You can encode your secret with the following command:
+    ```bash
+    echo 'clientSecret: <clientSecretFromIDP>' | base64
+    ```
+    Replace `<yourClientSecret>` below with the output of the previous command.
+    You can create this secret with the following `kubectl` command:
+    ```bash
+    <<EOF | kubectl apply -f -
+    apiVersion: v1
+    kind: Secret
+    type: Opaque
+    metadata:
+      annotations:
+        resource_kind: '*v1.Secret'
+      name: webeam-oidc-totally-new
+      namespace: argo-apps
+    data:
+      oauth: Y2xpZW50U2VjcmV0OiA1WXB4Q0FtcTlZQm5LNnByeFl1czNEOWRIcXNRUDhYTjkxWjRvRHk5Cg==
+    EOF
+    ```
 
 ### Using config from a file:
 
@@ -162,7 +187,6 @@ The following table lists the configurable parameters of the chart and its defau
 | deployment.spec.resources.requests.cpu | string | `"150m"` | Fractional amount of CPU allowed for a Pod. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage. |
 | deployment.spec.resources.requests.memory | string | `"200M"` | Amount of memory reserved for a Pod. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage. |
 | deployment.spec.serviceAccountName | string | `"default"` | The ServiceAccount this service will be associated with. |
-| externalSecrets.auth.key | string | `nil` | `Key` to AWS Secret Manager object where all sensitive authentication data should be stored. Each key in the Secret Manager Object should be named like your needed environment variable |
 | externalSecrets.service.key | string | `nil` | `Key` to AWS Secret Manager object where all sensitive application data should be stored. Each key in the Secret Manager Object should be named like your needed environment variable |
 | gloo.authConfig.name | string | `"auth-plugin"` | Prefix of the `Auth Config Plugin`. Final name will be <prefix>-<service-name> |
 | gloo.authConfig.namespace | string | `nil` | Namespace where the `Auth Config Plugin` is located. If nothing is specified `Auth Config Plugin` will be created in service namespace. |
@@ -185,10 +209,10 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath | string | `"/callback"` | Path to `callbackUrl` which needs to be registered at the Identity Provider. Pre-defined route in `VirtualService`. |
 | gloo.virtualservice.spec.virtualHost.routes.upstreamNamespace | string | `"gloo-system"` |  |
 | istio.destinationRule.spec.trafficPolicy.tls.mode | string | `"ISTIO_MUTUAL"` | trafficPolicy [ClientTLSSettings-TLSmode](https://istio.io/latest/docs/reference/config/networking/destination-rule/#ClientTLSSettings-TLSmode) |
-| istio.enabled | bool | `false` | Enables mtls per workload (pod) |
+| istio.enabled | bool | `true` | Enables mtls per workload (pod) |
 | istio.peerAuthentication.spec.mtls.mode | string | `"STRICT"` | mTLS mode for istio. [PeerAuthentication-MutualTLS-Mode](https://istio.io/latest/docs/reference/config/security/peer_authentication/#PeerAuthentication-MutualTLS-Mode) |
 | service.spec.ports.http.port | string | `"80"` | The http port the service is exposed to in the cluster. |
 | service.spec.ports.http.targetPort | string | `"80"` | The http port the service listens to and to which requests will be sent. |
 | service.spec.ports.https.port | string | `"443"` | The https port the service is exposed to in the cluster. |
-| service.spec.ports.https.targetPort | string | `"80"` | The http port the service listens to and to which requests will be sent. |
+| service.spec.ports.https.targetPort | string | `"443"` | The http port the service listens to and to which requests will be sent. |
 | service.spec.type | string | `"ClusterIP"` | Specify what kind of service to deploy. See [Kubernetes Service Spec](https://kubernetes.io/docs/concepts/services-networking/service/) for details |

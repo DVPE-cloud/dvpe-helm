@@ -13,7 +13,8 @@
 {{/* Expand Gloo upstream.name */}}
 {{- define "upstream.name" -}}
 {{- $serviceName := include "service.name" . -}}
-{{- printf "%s-%s-svc-%s" .Release.Namespace $serviceName .Values.service.spec.ports.http.port -}}
+{{/* TODO: Need to be changed to "%s-%s-svc-%s". Can be done after gloo isn't creating upstreams automatically */}}
+{{- printf "%s-%s-%s" .Release.Namespace $serviceName .Values.service.spec.ports.https.port -}}
 {{- end -}}
 
 

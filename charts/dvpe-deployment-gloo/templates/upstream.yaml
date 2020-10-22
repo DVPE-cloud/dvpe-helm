@@ -1,0 +1,27 @@
+{{- $serviceName := include "service.name" . -}}
+{{- $upstreamName := include "upstream.name" . -}}
+
+{{- if .Values.gloo.enabled }}
+
+apiVersion: gloo.solo.io/v1
+kind: Upstream
+metadata:
+  name: {{ $upstreamName }}
+  namespace: gloo-system
+spec:
+  kube:
+    selector:
+      app: {{ $serviceName }}
+    serviceName: {{ $serviceName }}-svc
+    serviceNamespace: {{ .Release.Namespace }}
+    servicePort: {{ .Values.service.spec.ports.https.port }}
+  sslConfig:
+    alpnProtocols:
+      - istio
+    sds:
+      certificatesSecretName: istio_server_cert
+      clusterName: gateway_proxy_sds
+      targetUri: 127.0.0.1:8234
+      validationContextName: istio_validation_context
+
+{{- end }}

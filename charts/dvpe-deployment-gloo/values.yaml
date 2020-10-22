@@ -7,9 +7,6 @@ externalSecrets:
   service:
     # externalSecrets.service.key -- `Key` to AWS Secret Manager object where all sensitive application data should be stored. Each key in the Secret Manager Object should be named like your needed environment variable
     key:
-  auth:
-    # externalSecrets.auth.key -- `Key` to AWS Secret Manager object where all sensitive authentication data should be stored. Each key in the Secret Manager Object should be named like your needed environment variable
-    key:
 
 #-------------------------------#
 # deployment.yaml value section #
@@ -81,7 +78,7 @@ service:
         # service.spec.ports.https.port -- The https port the service is exposed to in the cluster.
         port: "443"
         # service.spec.ports.https.targetPort -- The http port the service listens to and to which requests will be sent.
-        targetPort: "80"
+        targetPort: "443"
 
 #--------------------------------#
 # autoscaling.yaml value section #
@@ -176,3 +173,21 @@ datadog:
   source:
   # datadog.team -- Label in Datadog for the responsible team
   team:
+
+#-------------------------------------#
+# Istio value section                 #
+#-------------------------------------#
+istio:
+  # istio.enabled -- Enables mtls per workload (pod)
+  enabled: true
+  peerAuthentication:
+    spec:
+      mtls:
+        # istio.peerAuthentication.spec.mtls.mode -- mTLS mode for istio. [PeerAuthentication-MutualTLS-Mode](https://istio.io/latest/docs/reference/config/security/peer_authentication/#PeerAuthentication-MutualTLS-Mode)
+        mode: STRICT
+  destinationRule:
+    spec:
+      trafficPolicy:
+        tls:
+          # istio.destinationRule.spec.trafficPolicy.tls.mode -- trafficPolicy [ClientTLSSettings-TLSmode](https://istio.io/latest/docs/reference/config/networking/destination-rule/#ClientTLSSettings-TLSmode)
+          mode: ISTIO_MUTUAL
