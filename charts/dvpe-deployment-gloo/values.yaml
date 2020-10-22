@@ -1,14 +1,16 @@
 # Values for default microservice projects
 
-# secret.yaml value section
+# -------------------------------#
+# secret.yaml value section     #
+# -------------------------------#
 externalSecrets:
   service:
     # externalSecrets.service.key -- `Key` to AWS Secret Manager object where all sensitive application data should be stored. Each key in the Secret Manager Object should be named like your needed environment variable
     key:
 
-#-------------------------------
-# deployment.yaml value section
-#-------------------------------
+# -------------------------------#
+# deployment.yaml value section  #
+# -------------------------------#
 deployment:
   # deployment.podAnnotations -- List of additional `podAnnotations`.
   podAnnotations:
@@ -59,9 +61,9 @@ deployment:
         # deployment.spec.resources.requests.memory -- Amount of memory reserved for a Pod. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage.
         memory: 200M
 
-#-------------------------------#
+# -------------------------------#
 # service.yaml value section    #
-#-------------------------------#
+# -------------------------------#
 service:
   spec:
     # service.spec.type -- Specify what kind of service to deploy. See [Kubernetes Service Spec](https://kubernetes.io/docs/concepts/services-networking/service/) for details
@@ -78,9 +80,9 @@ service:
         # service.spec.ports.https.targetPort -- The http port the service listens to and to which requests will be sent.
         targetPort: "443"
 
-#--------------------------------#
+# --------------------------------#
 # autoscaling.yaml value section #
-#--------------------------------#
+# --------------------------------#
 autoscaling:
   # autoscaling.maxReplicas -- Defines `maxReplicas` of Pods scaled automatically by Horizontal Pod Autoscaler (HPA).
   maxReplicas: 5
@@ -92,9 +94,9 @@ autoscaling:
         # autoscaling.metrics.resource.cpu.targetAverageUtilization -- Defines cpu utilization threshold in % for the HPA to scale up new pods.
         targetAverageUtilization: 80
 
-#-------------------------------------#
+# -------------------------------------#
 # Extension param value section       #
-#-------------------------------------#
+# -------------------------------------#
 additionalparameters:
   # additionalparameters.configMapApplied -- Set to `true` if you want to add a custom `ConfigMap` for your deployment.
   configMapApplied: false
@@ -103,9 +105,9 @@ additionalparameters:
   # additionalparameters.yamlConfigFileApplied -- Set to `true` if you want to add a custom yaml configuration for your deployment.
   yamlConfigFileApplied: false
 
-#-------------------------------------#
-# Gloo (api gateway) value section    #
-#-------------------------------------#
+# -------------------------------------#
+# Gloo (api gateway) value section     #
+# -------------------------------------#
 gloo:
   # gloo.enabled -- When set to true only the application's deployment resources will be installed with this chart. Can be used to explicitly avoid deploying a VirtualService resource.
   enabled: true
@@ -161,9 +163,9 @@ gloo:
         # gloo.authConfig.spec.configs.additionalPlugins -- List of plugins which should be added to the plugin chain. Expected format is a valid yaml with the `pluginAuth`. See [gloo Plugin Auth](https://docs.solo.io/gloo/latest/guides/security/auth/extauth/plugin_auth/#create-an-authconfig-resource) for details
         additionalPlugins:
 
-#-------------------------------------#
-# DataDog value section               #
-#-------------------------------------#
+# -------------------------------------#
+# DataDog value section                #
+# -------------------------------------#
 datadog:
   # datadog.enabled -- When set to true Datadog is enabled and all logs, metrics and traces will be sent to Datadog.
   enabled: true
@@ -172,9 +174,9 @@ datadog:
   # datadog.team -- Label in Datadog for the responsible team
   team:
 
-#-------------------------------------#
-# Istio value section                 #
-#-------------------------------------#
+# -------------------------------------#
+# Istio value section                  #
+# -------------------------------------#
 istio:
   # istio.enabled -- Enables mtls per workload (pod)
   enabled: true
