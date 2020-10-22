@@ -6,9 +6,9 @@ externalSecrets:
     # externalSecrets.service.key -- `Key` to AWS Secret Manager object where all sensitive application data should be stored. Each key in the Secret Manager Object should be named like your needed environment variable
     key:
 
-#-------------------------------#
-# deployment.yaml value section #
-#-------------------------------#
+#-------------------------------
+# deployment.yaml value section
+#-------------------------------
 deployment:
   # deployment.podAnnotations -- List of additional `podAnnotations`.
   podAnnotations:
