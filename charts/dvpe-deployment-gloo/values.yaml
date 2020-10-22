@@ -1,8 +1,6 @@
 # Values for default microservice projects
 
-#-------------------------------#
-# secret.yaml value section     #
-#-------------------------------#
+# secret.yaml value section
 externalSecrets:
   service:
     # externalSecrets.service.key -- `Key` to AWS Secret Manager object where all sensitive application data should be stored. Each key in the Secret Manager Object should be named like your needed environment variable
