@@ -12,7 +12,7 @@ spec:
   sslConfig:
     secretRef:
       name: {{ .Values.gloo.virtualservice.spec.sslConfig.secretRef.name }}
-      namespace: {{ .Values.gloo.virtualservice.spec.sslConfig.secretRef.namespace }}
+      namespace: {{default .Values.gloo.namespace .Values.gloo.virtualservice.spec.sslConfig.secretRef.namespace }}
   virtualHost:
     domains:
       {{- range .Values.gloo.virtualservice.spec.virtualHost.domains }}
@@ -25,14 +25,14 @@ spec:
           single:
             upstream:
               name: {{ $upstreamName }}
-              namespace: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.upstreamNamespace }}
+              namespace: {{ .Values.gloo.upstream.namespace }}
       - matchers:
           - prefix: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.appPath }}
         routeAction:
           single:
             upstream:
               name: {{ $upstreamName }}
-              namespace: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.upstreamNamespace }}
+              namespace: {{ .Values.gloo.upstream.namespace }}
     {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.additionalRoutes }}
       {{- toYaml .Values.gloo.virtualservice.spec.virtualHost.routes.additionalRoutes | nindent 6 }}
     {{- end }}

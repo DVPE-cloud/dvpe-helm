@@ -12,8 +12,8 @@ externalSecrets:
 # deployment.yaml value section  #
 # -------------------------------#
 deployment:
-  # deployment.podAnnotations -- List of additional `podAnnotations`.
-  podAnnotations:
+  # deployment.podAnnotations -- Object of additional `podAnnotations`.
+  podAnnotations: {}
   spec:
     # deployment.spec.replicas -- The number of service instances to deploy.
     replicas: 1
@@ -106,19 +106,25 @@ additionalparameters:
   yamlConfigFileApplied: false
 
 # -------------------------------------#
-# Gloo (api gateway) value section     #
+# Gloo general value section     #
 # -------------------------------------#
 gloo:
   # gloo.enabled -- When set to true only the application's deployment resources will be installed with this chart. Can be used to explicitly avoid deploying a VirtualService resource.
   enabled: true
+  # gloo.namespace -- `Namespace` where all Gloo resources are deployed.
+  namespace: gloo-system
+
+# -------------------------------------#
+# Gloo VirtualService value section    #
+# -------------------------------------#
   virtualservice:
     spec:
       sslConfig:
         secretRef:
           # gloo.virtualservice.spec.sslConfig.secretRef.name -- Name of the secret containing the certificate information for this deployment.
           name: gloo-public-tls
-          # gloo.virtualservice.spec.sslConfig.secretRef.namespace -- Name of the namespace where the secret is located.
-          namespace: gloo-system
+          # gloo.virtualservice.spec.sslConfig.secretRef.namespace -- Namespace where the secret is located. If empty, gloo namespace is used.
+          namespace:
       virtualHost:
         # gloo.virtualservice.spec.virtualHost.domains -- List of DNS domain names this service will be published to. TODO: Check if more than one domain is necessary. Dependencies to app_url in auth config and sslconfig.secretRef
         domains:
@@ -127,14 +133,16 @@ gloo:
           callbackUrlPath: /callback
           # gloo.virtualservice.spec.virtualHost.routes.appPath -- Path to `appUrl` where the service can be accessed. Pre-defined route in `VirtualService`.
           appPath: /
-          upstreamNamespace: gloo-system
           # gloo.virtualservice.spec.virtualHost.routes.additionalRoutes -- List of route configurations for this `VirtualService`. See [gloo VirtualService Specification](https://docs.solo.io/gloo/1.1.0/introduction/concepts/#virtual-services) for details
           additionalRoutes:
 
+# -------------------------------------#
+# Gloo Auth Config value section       #
+# -------------------------------------#
   authConfig:
     # gloo.authConfig.name -- Prefix of the `Auth Config Plugin`. Final name will be <prefix>-<service-name>
     name: auth-plugin
-    # gloo.authConfig.namespace -- Namespace where the `Auth Config Plugin` is located. If nothing is specified `Auth Config Plugin` will be created in service namespace.
+    # gloo.authConfig.namespace -- Namespace where the `Auth Config Plugin` is located. If empty, release namespace is used.
     namespace:
     spec:
       configs:
@@ -146,11 +154,11 @@ gloo:
           client_secret_ref:
             # gloo.authConfig.spec.configs.oauth.client_secret_ref.name -- Name of the `Secret`. Gloo expects a k8s secret with the key `oauth` and base64 encoded value `clientSecret: secretValue`
             name: webeam-oidc
-            # gloo.authConfig.spec.configs.oauth.client_secret_ref.namespace -- Namespace were the `Secret` is located. If empty, secret will be saved in release namespace
+            # gloo.authConfig.spec.configs.oauth.client_secret_ref.namespace -- Namespace were the `Secret` is located. If empty, release namespace is used.
             namespace:
           # gloo.authConfig.spec.configs.oauth.issuer_url -- Issuer URL to the Identity Provider. Gloo adds `.well-known/openid-configuration` to the url automatically
           issuer_url:
-          # gloo.authConfig.spec.configs.oauth.scopes -- List of OIDC scopes. `openid` is set per default by Gloo and don't need to add here
+          # gloo.authConfig.spec.configs.oauth.scopes -- List of OIDC scopes. `openid` is set per default by Gloo and must not be added here
           scopes:
         cachePlugin:
           # gloo.authConfig.spec.configs.cachePlugin.name -- `Name` of the cache plugin
@@ -162,6 +170,14 @@ gloo:
             AwsRegion: eu-west-1
         # gloo.authConfig.spec.configs.additionalPlugins -- List of plugins which should be added to the plugin chain. Expected format is a valid yaml with the `pluginAuth`. See [gloo Plugin Auth](https://docs.solo.io/gloo/latest/guides/security/auth/extauth/plugin_auth/#create-an-authconfig-resource) for details
         additionalPlugins:
+
+# -------------------------------------#
+# Gloo Upstream value section          #
+# -------------------------------------#
+  upstream:
+    # gloo.upstream.namespace -- `Namespace` where gloo upstream is deployed.
+    namespace: gloo-system
+
 
 # -------------------------------------#
 # DataDog value section                #
