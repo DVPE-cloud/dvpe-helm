@@ -1,0 +1,42 @@
+{{- $upstreamName := include "upstream.name" . -}}
+{{- $serviceName := include "service.name" . -}}
+
+{{- if .Values.gloo.enabled }}
+
+apiVersion: gateway.solo.io/v1
+kind: VirtualService
+metadata:
+  name: {{ $serviceName }}-virtualservice
+  namespace: {{ .Release.Namespace }}
+spec:
+  sslConfig:
+    secretRef:
+      name: {{ .Values.gloo.virtualservice.spec.sslConfig.secretRef.name }}
+      namespace: {{default .Values.gloo.namespace .Values.gloo.virtualservice.spec.sslConfig.secretRef.namespace }}
+  virtualHost:
+    domains:
+    - {{ .Values.gloo.virtualservice.spec.virtualHost.domains }}
+    routes:
+      - matchers:
+        - prefix: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath }}
+        routeAction:
+          single:
+            upstream:
+              name: {{ $upstreamName }}
+              namespace: {{ .Values.gloo.upstream.namespace }}
+      - matchers:
+          - prefix: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.appPath }}
+        routeAction:
+          single:
+            upstream:
+              name: {{ $upstreamName }}
+              namespace: {{ .Values.gloo.upstream.namespace }}
+    {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.additionalRoutes }}
+      {{- toYaml .Values.gloo.virtualservice.spec.virtualHost.routes.additionalRoutes | nindent 6 }}
+    {{- end }}
+    options:
+      extauth:
+        configRef:
+          name: {{ $serviceName}}-{{ .Values.gloo.authConfig.name }}
+          namespace: {{default .Release.Namespace .Values.gloo.authConfig.namespace }}
+{{- end }}

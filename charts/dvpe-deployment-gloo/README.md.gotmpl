@@ -53,6 +53,31 @@ You can create this secret with the following `kubectl` command:
     --docker-password=<DOCKER_PASSWORD> \
     --docker-email=<DOCKER_EMAIL>
   ```
+  If you like to use a different name, please adjust the name of the secret in your `values.yaml`
+
+* a K8S secret with name `webeam-oidc` exists in the same namespace in which your service is going to be deployed.
+This secret needs to contain the client_secret information as base64 encoded string.
+Gloo expects a trailing newline at the secret string.
+You can encode your secret with the following command:
+    ```bash
+    echo 'clientSecret: <clientSecretFromIDP>' | base64
+    ```
+    Replace `<yourClientSecret>` below with the output of the previous command.
+    You can create this secret with the following `kubectl` command:
+    ```bash
+    <<EOF | kubectl apply -f -
+    apiVersion: v1
+    kind: Secret
+    type: Opaque
+    metadata:
+      annotations:
+        resource_kind: '*v1.Secret'
+      name: webeam-oidc
+      namespace: argo-apps
+    data:
+      oauth: <yourClientSecret>
+    EOF
+    ```
 
 ### Using config from a file:
 

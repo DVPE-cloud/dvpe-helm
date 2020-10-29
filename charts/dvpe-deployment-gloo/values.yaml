@@ -1,16 +1,31 @@
-settings:
-  # settings.deploymentOnly -- When set to true only the application's deployment resources will be installed with this chart. Can be used to explicitly avoid deploying a VirtualService resource.
-  deploymentOnly: false
+# Values for default microservice projects
 
+# -------------------------------#
+# secret.yaml value section     #
+# -------------------------------#
+externalSecrets:
+  service:
+    # externalSecrets.service.key -- `Key` to AWS Secret Manager object where all sensitive application data should be stored. Each key in the Secret Manager Object should be named like your needed environment variable
+    key:
+
+# -------------------------------#
+# deployment.yaml value section  #
+# -------------------------------#
 deployment:
+  # deployment.podAnnotations -- Object of additional `podAnnotations`.
+  podAnnotations: {}
   spec:
     # deployment.spec.replicas -- The number of service instances to deploy.
-    replicas: 2
+    replicas: 1
     # deployment.spec.serviceAccountName -- The ServiceAccount this service will be associated with.
     serviceAccountName: default
+    # deployment.spec.imagePullSecrets -- Image Pull Secret to access docker registry.
+    imagePullSecrets: docker-reg-secret
     image:
       # deployment.spec.image.repository -- The docker repository to pull the service image from.
       repository:
+      # deployment.spec.image.name -- The image name to use.
+      name:
       # deployment.spec.image.tag -- The image version to use.
       tag: latest
       # deployment.spec.image.pullPolicy -- The default rule for downloading images.
@@ -46,6 +61,9 @@ deployment:
         # deployment.spec.resources.requests.memory -- Amount of memory reserved for a Pod. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage.
         memory: 200M
 
+# -------------------------------#
+# service.yaml value section    #
+# -------------------------------#
 service:
   spec:
     # service.spec.type -- Specify what kind of service to deploy. See [Kubernetes Service Spec](https://kubernetes.io/docs/concepts/services-networking/service/) for details
@@ -53,15 +71,32 @@ service:
     ports:
       http:
         # service.spec.ports.http.port -- The http port the service is exposed to in the cluster.
-        port: 80
+        port: "80"
         # service.spec.ports.http.targetPort -- The http port the service listens to and to which requests will be sent.
-        targetPort: 80
+        targetPort: "80"
       https:
         # service.spec.ports.https.port -- The https port the service is exposed to in the cluster.
-        port: 443
+        port: "443"
         # service.spec.ports.https.targetPort -- The http port the service listens to and to which requests will be sent.
-        targetPort: 80
+        targetPort: "443"
 
+# --------------------------------#
+# autoscaling.yaml value section #
+# --------------------------------#
+autoscaling:
+  # autoscaling.maxReplicas -- Defines `maxReplicas` of Pods scaled automatically by Horizontal Pod Autoscaler (HPA).
+  maxReplicas: 5
+  # autoscaling.minReplicas -- Defines `minReplicas` of Pods scaled automatically by Horizontal Pod Autoscaler (HPA).
+  minReplicas: 1
+  metrics:
+    resource:
+      cpu:
+        # autoscaling.metrics.resource.cpu.targetAverageUtilization -- Defines cpu utilization threshold in % for the HPA to scale up new pods.
+        targetAverageUtilization: 80
+
+# -------------------------------------#
+# Extension param value section       #
+# -------------------------------------#
 additionalparameters:
   # additionalparameters.configMapApplied -- Set to `true` if you want to add a custom `ConfigMap` for your deployment.
   configMapApplied: false
@@ -70,19 +105,103 @@ additionalparameters:
   # additionalparameters.yamlConfigFileApplied -- Set to `true` if you want to add a custom yaml configuration for your deployment.
   yamlConfigFileApplied: false
 
+# -------------------------------------#
+# Gloo general value section     #
+# -------------------------------------#
 gloo:
+  # gloo.enabled -- When set to true only the application's deployment resources will be installed with this chart. Can be used to explicitly avoid deploying a VirtualService resource.
+  enabled: true
+  # gloo.namespace -- `Namespace` where all Gloo resources are deployed.
+  namespace: gloo-system
+
+# -------------------------------------#
+# Gloo VirtualService value section    #
+# -------------------------------------#
   virtualservice:
-    # gloo.virtualservice.name -- Name of the `VirtualService` to deploy
-    name:
     spec:
       sslConfig:
         secretRef:
           # gloo.virtualservice.spec.sslConfig.secretRef.name -- Name of the secret containing the certificate information for this deployment.
-          name:
-          # gloo.virtualservice.spec.sslConfig.secretRef.namespace -- Name of the namespace where the secret is located.
+          name: gloo-public-tls
+          # gloo.virtualservice.spec.sslConfig.secretRef.namespace -- Namespace where the secret is located. If empty, gloo namespace is used.
           namespace:
       virtualHost:
-        # gloo.virtualservice.spec.virtualHost.domains -- List of DNS domain names this service will be published to.
+        # gloo.virtualservice.spec.virtualHost.domains -- `DNS domain name` this service will be published to.
         domains:
-        # gloo.virtualservice.spec.virtualHost.routes -- List of route configurations for this `VirtualService`. See [gloo VirtualService Specification](https://docs.solo.io/gloo/1.1.0/introduction/concepts/#virtual-services) for details
         routes:
+          # gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath -- Path to `callbackUrl` which needs to be registered at the Identity Provider. Pre-defined route in `VirtualService`.
+          callbackUrlPath: /callback
+          # gloo.virtualservice.spec.virtualHost.routes.appPath -- Path to `appUrl` where the service can be accessed. Pre-defined route in `VirtualService`.
+          appPath: /
+          # gloo.virtualservice.spec.virtualHost.routes.additionalRoutes -- List of route configurations for this `VirtualService`. See [gloo VirtualService Specification](https://docs.solo.io/gloo/1.1.0/introduction/concepts/#virtual-services) for details
+          additionalRoutes:
+
+# -------------------------------------#
+# Gloo Auth Config value section       #
+# -------------------------------------#
+  authConfig:
+    # gloo.authConfig.name -- Prefix of the `Auth Config Plugin`. Final name will be <prefix>-<service-name>
+    name: auth-plugin
+    # gloo.authConfig.namespace -- Namespace where the `Auth Config Plugin` is located. If empty, release namespace is used.
+    namespace:
+    spec:
+      configs:
+        oauth:
+          # gloo.authConfig.spec.configs.oauth.client_id -- Registered `ClientID` at the IDP
+          client_id:
+          client_secret_ref:
+            # gloo.authConfig.spec.configs.oauth.client_secret_ref.name -- Name of the `Secret`. Gloo expects a k8s secret with the key `oauth` and base64 encoded value `clientSecret: secretValue`
+            name: webeam-oidc
+            # gloo.authConfig.spec.configs.oauth.client_secret_ref.namespace -- Namespace were the `Secret` is located. If empty, release namespace is used.
+            namespace:
+          # gloo.authConfig.spec.configs.oauth.issuer_url -- Issuer URL to the Identity Provider. Gloo adds `.well-known/openid-configuration` to the url automatically
+          issuer_url:
+          # gloo.authConfig.spec.configs.oauth.scopes -- List of OIDC scopes. `openid` is set per default by Gloo and must not be added here
+          scopes:
+        cachePlugin:
+          # gloo.authConfig.spec.configs.cachePlugin.name -- `Name` of the cache plugin
+          name: AuthFlow
+          config:
+            # gloo.authConfig.spec.configs.cachePlugin.config.CacheTableName -- `CacheTableName` of the auth cache
+            CacheTableName: auth-cache-dev
+            # gloo.authConfig.spec.configs.cachePlugin.config.AwsRegion -- `AwsRegion` where the cache is located
+            AwsRegion: eu-west-1
+        # gloo.authConfig.spec.configs.additionalPlugins -- List of plugins which should be added to the plugin chain. Expected format is a valid yaml with the `pluginAuth`. See [gloo Plugin Auth](https://docs.solo.io/gloo/latest/guides/security/auth/extauth/plugin_auth/#create-an-authconfig-resource) for details
+        additionalPlugins:
+
+# -------------------------------------#
+# Gloo Upstream value section          #
+# -------------------------------------#
+  upstream:
+    # gloo.upstream.namespace -- `Namespace` where gloo upstream is deployed.
+    namespace: gloo-system
+
+
+# -------------------------------------#
+# DataDog value section                #
+# -------------------------------------#
+datadog:
+  # datadog.enabled -- When set to true Datadog is enabled and all logs, metrics and traces will be sent to Datadog.
+  enabled: true
+  # datadog.source -- Defines the source which creates log outputs. Source defines the log format and triggers Datadog parser pipelines
+  source:
+  # datadog.team -- Label in Datadog for the responsible team
+  team:
+
+# -------------------------------------#
+# Istio value section                  #
+# -------------------------------------#
+istio:
+  # istio.enabled -- Enables mtls per workload (pod)
+  enabled: true
+  peerAuthentication:
+    spec:
+      mtls:
+        # istio.peerAuthentication.spec.mtls.mode -- mTLS mode for istio. [PeerAuthentication-MutualTLS-Mode](https://istio.io/latest/docs/reference/config/security/peer_authentication/#PeerAuthentication-MutualTLS-Mode)
+        mode: STRICT
+  destinationRule:
+    spec:
+      trafficPolicy:
+        tls:
+          # istio.destinationRule.spec.trafficPolicy.tls.mode -- trafficPolicy [ClientTLSSettings-TLSmode](https://istio.io/latest/docs/reference/config/networking/destination-rule/#ClientTLSSettings-TLSmode)
+          mode: ISTIO_MUTUAL

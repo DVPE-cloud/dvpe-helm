@@ -1,0 +1,27 @@
+{{- $serviceName := include "service.name" . -}}
+{{- if .Values.istio.enabled }}
+
+apiVersion: "security.istio.io/v1beta1"
+kind: "PeerAuthentication"
+metadata:
+  name: {{ $serviceName }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ $serviceName }}
+  mtls:
+    mode: {{ .Values.istio.peerAuthentication.spec.mtls.mode }}
+
+---
+apiVersion: "networking.istio.io/v1alpha3"
+kind: "DestinationRule"
+metadata:
+  name: {{ $serviceName }}-mtls
+spec:
+  host: "{{ $serviceName }}.{{ .Release.Namespace }}.svc.cluster.local"
+  trafficPolicy:
+    tls:
+      mode: {{ .Values.istio.destinationRule.spec.trafficPolicy.tls.mode}}
+
+{{- end}}

@@ -5,8 +5,16 @@
 {{- default .Release.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
-{{/* Expand AWS ECR image url. */}}
+{{/* Expand Nexus image url. */}}
 {{- define "image.url" -}}
-{{- $serviceName := default .Release.Name .Values.nameOverride -}}
-{{- printf "\"%s/%s:%s\"" .Values.deployment.spec.image.repository $serviceName .Values.deployment.spec.image.tag -}}
+{{- printf "\"%s/%s:%s\"" .Values.deployment.spec.image.repository .Values.deployment.spec.image.name .Values.deployment.spec.image.tag -}}
 {{- end -}}
+
+{{/* Expand Gloo upstream.name */}}
+{{- define "upstream.name" -}}
+{{- $serviceName := include "service.name" . -}}
+{{/* TODO: Need to be changed to "%s-%s-svc-%s". Can be done after gloo isn't creating upstreams automatically */}}
+{{- printf "%s-%s-%s" .Release.Namespace $serviceName .Values.service.spec.ports.https.port -}}
+{{- end -}}
+
+
