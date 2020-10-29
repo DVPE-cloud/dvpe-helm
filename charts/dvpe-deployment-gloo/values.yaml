@@ -126,7 +126,7 @@ gloo:
           # gloo.virtualservice.spec.sslConfig.secretRef.namespace -- Namespace where the secret is located. If empty, gloo namespace is used.
           namespace:
       virtualHost:
-        # gloo.virtualservice.spec.virtualHost.domains -- List of DNS domain names this service will be published to. TODO: Check if more than one domain is necessary. Dependencies to app_url in auth config and sslconfig.secretRef
+        # gloo.virtualservice.spec.virtualHost.domains -- `DNS domain name` this service will be published to.
         domains:
         routes:
           # gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath -- Path to `callbackUrl` which needs to be registered at the Identity Provider. Pre-defined route in `VirtualService`.
@@ -147,8 +147,6 @@ gloo:
     spec:
       configs:
         oauth:
-          # gloo.authConfig.spec.configs.oauth.app_url -- `BaseUrl` of the app
-          app_url:
           # gloo.authConfig.spec.configs.oauth.client_id -- Registered `ClientID` at the IDP
           client_id:
           client_secret_ref:

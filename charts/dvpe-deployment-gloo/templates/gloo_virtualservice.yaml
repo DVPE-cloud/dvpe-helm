@@ -15,9 +15,7 @@ spec:
       namespace: {{default .Values.gloo.namespace .Values.gloo.virtualservice.spec.sslConfig.secretRef.namespace }}
   virtualHost:
     domains:
-      {{- range .Values.gloo.virtualservice.spec.virtualHost.domains }}
-      - {{ . | quote }}
-      {{- end }}
+    - {{ .Values.gloo.virtualservice.spec.virtualHost.domains }}
     routes:
       - matchers:
         - prefix: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath }}

@@ -10,7 +10,7 @@ metadata:
 spec:
   configs:
     - oauth:
-        app_url: {{ .Values.gloo.authConfig.spec.configs.oauth.app_url }}
+        app_url: "https://{{ .Values.gloo.virtualservice.spec.virtualHost.domains }}"
         callback_path: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath }}
         client_id: {{ .Values.gloo.authConfig.spec.configs.oauth.client_id }}
         client_secret_ref:

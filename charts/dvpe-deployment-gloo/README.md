@@ -194,7 +194,6 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.authConfig.spec.configs.cachePlugin.config.AwsRegion | string | `"eu-west-1"` | `AwsRegion` where the cache is located |
 | gloo.authConfig.spec.configs.cachePlugin.config.CacheTableName | string | `"auth-cache-dev"` | `CacheTableName` of the auth cache |
 | gloo.authConfig.spec.configs.cachePlugin.name | string | `"AuthFlow"` | `Name` of the cache plugin |
-| gloo.authConfig.spec.configs.oauth.app_url | string | `nil` | `BaseUrl` of the app |
 | gloo.authConfig.spec.configs.oauth.client_id | string | `nil` | Registered `ClientID` at the IDP |
 | gloo.authConfig.spec.configs.oauth.client_secret_ref.name | string | `"webeam-oidc"` | Name of the `Secret`. Gloo expects a k8s secret with the key `oauth` and base64 encoded value `clientSecret: secretValue` |
 | gloo.authConfig.spec.configs.oauth.client_secret_ref.namespace | string | `nil` | Namespace were the `Secret` is located. If empty, release namespace is used. |
@@ -205,7 +204,7 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.upstream.namespace | string | `"gloo-system"` | `Namespace` where gloo upstream is deployed. |
 | gloo.virtualservice.spec.sslConfig.secretRef.name | string | `"gloo-public-tls"` | Name of the secret containing the certificate information for this deployment. |
 | gloo.virtualservice.spec.sslConfig.secretRef.namespace | string | `nil` | Namespace where the secret is located. If empty, gloo namespace is used. |
-| gloo.virtualservice.spec.virtualHost.domains | string | `nil` | List of DNS domain names this service will be published to. TODO: Check if more than one domain is necessary. Dependencies to app_url in auth config and sslconfig.secretRef |
+| gloo.virtualservice.spec.virtualHost.domains | string | `nil` | `DNS domain name` this service will be published to. |
 | gloo.virtualservice.spec.virtualHost.routes.additionalRoutes | string | `nil` | List of route configurations for this `VirtualService`. See [gloo VirtualService Specification](https://docs.solo.io/gloo/1.1.0/introduction/concepts/#virtual-services) for details |
 | gloo.virtualservice.spec.virtualHost.routes.appPath | string | `"/"` | Path to `appUrl` where the service can be accessed. Pre-defined route in `VirtualService`. |
 | gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath | string | `"/callback"` | Path to `callbackUrl` which needs to be registered at the Identity Provider. Pre-defined route in `VirtualService`. |
