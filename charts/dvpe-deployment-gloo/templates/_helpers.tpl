@@ -17,4 +17,12 @@
 {{- printf "%s-%s-%s" .Release.Namespace $serviceName .Values.service.spec.ports.https.port -}}
 {{- end -}}
 
+{{/* Expand serviceAccountName */}}
+{{- define "serviceAccountName" -}}
+{{- if .Values.deployment.spec.serviceAccountName -}}
+{{- .Values.deployment.spec.serviceAccountName -}}
+{{- else -}}
+{{- printf "%s-sa" .Release.Namespace -}}
+{{- end -}}
+{{- end -}}
 

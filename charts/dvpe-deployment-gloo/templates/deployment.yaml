@@ -1,5 +1,6 @@
 {{- $serviceName := include "service.name" . -}}
 {{- $imageUrl := include "image.url" . -}}
+{{- $serviceAccountName := include "serviceAccountName" . -}}
 
 ---
 apiVersion: apps/v1
@@ -29,7 +30,7 @@ spec:
     spec:
       imagePullSecrets:
         - name: {{ .Values.deployment.spec.imagePullSecrets }}
-      serviceAccountName: {{ .Values.deployment.spec.serviceAccountName }}
+      serviceAccountName: {{ $serviceAccountName }}
       containers:
         - name: {{ $serviceName }}
           imagePullPolicy: {{ .Values.deployment.spec.image.pullPolicy }}
