@@ -130,9 +130,9 @@ gloo:
         domains:
         routes:
           # gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath -- Path to `callbackUrl` which needs to be registered at the Identity Provider. Pre-defined route in `VirtualService`.
-          callbackUrlPath: /callback
+          callbackUrlPath:
           # gloo.virtualservice.spec.virtualHost.routes.appPath -- Path to `appUrl` where the service can be accessed. Pre-defined route in `VirtualService`.
-          appPath: /
+          appPath:
           # gloo.virtualservice.spec.virtualHost.routes.additionalRoutes -- List of route configurations for this `VirtualService`. See [gloo VirtualService Specification](https://docs.solo.io/gloo/1.1.0/introduction/concepts/#virtual-services) for details
           additionalRoutes:
 
