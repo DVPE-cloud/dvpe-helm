@@ -4,8 +4,7 @@ entries:
   - apiVersion: v1
     appVersion: "1.1"
     created: "2020-09-28T15:11:01.790344809Z"
-    description: Helm chart for installing cert-manager's Certificate resource, to
-      be used in Kubernetes automation scripts.
+    description: Helm chart for installing cert-manager's Certificate resource, to be used in Kubernetes automation scripts.
     digest: 7df07aa2b95ac6c628680d803d36a8154b1d2563c5436da5da6fabbddb1d047b
     home: https://github.com/dvpe-cloud/dvpe-helm
     keywords:
@@ -24,8 +23,7 @@ entries:
   - apiVersion: v1
     appVersion: "1.1"
     created: "2020-09-29T12:32:32.9340007Z"
-    description: Helm chart for installing cert-manager's ClusterIssuer resource,
-      to be used in Kubernetes automation scripts.
+    description: Helm chart for installing cert-manager's ClusterIssuer resource, to be used in Kubernetes automation scripts.
     digest: 4a5a33279bb5913493d46da01242a9af9643f10aa19ceccfca091d626436e275
     home: https://github.com/dvpe-cloud/dvpe-helm
     keywords:
@@ -43,8 +41,7 @@ entries:
   - apiVersion: v1
     appVersion: "1.1"
     created: "2020-09-28T15:11:01.967702696Z"
-    description: Helm chart for installing cert-manager's ClusterIssuer resource,
-      to be used in Kubernetes automation scripts.
+    description: Helm chart for installing cert-manager's ClusterIssuer resource, to be used in Kubernetes automation scripts.
     digest: 0b6314c787e6e7f6b96b6bbd69b2850abce452987d92890a7a74c0d1aa9745d4
     home: https://github.com/dvpe-cloud/dvpe-helm
     keywords:
@@ -62,8 +59,7 @@ entries:
   - apiVersion: v1
     appVersion: "1.1"
     created: "2020-09-25T12:24:35.963107684Z"
-    description: Helm chart for installing jetstack cert manager resources, to be
-      used in Kubernetes automation scripts.
+    description: Helm chart for installing jetstack cert manager resources, to be used in Kubernetes automation scripts.
     digest: 3354bacc72533dcb48d3c3601afe35fe245671189a109868746319e615bd2dfe
     home: https://github.com/dvpe-cloud/dvpe-helm
     keywords:
@@ -81,9 +77,26 @@ entries:
   dvpe-deployment-gloo:
   - apiVersion: v1
     appVersion: "1.1"
+    created: "2020-11-17T12:53:24.154744515Z"
+    description: Helm chart for installing microservices as gloo enabled VirtualService definitions.
+    digest: 33b48edce20852df3e9c58e6acd3b663264ebf0deaeeb0236a88505cce590b57
+    home: https://github.com/dvpe-cloud/dvpe-helm
+    keywords:
+    - dvpe-helm
+    - automation
+    - gitops
+    maintainers:
+    - name: mithie
+    - name: herrLierb
+    - name: christodo
+    name: dvpe-deployment-gloo
+    urls:
+    - https://github.com/DVPE-cloud/dvpe-helm/releases/download/dvpe-deployment-gloo-1.1.0/dvpe-deployment-gloo-1.1.0.tgz
+    version: 1.1.0
+  - apiVersion: v1
+    appVersion: "1.1"
     created: "2020-10-29T07:32:15.680097297Z"
-    description: Helm chart for installing microservices as gloo enabled VirtualService
-      definitions.
+    description: Helm chart for installing microservices as gloo enabled VirtualService definitions.
     digest: 8082c488d589ba03d737950de891411a20888c7e5845c929d749e8970773cfc1
     home: https://github.com/dvpe-cloud/dvpe-helm
     keywords:
@@ -101,8 +114,7 @@ entries:
   - apiVersion: v1
     appVersion: "1.1"
     created: "2020-10-06T10:07:22.280003046Z"
-    description: Helm chart for installing microservices as gloo enabled VirtualService
-      definitions.
+    description: Helm chart for installing microservices as gloo enabled VirtualService definitions.
     digest: a4f9263ab77e32228a2f88f8a5b4b49ce3eff6b42cca47f11492afb1f7ccc812
     home: https://github.com/dvpe-cloud/dvpe-helm
     keywords:
@@ -120,8 +132,7 @@ entries:
   - apiVersion: v1
     appVersion: "1.1"
     created: "2020-10-02T11:38:28.994794413Z"
-    description: Helm chart for installing microservices as gloo enabled VirtualService
-      definitions.
+    description: Helm chart for installing microservices as gloo enabled VirtualService definitions.
     digest: 01983bd078017b342409fe8881b6aeaef0a1270ca216bf78f6b7d2ae1057e153
     home: https://github.com/dvpe-cloud/dvpe-helm
     keywords:
