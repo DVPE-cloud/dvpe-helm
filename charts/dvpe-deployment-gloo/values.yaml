@@ -17,8 +17,8 @@ deployment:
   spec:
     # deployment.spec.replicas -- The number of service instances to deploy.
     replicas: 1
-    # deployment.spec.serviceAccountName -- The ServiceAccount this service will be associated with.
-    serviceAccountName: default
+    # deployment.spec.serviceAccountName -- The ServiceAccount this service will be associated with. If empty, `serviceAccountName` will be `<namespace>-sa`
+    serviceAccountName:
     # deployment.spec.imagePullSecrets -- Image Pull Secret to access docker registry.
     imagePullSecrets: docker-reg-secret
     image:
@@ -114,9 +114,9 @@ gloo:
   # gloo.namespace -- `Namespace` where all Gloo resources are deployed.
   namespace: gloo-system
 
-# -------------------------------------#
-# Gloo VirtualService value section    #
-# -------------------------------------#
+  # -------------------------------------#
+  # Gloo VirtualService value section    #
+  # -------------------------------------#
   virtualservice:
     spec:
       sslConfig:
@@ -136,9 +136,9 @@ gloo:
           # gloo.virtualservice.spec.virtualHost.routes.additionalRoutes -- List of route configurations for this `VirtualService`. See [gloo VirtualService Specification](https://docs.solo.io/gloo/1.1.0/introduction/concepts/#virtual-services) for details
           additionalRoutes:
 
-# -------------------------------------#
-# Gloo Auth Config value section       #
-# -------------------------------------#
+  # -------------------------------------#
+  # Gloo Auth Config value section       #
+  # -------------------------------------#
   authConfig:
     # gloo.authConfig.name -- Prefix of the `Auth Config Plugin`. Final name will be <prefix>-<service-name>
     name: auth-plugin
@@ -147,6 +147,8 @@ gloo:
     spec:
       configs:
         oauth:
+          # gloo.authConfig.spec.configs.oauth.enabled -- If `enabled` set to true the oauth plugin from Gloo will be used
+          enabled: false
           # gloo.authConfig.spec.configs.oauth.client_id -- Registered `ClientID` at the IDP
           client_id:
           client_secret_ref:
@@ -159,23 +161,52 @@ gloo:
           # gloo.authConfig.spec.configs.oauth.scopes -- List of OIDC scopes. `openid` is set per default by Gloo and must not be added here
           scopes:
         cachePlugin:
+          # gloo.authConfig.spec.configs.cachePlugin.enabled -- If `enabled` set to true the cache plugin will be used
+          enabled: false
           # gloo.authConfig.spec.configs.cachePlugin.name -- `Name` of the cache plugin
-          name: AuthFlow
+          name: SessionCache
           config:
             # gloo.authConfig.spec.configs.cachePlugin.config.CacheTableName -- `CacheTableName` of the auth cache
-            CacheTableName: auth-cache-dev
+            CacheTableName: auth-cache-prod
             # gloo.authConfig.spec.configs.cachePlugin.config.AwsRegion -- `AwsRegion` where the cache is located
             AwsRegion: eu-west-1
+        backendPlugin:
+          # gloo.authConfig.spec.configs.backendPlugin.enabled -- If `enabled` set to true the backend plugin will be used
+          enabled: false
+          # gloo.authConfig.spec.configs.backendPlugin.name -- `Name` of the cache plugin
+          name: AuthFlowBackend
+          config:
+            # gloo.authConfig.spec.configs.backendPlugin.config.cacheTableName -- `cacheTableName` of the auth cache
+            cacheTableName: auth-cache-prod
+            # gloo.authConfig.spec.configs.backendPlugin.config.awsRegion -- `awsRegion` where the cache is located
+            awsRegion: eu-west-1
+            # gloo.authConfig.spec.configs.backendPlugin.config.oidcUrl -- `oidcUrl` where the access token can be verified at the IDP
+            oidcUrl:
+        m2mPlugin:
+          # gloo.authConfig.spec.configs.m2mPlugin.enabled -- If `enabled` set to true the machine to machine plugin will be used
+          enabled: false
+          # gloo.authConfig.spec.configs.m2mPlugin.name -- `Name` of the cache plugin
+          name: AuthM2m
+          config:
+            # gloo.authConfig.spec.configs.m2mPlugin.config.cacheTableName -- `cacheTableName` in DynamoDB of the auth cache
+            cacheTableName: auth-cache-prod
+            # gloo.authConfig.spec.configs.m2mPlugin.config.awsRegion -- `awsRegion` where the cache is located
+            awsRegion: eu-west-1
+            # gloo.authConfig.spec.configs.m2mPlugin.config.oidcUrl -- `oidcUrl` where the access token can be verified at the IDP
+            oidcUrl:
+            # gloo.authConfig.spec.configs.m2mPlugin.config.clientId -- `clientId` of the machine2machine client registered at the IDP
+            clientId:
+            # gloo.authConfig.spec.configs.m2mPlugin.config.clientSecret -- `clientSecret` of the machine2machine client registered at the IDP
+            clientSecret:
         # gloo.authConfig.spec.configs.additionalPlugins -- List of plugins which should be added to the plugin chain. Expected format is a valid yaml with the `pluginAuth`. See [gloo Plugin Auth](https://docs.solo.io/gloo/latest/guides/security/auth/extauth/plugin_auth/#create-an-authconfig-resource) for details
         additionalPlugins:
 
-# -------------------------------------#
-# Gloo Upstream value section          #
-# -------------------------------------#
+  # -------------------------------------#
+  # Gloo Upstream value section          #
+  # -------------------------------------#
   upstream:
     # gloo.upstream.namespace -- `Namespace` where gloo upstream is deployed.
     namespace: gloo-system
-
 
 # -------------------------------------#
 # DataDog value section                #
