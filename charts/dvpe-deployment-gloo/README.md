@@ -1,6 +1,6 @@
 # dvpe-deployment-gloo
 
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square)
+![Version: 1.1.0](https://img.shields.io/badge/Version-1.1.0-informational?style=flat-square)
 
 Helm chart for installing microservices as gloo enabled VirtualService definitions.
 
@@ -186,17 +186,31 @@ The following table lists the configurable parameters of the chart and its defau
 | deployment.spec.resources.limits.memory | string | `"235M"` | The memory limit for a Pod. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage. |
 | deployment.spec.resources.requests.cpu | string | `"150m"` | Fractional amount of CPU allowed for a Pod. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage. |
 | deployment.spec.resources.requests.memory | string | `"200M"` | Amount of memory reserved for a Pod. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage. |
-| deployment.spec.serviceAccountName | string | `"default"` | The ServiceAccount this service will be associated with. |
+| deployment.spec.serviceAccountName | string | `nil` | The ServiceAccount this service will be associated with. If empty, `serviceAccountName` will be `<namespace>-sa` |
 | externalSecrets.service.key | string | `nil` | `Key` to AWS Secret Manager object where all sensitive application data should be stored. Each key in the Secret Manager Object should be named like your needed environment variable |
 | gloo.authConfig.name | string | `"auth-plugin"` | Prefix of the `Auth Config Plugin`. Final name will be <prefix>-<service-name> |
 | gloo.authConfig.namespace | string | `nil` | Namespace where the `Auth Config Plugin` is located. If empty, release namespace is used. |
 | gloo.authConfig.spec.configs.additionalPlugins | string | `nil` | List of plugins which should be added to the plugin chain. Expected format is a valid yaml with the `pluginAuth`. See [gloo Plugin Auth](https://docs.solo.io/gloo/latest/guides/security/auth/extauth/plugin_auth/#create-an-authconfig-resource) for details |
+| gloo.authConfig.spec.configs.backendPlugin.config.awsRegion | string | `"eu-west-1"` | `awsRegion` where the cache is located |
+| gloo.authConfig.spec.configs.backendPlugin.config.cacheTableName | string | `"auth-cache-prod"` | `cacheTableName` of the auth cache |
+| gloo.authConfig.spec.configs.backendPlugin.config.oidcUrl | string | `nil` | `oidcUrl` where the access token can be verified at the IDP |
+| gloo.authConfig.spec.configs.backendPlugin.enabled | bool | `false` | If `enabled` set to true the backend plugin will be used |
+| gloo.authConfig.spec.configs.backendPlugin.name | string | `"AuthFlowBackend"` | `Name` of the cache plugin |
 | gloo.authConfig.spec.configs.cachePlugin.config.AwsRegion | string | `"eu-west-1"` | `AwsRegion` where the cache is located |
-| gloo.authConfig.spec.configs.cachePlugin.config.CacheTableName | string | `"auth-cache-dev"` | `CacheTableName` of the auth cache |
-| gloo.authConfig.spec.configs.cachePlugin.name | string | `"AuthFlow"` | `Name` of the cache plugin |
+| gloo.authConfig.spec.configs.cachePlugin.config.CacheTableName | string | `"auth-cache-prod"` | `CacheTableName` of the auth cache |
+| gloo.authConfig.spec.configs.cachePlugin.enabled | bool | `false` | If `enabled` set to true the cache plugin will be used |
+| gloo.authConfig.spec.configs.cachePlugin.name | string | `"SessionCache"` | `Name` of the cache plugin |
+| gloo.authConfig.spec.configs.m2mPlugin.config.awsRegion | string | `"eu-west-1"` | `awsRegion` where the cache is located |
+| gloo.authConfig.spec.configs.m2mPlugin.config.cacheTableName | string | `"auth-cache-prod"` | `cacheTableName` in DynamoDB of the auth cache |
+| gloo.authConfig.spec.configs.m2mPlugin.config.clientId | string | `nil` | `clientId` of the machine2machine client registered at the IDP |
+| gloo.authConfig.spec.configs.m2mPlugin.config.clientSecret | string | `nil` | `clientSecret` of the machine2machine client registered at the IDP |
+| gloo.authConfig.spec.configs.m2mPlugin.config.oidcUrl | string | `nil` | `oidcUrl` where the access token can be verified at the IDP |
+| gloo.authConfig.spec.configs.m2mPlugin.enabled | bool | `false` | If `enabled` set to true the machine to machine plugin will be used |
+| gloo.authConfig.spec.configs.m2mPlugin.name | string | `"AuthM2m"` | `Name` of the cache plugin |
 | gloo.authConfig.spec.configs.oauth.client_id | string | `nil` | Registered `ClientID` at the IDP |
 | gloo.authConfig.spec.configs.oauth.client_secret_ref.name | string | `"webeam-oidc"` | Name of the `Secret`. Gloo expects a k8s secret with the key `oauth` and base64 encoded value `clientSecret: secretValue` |
 | gloo.authConfig.spec.configs.oauth.client_secret_ref.namespace | string | `nil` | Namespace were the `Secret` is located. If empty, release namespace is used. |
+| gloo.authConfig.spec.configs.oauth.enabled | bool | `false` | If `enabled` set to true the oauth plugin from Gloo will be used |
 | gloo.authConfig.spec.configs.oauth.issuer_url | string | `nil` | Issuer URL to the Identity Provider. Gloo adds `.well-known/openid-configuration` to the url automatically |
 | gloo.authConfig.spec.configs.oauth.scopes | string | `nil` | List of OIDC scopes. `openid` is set per default by Gloo and must not be added here |
 | gloo.enabled | bool | `true` | When set to true only the application's deployment resources will be installed with this chart. Can be used to explicitly avoid deploying a VirtualService resource. |
@@ -206,8 +220,8 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.virtualservice.spec.sslConfig.secretRef.namespace | string | `nil` | Namespace where the secret is located. If empty, gloo namespace is used. |
 | gloo.virtualservice.spec.virtualHost.domains | string | `nil` | `DNS domain name` this service will be published to. |
 | gloo.virtualservice.spec.virtualHost.routes.additionalRoutes | string | `nil` | List of route configurations for this `VirtualService`. See [gloo VirtualService Specification](https://docs.solo.io/gloo/1.1.0/introduction/concepts/#virtual-services) for details |
-| gloo.virtualservice.spec.virtualHost.routes.appPath | string | `"/"` | Path to `appUrl` where the service can be accessed. Pre-defined route in `VirtualService`. |
-| gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath | string | `"/callback"` | Path to `callbackUrl` which needs to be registered at the Identity Provider. Pre-defined route in `VirtualService`. |
+| gloo.virtualservice.spec.virtualHost.routes.appPath | string | `nil` | Path to `appUrl` where the service can be accessed. Pre-defined route in `VirtualService`. |
+| gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath | string | `nil` | Path to `callbackUrl` which needs to be registered at the Identity Provider. Pre-defined route in `VirtualService`. |
 | istio.destinationRule.spec.trafficPolicy.tls.mode | string | `"ISTIO_MUTUAL"` | trafficPolicy [ClientTLSSettings-TLSmode](https://istio.io/latest/docs/reference/config/networking/destination-rule/#ClientTLSSettings-TLSmode) |
 | istio.enabled | bool | `true` | Enables mtls per workload (pod) |
 | istio.peerAuthentication.spec.mtls.mode | string | `"STRICT"` | mTLS mode for istio. [PeerAuthentication-MutualTLS-Mode](https://istio.io/latest/docs/reference/config/security/peer_authentication/#PeerAuthentication-MutualTLS-Mode) |
