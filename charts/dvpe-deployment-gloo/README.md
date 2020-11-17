@@ -220,8 +220,8 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.virtualservice.spec.sslConfig.secretRef.namespace | string | `nil` | Namespace where the secret is located. If empty, gloo namespace is used. |
 | gloo.virtualservice.spec.virtualHost.domains | string | `nil` | `DNS domain name` this service will be published to. |
 | gloo.virtualservice.spec.virtualHost.routes.additionalRoutes | string | `nil` | List of route configurations for this `VirtualService`. See [gloo VirtualService Specification](https://docs.solo.io/gloo/1.1.0/introduction/concepts/#virtual-services) for details |
-| gloo.virtualservice.spec.virtualHost.routes.appPath | string | `"/"` | Path to `appUrl` where the service can be accessed. Pre-defined route in `VirtualService`. |
-| gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath | string | `"/callback"` | Path to `callbackUrl` which needs to be registered at the Identity Provider. Pre-defined route in `VirtualService`. |
+| gloo.virtualservice.spec.virtualHost.routes.appPath | string | `nil` | Path to `appUrl` where the service can be accessed. Pre-defined route in `VirtualService`. |
+| gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath | string | `nil` | Path to `callbackUrl` which needs to be registered at the Identity Provider. Pre-defined route in `VirtualService`. |
 | istio.destinationRule.spec.trafficPolicy.tls.mode | string | `"ISTIO_MUTUAL"` | trafficPolicy [ClientTLSSettings-TLSmode](https://istio.io/latest/docs/reference/config/networking/destination-rule/#ClientTLSSettings-TLSmode) |
 | istio.enabled | bool | `true` | Enables mtls per workload (pod) |
 | istio.peerAuthentication.spec.mtls.mode | string | `"STRICT"` | mTLS mode for istio. [PeerAuthentication-MutualTLS-Mode](https://istio.io/latest/docs/reference/config/security/peer_authentication/#PeerAuthentication-MutualTLS-Mode) |
