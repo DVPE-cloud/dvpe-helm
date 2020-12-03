@@ -214,6 +214,8 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.authConfig.spec.configs.oauth.issuer_url | string | `nil` | Issuer URL to the Identity Provider. Gloo adds `.well-known/openid-configuration` to the url automatically |
 | gloo.authConfig.spec.configs.oauth.scopes | string | `nil` | List of OIDC scopes. `openid` is set per default by Gloo and must not be added here |
 | gloo.enabled | bool | `true` | When set to true only the application's deployment resources will be installed with this chart. Can be used to explicitly avoid deploying a VirtualService resource. |
+| gloo.fds.enabled | bool | `true` | When set true Gloo Function Discovery Service is enabled for the upstream [Gloo FDS](https://docs.solo.io/gloo-edge/latest/installation/advanced_configuration/fds_mode/) |
+| gloo.fds.path | string | `"/v2/swagger"` | Defines the Gloo Function Discovery Service lookup path for swagger documentation |
 | gloo.namespace | string | `"gloo-system"` | `Namespace` where all Gloo resources are deployed. |
 | gloo.upstream.namespace | string | `"gloo-system"` | `Namespace` where gloo upstream is deployed. |
 | gloo.virtualservice.spec.sslConfig.secretRef.name | string | `"gloo-public-tls"` | Name of the secret containing the certificate information for this deployment. |
