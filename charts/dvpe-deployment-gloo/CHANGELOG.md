@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.1] - 2020-12-03
+
+### Added
+
+* Add Support for Gloo Function Discovery Service url path
+
 ## [1.1.0] - 2020-11-17
 
 ### Added
