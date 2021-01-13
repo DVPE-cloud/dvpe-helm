@@ -135,6 +135,11 @@ gloo:
           appPath:
           # gloo.virtualservice.spec.virtualHost.routes.additionalRoutes -- List of route configurations for this `VirtualService`. See [gloo VirtualService Specification](https://docs.solo.io/gloo/1.1.0/introduction/concepts/#virtual-services) for details
           additionalRoutes:
+          swagger:
+            # gloo.virtualservice.spec.virtualHost.routes.swagger.path -- Path to `swagger-ui.html` page.
+            path: /swagger-ui.html
+            # gloo.virtualservice.spec.virtualHost.routes.swagger.rewriteUrl -- Prefix Rewrite URL which points to `swagger.path`.
+            rewriteUrl: /api/docs
 
   # -------------------------------------#
   # Gloo Auth Config value section       #
