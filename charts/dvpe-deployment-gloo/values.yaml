@@ -208,15 +208,6 @@ gloo:
     # gloo.upstream.namespace -- `Namespace` where gloo upstream is deployed.
     namespace: gloo-system
 
-  # -------------------------------------#
-  # FDS value section                    #
-  # -------------------------------------#
-  fds:
-    # gloo.fds.enabled -- When set true Gloo Function Discovery Service is enabled for the upstream [Gloo FDS](https://docs.solo.io/gloo-edge/latest/installation/advanced_configuration/fds_mode/)
-    enabled: true
-    # gloo.fds.path -- Defines the Gloo Function Discovery Service lookup path for swagger documentation
-    path: /v2/swagger
-
 # -------------------------------------#
 # DataDog value section                #
 # -------------------------------------#
