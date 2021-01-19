@@ -1,0 +1,19 @@
+apiVersion: v2
+type: application
+description: Helm chart for installing Argocd with Project definitions and gloo enabled VirtualService.
+name: dvpe-argocd
+home: https://github.com/dvpe-cloud/dvpe-helm
+version: 1.0.0
+appVersion: "1.7.6" # equals argo-cd app version
+dependencies:
+  - name: argo-cd
+    version: 2.11.2 # update appVersion on change
+    repository: "https://argoproj.github.io/argo-helm"
+keywords:
+  - dvpe-helm
+  - argocd
+  - gloo
+maintainers:
+  - name: mithie
+  - name: herrLierb
+  - name: christodo

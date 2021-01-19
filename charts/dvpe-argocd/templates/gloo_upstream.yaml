@@ -1,0 +1,36 @@
+{{- $servicename := include "servicename" . -}}
+{{- $upName := include "upstream.name" . -}}
+{{- $upPort := include "upstream.port" . -}}
+
+{{- if .Values.gloo.enabled }}
+
+apiVersion: gloo.solo.io/v1
+kind: Upstream
+metadata:
+  name: {{ $upName }}
+  namespace: {{ .Values.gloo.upstream.namespace }}
+  labels:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/instance: argocd
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: {{ $upName }}
+    app.kubernetes.io/part-of: argocd
+
+spec:
+  kube:
+    selector:
+      app.kubernetes.io/name: {{ $servicename }}
+      app.kubernetes.io/part-of: argocd
+    serviceName: {{ $servicename }}
+    serviceNamespace: {{ .Release.Namespace }}
+    servicePort: {{ $upPort }}
+  sslConfig:
+    alpnProtocols:
+      - istio
+    sds:
+      certificatesSecretName: istio_server_cert
+      clusterName: gateway_proxy_sds
+      targetUri: 127.0.0.1:8234
+      validationContextName: istio_validation_context
+
+{{- end }}

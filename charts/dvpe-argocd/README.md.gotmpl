@@ -1,0 +1,67 @@
+{{ template "chart.header" . }}
+{{ template "chart.versionBadge" . }}
+
+{{ template "chart.description" . }}
+
+## Installation
+Installs Argo CD as [gloo](https://www.solo.io/products/gloo/) enabled VirtualService.
+Note that this chart assumes that [gloo Api Gateway](https://docs.solo.io/gloo/latest/installation/preparation/) has already been installed and configured on your K8S cluster.
+
+### Add Helm repository
+
+```shell
+helm repo add dvpe https://dvpe-cloud.github.io/dvpe-helm
+helm repo update
+```
+
+## Install dvpe-argocd chart
+
+### Preconditions
+
+Before installing this chart you need to make sure that
+
+* [gloo API Gateway](https://docs.solo.io/gloo/latest/installation/preparation/) has already been installed on the K8S cluster.
+* a K8S secret exists on the cluster containing the `certificate` and corresponding `secret key` of the TLS certificate you want to use
+  for your service deployment.This secret will then be referenced in your VirtualService section of this chart.   
+  You can create this secret via external secrets or simpler with the following `kubectl` command:
+
+  ```bash
+  kubectl create secret tls sample_secret \
+    --key <PATH_TO_CERT_SECRET_KEY> \
+    --cert <PATH_TO_CERT> \
+    -n sample_namespace
+  ```
+
+  The relevant section in your helm config file would then be:
+
+  ```yaml
+  gloo:
+    virtualservice:
+      name: sample_service
+      spec:
+        sslConfig:
+          secretRef:
+            name: sample_secret
+            namespace: sample_namespace
+  ```
+
+### Using config from a file:
+
+```bash
+helm install -f config.yaml --namespace `TARGET_K8S_NAMESPACE` `HELM_RELEASE_NAME` dvpe/dvpe-argocd
+```
+**Note**: The structure of `config.yaml` needs to adhere to the chart's value fields (see config section below). `config.yaml` can be defined as a default helm
+values file.
+
+#### Notes on gloo VirtualService definitions
+
+The `VirtualService` kind in gloo allows to define a set of routing rules to services deployed on K8S. A `VirtualService` always comes with an `Upstream`
+automatically deployed in a pre-defined namespace on the cluster. An `Upstream` in turn specifies the destination to the service inside the cluster.
+See [gloo concepts](https://docs.solo.io/gloo/latest/introduction/) for further details.
+
+
+## Chart Configuration Parameters
+
+The following table lists the configurable parameters of the chart and its default values.
+
+{{ template "chart.valuesSection" . }}
