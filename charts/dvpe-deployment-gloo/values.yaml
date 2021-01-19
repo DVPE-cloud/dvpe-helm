@@ -133,7 +133,7 @@ gloo:
           callbackUrlPath:
           # gloo.virtualservice.spec.virtualHost.routes.appPath -- Path to `appUrl` where the service can be accessed. Pre-defined route in `VirtualService`.
           appPath:
-          # gloo.virtualservice.spec.virtualHost.routes.additionalRoutes -- List of route configurations for this `VirtualService`. See [gloo VirtualService Specification](https://docs.solo.io/gloo/1.1.0/introduction/concepts/#virtual-services) for details
+          # gloo.virtualservice.spec.virtualHost.routes.additionalRoutes -- List of route configurations for this `VirtualService`. See [gloo VirtualService Specification](https://docs.solo.io/gloo-edge/latest/introduction/architecture/concepts/#virtual-services) for details
           additionalRoutes:
           swagger:
             # gloo.virtualservice.spec.virtualHost.routes.swagger.path -- Path to `swagger-ui.html` page.

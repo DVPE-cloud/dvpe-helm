@@ -92,7 +92,7 @@ values file.
 
 The `VirtualService` kind in gloo allows to define a set of routing rules to services deployed on K8S. A `VirtualService` always comes with an `Upstream`
 automatically deployed in a pre-defined namespace on the cluster. An `Upstream` in turn specifies the destination to the service inside the cluster.
-See [gloo concepts](https://docs.solo.io/gloo/1.1.0/introduction/concepts/) for further details.
+See [gloo concepts](https://docs.solo.io/gloo-edge/latest/introduction/architecture/concepts/) for further details.
 
 `Upstreams` have a special syntax you need to use when you define a `VirtualService` for deployment:
 
@@ -219,7 +219,7 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.virtualservice.spec.sslConfig.secretRef.name | string | `"gloo-public-tls"` | Name of the secret containing the certificate information for this deployment. |
 | gloo.virtualservice.spec.sslConfig.secretRef.namespace | string | `nil` | Namespace where the secret is located. If empty, gloo namespace is used. |
 | gloo.virtualservice.spec.virtualHost.domains | string | `nil` | `DNS domain name` this service will be published to. |
-| gloo.virtualservice.spec.virtualHost.routes.additionalRoutes | string | `nil` | List of route configurations for this `VirtualService`. See [gloo VirtualService Specification](https://docs.solo.io/gloo/1.1.0/introduction/concepts/#virtual-services) for details |
+| gloo.virtualservice.spec.virtualHost.routes.additionalRoutes | string | `nil` | List of route configurations for this `VirtualService`. See [gloo VirtualService Specification](https://docs.solo.io/gloo-edge/latest/introduction/architecture/concepts/#virtual-services) for details |
 | gloo.virtualservice.spec.virtualHost.routes.appPath | string | `nil` | Path to `appUrl` where the service can be accessed. Pre-defined route in `VirtualService`. |
 | gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath | string | `nil` | Path to `callbackUrl` which needs to be registered at the Identity Provider. Pre-defined route in `VirtualService`. |
 | gloo.virtualservice.spec.virtualHost.routes.swagger.path | string | `"/swagger-ui.html"` | Path to `swagger-ui.html` page. |
