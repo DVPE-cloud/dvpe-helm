@@ -8,10 +8,6 @@ kind: Upstream
 metadata:
   name: {{ $upstreamName }}
   namespace: {{ .Values.gloo.upstream.namespace }}
-  {{- if .Values.gloo.fds.enabled }}
-  labels:
-    discovery.solo.io/function_discovery: enabled
-  {{- end }}
 spec:
   kube:
     selector:
@@ -19,12 +15,6 @@ spec:
     serviceName: {{ $serviceName }}-svc
     serviceNamespace: {{ .Release.Namespace }}
     servicePort: {{ .Values.service.spec.ports.https.port }}
-    {{- if .Values.gloo.fds.enabled }}
-    serviceSpec:
-      rest:
-        swaggerInfo:
-          url: http://{{ $serviceName }}-svc.{{ .Release.Namespace }}:{{ .Values.service.spec.ports.https.port }}{{ .Values.gloo.fds.path }}
-    {{- end }}
   sslConfig:
     alpnProtocols:
       - istio

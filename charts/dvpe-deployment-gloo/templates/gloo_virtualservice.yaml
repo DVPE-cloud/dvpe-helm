@@ -17,6 +17,27 @@ spec:
     domains:
       - {{ .Values.gloo.virtualservice.spec.virtualHost.domains }}
     routes:
+      - matchers:
+          - prefix: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.swagger.path }}
+        routeAction:
+          single:
+            upstream:
+              name: {{ $upstreamName }}
+              namespace: {{ .Values.gloo.upstream.namespace }}
+        options:
+          extauth:
+            disable: true
+      - matchers:
+          - prefix: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.swagger.rewriteUrl }}
+        routeAction:
+          single:
+            upstream:
+              name: {{ $upstreamName }}
+              namespace: {{ .Values.gloo.upstream.namespace }}
+        options:
+          prefixRewrite: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.swagger.path }}
+          extauth:
+            disable: true
       {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath }}
       - matchers:
           - prefix: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath }}
