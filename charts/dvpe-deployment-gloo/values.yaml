@@ -132,14 +132,14 @@ gloo:
           # gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath -- Path to `callbackUrl` which needs to be registered at the Identity Provider. Pre-defined route in `VirtualService`.
           callbackUrlPath:
           # gloo.virtualservice.spec.virtualHost.routes.appPath -- Path to `appUrl` where the service can be accessed. Pre-defined route in `VirtualService`.
-          appPath:
+          appPath: /api
           # gloo.virtualservice.spec.virtualHost.routes.additionalRoutes -- List of route configurations for this `VirtualService`. See [gloo VirtualService Specification](https://docs.solo.io/gloo-edge/latest/introduction/architecture/concepts/#virtual-services) for details
           additionalRoutes:
           swagger:
             # gloo.virtualservice.spec.virtualHost.routes.swagger.path -- Path to `swagger-ui.html` page.
             path: /swagger-ui.html
             # gloo.virtualservice.spec.virtualHost.routes.swagger.rewriteUrl -- Prefix Rewrite URL which points to `swagger.path`.
-            rewriteUrl: /api/docs
+            rewriteUrl: /docs
 
   # -------------------------------------#
   # Gloo Auth Config value section       #
