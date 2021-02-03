@@ -17,16 +17,7 @@ spec:
     domains:
       - {{ .Values.gloo.virtualservice.spec.virtualHost.domains }}
     routes:
-      - matchers:
-          - prefix: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.swagger.path }}
-        routeAction:
-          single:
-            upstream:
-              name: {{ $upstreamName }}
-              namespace: {{ .Values.gloo.upstream.namespace }}
-        options:
-          extauth:
-            disable: true
+      {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.swagger.rewriteUrl }}
       - matchers:
           - prefix: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.swagger.rewriteUrl }}
         routeAction:
@@ -36,8 +27,7 @@ spec:
               namespace: {{ .Values.gloo.upstream.namespace }}
         options:
           prefixRewrite: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.swagger.path }}
-          extauth:
-            disable: true
+      {{- end }}
       {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath }}
       - matchers:
           - prefix: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath }}
@@ -46,7 +36,12 @@ spec:
             upstream:
               name: {{ $upstreamName }}
               namespace: {{ .Values.gloo.upstream.namespace }}
-      {{- end}}
+        options:
+          extauth:
+            configRef:
+              name: {{ $serviceName}}-{{ .Values.gloo.authConfig.name }}
+              namespace: {{default .Release.Namespace .Values.gloo.authConfig.namespace }}
+      {{- end }}
       {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.appPath }}
       - matchers:
           - prefix: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.appPath }}
@@ -55,13 +50,22 @@ spec:
             upstream:
               name: {{ $upstreamName }}
               namespace: {{ .Values.gloo.upstream.namespace }}
+        options:
+          extauth:
+            configRef:
+              name: {{ $serviceName}}-{{ .Values.gloo.authConfig.name }}
+              namespace: {{default .Release.Namespace .Values.gloo.authConfig.namespace }}
+      {{- end}}
+      {{- if ne .Values.gloo.virtualservice.spec.virtualHost.routes.appPath "/" }}
+      - matchers:
+          - prefix: /
+        routeAction:
+          single:
+            upstream:
+              name: {{ $upstreamName }}
+              namespace: {{ .Values.gloo.upstream.namespace }}
       {{- end}}
       {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.additionalRoutes }}
     {{- toYaml .Values.gloo.virtualservice.spec.virtualHost.routes.additionalRoutes | nindent 6 }}
-    {{- end }}
-    options:
-      extauth:
-        configRef:
-          name: {{ $serviceName}}-{{ .Values.gloo.authConfig.name }}
-          namespace: {{default .Release.Namespace .Values.gloo.authConfig.namespace }}
-  {{- end }}
+      {{- end }}
+{{- end }}

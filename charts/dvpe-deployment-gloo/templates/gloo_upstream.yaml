@@ -8,6 +8,10 @@ kind: Upstream
 metadata:
   name: {{ $upstreamName }}
   namespace: {{ .Values.gloo.upstream.namespace }}
+  {{- if .Values.gloo.upstream.fds }}
+  labels:
+    discovery.solo.io/function_discovery: enabled
+  {{- end }}
 spec:
   kube:
     selector:
