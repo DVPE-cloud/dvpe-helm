@@ -212,6 +212,8 @@ gloo:
   upstream:
     # gloo.upstream.namespace -- `Namespace` where gloo upstream is deployed.
     namespace: gloo-system
+    # gloo.upstream.fds -- Whitelist this upstream for `FDS`. [Gloo Function Discovery Mode] (https://docs.solo.io/gloo-edge/latest/installation/advanced_configuration/fds_mode/)
+    fds: false
 
 # -------------------------------------#
 # DataDog value section                #
