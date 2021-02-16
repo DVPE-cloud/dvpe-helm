@@ -165,6 +165,10 @@ gloo:
                   namespace: gloo-system
 ```
 
+For user interfaces services an additional `VirtualService` is generated to provide a HTTP to HTTPS redirect for user
+convenience. This is done for all services which have a `gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath`
+value set - this value is related to the OAuth flow with the IDP and thus a good indicator for an user interfaces service.
+
 ## Chart Configuration Parameters
 
 The following table lists the configurable parameters of the chart and its default values.

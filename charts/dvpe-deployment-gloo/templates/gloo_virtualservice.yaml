@@ -3,6 +3,7 @@
 
 {{- if .Values.gloo.enabled }}
 
+---
 apiVersion: gateway.solo.io/v1
 kind: VirtualService
 metadata:
@@ -91,4 +92,24 @@ spec:
       {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.additionalRoutes }}
     {{- toYaml .Values.gloo.virtualservice.spec.virtualHost.routes.additionalRoutes | nindent 6 }}
       {{- end }}
+
+{{- if .Values.gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath }}
+---
+apiVersion: gateway.solo.io/v1
+kind: VirtualService
+metadata:
+  name: {{ $serviceName }}-http-to-https
+  namespace: {{ .Release.Namespace }}
+spec:
+  virtualHost:
+    domains:
+      - {{ .Values.gloo.virtualservice.spec.virtualHost.domains }}
+    routes:
+      - matchers:
+        - prefix: /
+        redirectAction:
+          hostRedirect: {{ .Values.gloo.virtualservice.spec.virtualHost.domains }}
+          httpsRedirect: true
+{{- end }}
+
 {{- end }}
