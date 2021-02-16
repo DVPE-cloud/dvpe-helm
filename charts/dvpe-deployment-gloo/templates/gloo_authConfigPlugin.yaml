@@ -15,8 +15,13 @@ spec:
         callback_path: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath }}
         client_id: {{ .Values.gloo.authConfig.spec.configs.oauth.client_id }}
         client_secret_ref:
+          {{- if .Values.externalSecrets.oidc.key }}
+          name: {{ $serviceName }}-oidc-secrets
+          namespace: {{ .Release.Namespace }}
+          {{- else }}
           name: {{ .Values.gloo.authConfig.spec.configs.oauth.client_secret_ref.name }}
           namespace: {{default .Release.Namespace .Values.gloo.authConfig.spec.configs.oauth.client_secret_ref.namespace }}
+          {{- end }}
         issuer_url: {{ .Values.gloo.authConfig.spec.configs.oauth.issuer_url }}
         scopes:
         {{- if .Values.gloo.authConfig.spec.configs.oauth.scopes }}

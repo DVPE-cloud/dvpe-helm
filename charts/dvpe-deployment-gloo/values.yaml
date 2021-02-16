@@ -7,6 +7,10 @@ externalSecrets:
   service:
     # externalSecrets.service.key -- `Key` to AWS Secret Manager object where all sensitive application data should be stored. Each key in the Secret Manager Object should be named like your needed environment variable
     key:
+  oidc:
+    # externalSecrets.oidc.key -- `Key` to AWS Secret Manager object where the client secret for OIDC provider should be stored. The key in the Secret Manager Object has to be named as the given `gloo.authConfig.spec.configs.oauth.client_id`. The value has to be formated as `clientSecret: <secret>`.
+    # **This definition is exclusive to `gloo.authConfig.spec.configs.oauth.client_secret_ref`. If defined, `gloo.authConfig.spec.configs.oauth.client_secret_ref` is ignored.**
+    key:
 
 # -------------------------------#
 # deployment.yaml value section  #
@@ -175,8 +179,10 @@ gloo:
           client_id:
           client_secret_ref:
             # gloo.authConfig.spec.configs.oauth.client_secret_ref.name -- Name of the `Secret`. Gloo expects a k8s secret with the key `oauth` and base64 encoded value `clientSecret: secretValue`
+            # **This value is ignored if `externalSecrets.oidc.key` is present.**
             name: webeam-oidc
             # gloo.authConfig.spec.configs.oauth.client_secret_ref.namespace -- Namespace were the `Secret` is located. If empty, release namespace is used.
+            # **This value is ignored if `externalSecrets.oidc.key` is present.**
             namespace:
           # gloo.authConfig.spec.configs.oauth.issuer_url -- Issuer URL to the Identity Provider. Gloo adds `.well-known/openid-configuration` to the url automatically
           issuer_url:

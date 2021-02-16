@@ -55,7 +55,7 @@ You can create this secret with the following `kubectl` command:
   ```
   If you like to use a different name, please adjust the name of the secret in your `values.yaml`
 
-* a K8S secret with name `webeam-oidc` exists in the same namespace in which your service is going to be deployed.
+* (_deprecated - since version #1.2.3 this can be set up by the template via an [`ExternalSecret`](https://github.com/external-secrets/kubernetes-external-secrets) - see below_) a K8S secret with name `webeam-oidc` exists in the same namespace in which your service is going to be deployed.
 This secret needs to contain the client_secret information as base64 encoded string.
 Gloo expects a trailing newline at the secret string.
 You can encode your secret with the following command:
@@ -78,6 +78,21 @@ You can encode your secret with the following command:
       oauth: <yourClientSecret>
     EOF
     ```
+
+* (_new since version #1.2.3_)
+The `<webeam-oidc>` secret can be set up as an external secret charged from an AWS secrets manager one.
+To use this feature, please sepecify `externalSecrets.oidc.key` as the name of the AWS secrets manager secret. This secret is expected in format:
+    ```yaml
+    {
+      "<client_id>": "clientSecret: <client_secret>",
+      ...
+    }
+    ```
+  with `<client_id>` equals to the value (UUID) given as `gloo.authConfig.spec.configs.oauth.client_id`.
+  The format allows multiple client IDs and secrets (e.g. for different services in a common business domain) to be defined within a single secrets manager secret.
+  >**Note:**\
+  >The name of the `<webeam-oidc>` secret gets changed to `<service-name>-oidc-secrets` to distinguish the secrets dedicated to different services deployed to
+  >the same K8S namespace.
 
 ### Using config from a file:
 
