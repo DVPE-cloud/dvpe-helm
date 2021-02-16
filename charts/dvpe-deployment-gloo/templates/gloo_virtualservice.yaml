@@ -16,6 +16,29 @@ spec:
   virtualHost:
     domains:
       - {{ .Values.gloo.virtualservice.spec.virtualHost.domains }}
+    {{- if .Values.gloo.virtualservice.spec.virtualHost.cors.allowOrigin }}
+    options:
+      cors:
+        allowCredentials: true
+        allowHeaders:
+          {{- range .Values.gloo.virtualservice.spec.virtualHost.cors.allowHeaders }}
+          - {{ . }}
+          {{- end }}
+        allowMethods:
+          {{- range .Values.gloo.virtualservice.spec.virtualHost.cors.allowMethods }}
+          - {{ . }}
+          {{- end }}
+        allowOrigin:
+          {{- range .Values.gloo.virtualservice.spec.virtualHost.cors.allowOrigin }}
+          - {{ . | quote }}
+          {{- end }}
+        allowOriginRegex:
+        exposeHeaders:
+          {{- range .Values.gloo.virtualservice.spec.virtualHost.cors.exposeHeaders }}
+          - {{ . }}
+          {{- end }}
+        maxAge: {{ .Values.gloo.virtualservice.spec.virtualHost.cors.maxAge }}
+    {{- end }}
     routes:
       {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.swagger.rewriteUrl }}
       - matchers:

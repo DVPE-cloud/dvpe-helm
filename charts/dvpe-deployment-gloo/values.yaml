@@ -128,6 +128,23 @@ gloo:
       virtualHost:
         # gloo.virtualservice.spec.virtualHost.domains -- `DNS domain name` this service will be published to.
         domains:
+        cors:
+          # gloo.virtualservice.spec.virtualHost.cors.allowOrigin -- Specifies the URLs of origins to allow CORS for. Origin URLs have to contain scheme, domain and port (if none-standard port is used).
+          allowOrigin:
+          # gloo.virtualservice.spec.virtualHost.cors.allowMethods -- Specifies the HTTP methods to allow CORS for.
+          allowMethods:
+            - GET
+            - POST
+            - PUT
+            - DELETE
+          # gloo.virtualservice.spec.virtualHost.cors.allowHeaders -- Specifies the content for the `access-control-allow-headers` header. In general this should not be changed.
+          allowHeaders:
+            - origin
+          # gloo.virtualservice.spec.virtualHost.cors.exposeHeaders -- Specifies the content for the `access-control-expose-headers` header. In general this should not be changed.
+          exposeHeaders:
+            - origin
+          # gloo.virtualservice.spec.virtualHost.cors.maxAge -- Specifies the content for the `access-control-max-age` header. In general this should not be changed.
+          maxAge: 1d
         routes:
           # gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath -- Path to `callbackUrl` which needs to be registered at the Identity Provider. Pre-defined route in `VirtualService`.
           callbackUrlPath:

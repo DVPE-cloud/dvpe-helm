@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.3] - 2021-02-??
+
+### Changed
+
+* Added support for CORS configuration of Gloo virtual services (`gloo.virtualservice.spec.virtualHost.cors`) according to [Gloo documentation: CORS](https://docs.solo.io/gloo-edge/latest/guides/security/cors/).
+
 ## [1.2.2] - 2021-02-02
 
 ### Changed
