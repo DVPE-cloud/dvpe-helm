@@ -46,6 +46,7 @@ spec:
           CacheTableName: {{ .Values.gloo.authConfig.spec.configs.backendPlugin.config.cacheTableName }}
           AwsRegion:  {{ .Values.gloo.authConfig.spec.configs.backendPlugin.config.awsRegion }}
           OidcUrl: {{ .Values.gloo.authConfig.spec.configs.backendPlugin.config.oidcUrl }}
+          JwksUrl: {{ .Values.gloo.authConfig.spec.configs.backendPlugin.config.jwksUrl }}
     {{- end }}
     {{- if .Values.gloo.authConfig.spec.configs.m2mPlugin.enabled }}
     - pluginAuth:
