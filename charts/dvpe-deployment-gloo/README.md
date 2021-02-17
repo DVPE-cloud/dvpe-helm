@@ -100,8 +100,9 @@ To use this feature, please sepecify `externalSecrets.oidc.key` as the name of t
 ```bash
 helm install -f config.yaml --namespace `TARGET_K8S_NAMESPACE` `HELM_RELEASE_NAME` dvpe/dvpe-deployment-gloo
 ```
-**Note**: The structure of `config.yaml` needs to adhere to the chart's value fields (see config section below). `config.yaml` can be defined as a default helm
-values file.
+>**Note**:\
+>The structure of `config.yaml` needs to adhere to the chart's value fields (see config section below). `config.yaml` can be defined as a default helm
+>values file.
 
 #### Notes on gloo VirtualService definitions
 
@@ -165,9 +166,15 @@ gloo:
                   namespace: gloo-system
 ```
 
-For user interfaces services an additional `VirtualService` is generated to provide a HTTP to HTTPS redirect for user
-convenience. This is done for all services which have a `gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath`
-value set - this value is related to the OAuth flow with the IDP and thus a good indicator for an user interfaces service.
+For user interface services and services which provide a [Swagger](https://swagger.io/) API documentation an additional
+`VirtualService` is generated to provide a HTTP to HTTPS redirect for user convenience. This is done for all services
+which have either a `gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath` value set or the
+`gloo.virtualservice.spec.virtualHost.routes.swagger.enabled` switched on.
+The first value is related to the OAuth flow with the IDP and thus a good indicator for an user interfaces service.
+The second one switches on routing for the Swagger API documentation indicating the service to provide an according UI.
+>**Note:**\
+>For Swagger API documentation this redirect is limited to the paths given as `gloo.virtualservice.spec.virtualHost.routes.swagger.path` and
+>`gloo.virtualservice.spec.virtualHost.routes.swagger.alternativePath`.
 
 ## Chart Configuration Parameters
 
@@ -248,8 +255,9 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.virtualservice.spec.virtualHost.routes.additionalRoutes | string | `nil` | List of route configurations for this `VirtualService`. See [gloo VirtualService Specification](https://docs.solo.io/gloo-edge/latest/introduction/architecture/concepts/#virtual-services) for details |
 | gloo.virtualservice.spec.virtualHost.routes.appPath | string | `"/api"` | Path to `appUrl` where the service can be accessed. Pre-defined route in `VirtualService`. |
 | gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath | string | `nil` | Path to `callbackUrl` which needs to be registered at the Identity Provider. Pre-defined route in `VirtualService`. |
+| gloo.virtualservice.spec.virtualHost.routes.swagger.alternativePath | string | `"/docs"` | Alternative path to Swagger UI, this redirects to `...swagger.path`. |
+| gloo.virtualservice.spec.virtualHost.routes.swagger.enabled | bool | `false` | If set to `true` routing for `...swagger.path` and `...swagger.alternativePath` gets enabled. |
 | gloo.virtualservice.spec.virtualHost.routes.swagger.path | string | `"/swagger-ui.html"` | Path to `swagger-ui.html` page. |
-| gloo.virtualservice.spec.virtualHost.routes.swagger.rewriteUrl | string | `"/docs"` | Prefix Rewrite URL which points to `swagger.path`. |
 | istio.destinationRule.spec.trafficPolicy.tls.mode | string | `"ISTIO_MUTUAL"` | trafficPolicy [ClientTLSSettings-TLSmode](https://istio.io/latest/docs/reference/config/networking/destination-rule/#ClientTLSSettings-TLSmode) |
 | istio.enabled | bool | `true` | Enables mtls per workload (pod) |
 | istio.peerAuthentication.spec.mtls.mode | string | `"STRICT"` | mTLS mode for istio. [PeerAuthentication-MutualTLS-Mode](https://istio.io/latest/docs/reference/config/security/peer_authentication/#PeerAuthentication-MutualTLS-Mode) |

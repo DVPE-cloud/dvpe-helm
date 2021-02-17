@@ -99,8 +99,9 @@ To use this feature, please sepecify `externalSecrets.oidc.key` as the name of t
 ```bash
 helm install -f config.yaml --namespace `TARGET_K8S_NAMESPACE` `HELM_RELEASE_NAME` dvpe/dvpe-deployment-gloo
 ```
-**Note**: The structure of `config.yaml` needs to adhere to the chart's value fields (see config section below). `config.yaml` can be defined as a default helm
-values file.
+>**Note**:\
+>The structure of `config.yaml` needs to adhere to the chart's value fields (see config section below). `config.yaml` can be defined as a default helm
+>values file.
 
 #### Notes on gloo VirtualService definitions
 
@@ -164,9 +165,15 @@ gloo:
                   namespace: gloo-system
 ```
 
-For user interfaces services an additional `VirtualService` is generated to provide a HTTP to HTTPS redirect for user
-convenience. This is done for all services which have a `gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath`
-value set - this value is related to the OAuth flow with the IDP and thus a good indicator for an user interfaces service.
+For user interface services and services which provide a [Swagger](https://swagger.io/) API documentation an additional
+`VirtualService` is generated to provide a HTTP to HTTPS redirect for user convenience. This is done for all services
+which have either a `gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath` value set or the
+`gloo.virtualservice.spec.virtualHost.routes.swagger.enabled` switched on.
+The first value is related to the OAuth flow with the IDP and thus a good indicator for an user interfaces service.
+The second one switches on routing for the Swagger API documentation indicating the service to provide an according UI.
+>**Note:**\
+>For Swagger API documentation this redirect is limited to the paths given as `gloo.virtualservice.spec.virtualHost.routes.swagger.path` and
+>`gloo.virtualservice.spec.virtualHost.routes.swagger.alternativePath`.
 
 ## Chart Configuration Parameters
 
