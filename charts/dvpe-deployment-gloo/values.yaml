@@ -190,16 +190,6 @@ gloo:
           issuer_url:
           # gloo.authConfig.spec.configs.oauth.scopes -- List of OIDC scopes. `openid` is set per default by Gloo and must not be added here
           scopes:
-        cachePlugin:
-          # gloo.authConfig.spec.configs.cachePlugin.enabled -- If `enabled` set to true the cache plugin will be used
-          enabled: false
-          # gloo.authConfig.spec.configs.cachePlugin.name -- `Name` of the cache plugin
-          name: SessionCache
-          config:
-            # gloo.authConfig.spec.configs.cachePlugin.config.CacheTableName -- `CacheTableName` of the auth cache
-            CacheTableName: auth-cache-prod
-            # gloo.authConfig.spec.configs.cachePlugin.config.AwsRegion -- `AwsRegion` where the cache is located
-            AwsRegion: eu-west-1
         backendPlugin:
           # gloo.authConfig.spec.configs.backendPlugin.enabled -- If `enabled` set to true the backend plugin will be used
           enabled: false

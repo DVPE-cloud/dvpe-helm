@@ -224,10 +224,6 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.authConfig.spec.configs.backendPlugin.config.oidcUrl | string | `nil` | `oidcUrl` where the access token can be verified at the IDP |
 | gloo.authConfig.spec.configs.backendPlugin.enabled | bool | `false` | If `enabled` set to true the backend plugin will be used |
 | gloo.authConfig.spec.configs.backendPlugin.name | string | `"AuthFlowBackend"` | `Name` of the cache plugin |
-| gloo.authConfig.spec.configs.cachePlugin.config.AwsRegion | string | `"eu-west-1"` | `AwsRegion` where the cache is located |
-| gloo.authConfig.spec.configs.cachePlugin.config.CacheTableName | string | `"auth-cache-prod"` | `CacheTableName` of the auth cache |
-| gloo.authConfig.spec.configs.cachePlugin.enabled | bool | `false` | If `enabled` set to true the cache plugin will be used |
-| gloo.authConfig.spec.configs.cachePlugin.name | string | `"SessionCache"` | `Name` of the cache plugin |
 | gloo.authConfig.spec.configs.m2mPlugin.config.awsRegion | string | `"eu-west-1"` | `awsRegion` where the cache is located |
 | gloo.authConfig.spec.configs.m2mPlugin.config.cacheTableName | string | `"auth-cache-prod"` | `cacheTableName` in DynamoDB of the auth cache |
 | gloo.authConfig.spec.configs.m2mPlugin.config.clientId | string | `nil` | `clientId` of the machine2machine client registered at the IDP |
