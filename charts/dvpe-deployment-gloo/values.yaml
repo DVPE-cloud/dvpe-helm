@@ -190,6 +190,8 @@ gloo:
           issuer_url:
           # gloo.authConfig.spec.configs.oauth.scopes -- List of OIDC scopes. `openid` is set per default by Gloo and must not be added here
           scopes:
+          # gloo.authConfig.spec.configs.oauth.cookie_domain -- The domain to be used for `id_token` and `access_token` cookies set after successful authentication. This has to be some kind of wildcard to support cross origin requests. If unset, the cookies get no domain set.
+          cookie_domain:
         backendPlugin:
           # gloo.authConfig.spec.configs.backendPlugin.enabled -- If `enabled` set to true the backend plugin will be used
           enabled: false
