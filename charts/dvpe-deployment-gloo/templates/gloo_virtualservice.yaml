@@ -14,6 +14,8 @@ spec:
     secretRef:
       name: {{ .Values.gloo.virtualservice.spec.sslConfig.secretRef.name }}
       namespace: {{default .Values.gloo.namespace .Values.gloo.virtualservice.spec.sslConfig.secretRef.namespace }}
+    sniDomains:
+      - {{ .Values.gloo.virtualservice.spec.virtualHost.domains }}
   virtualHost:
     domains:
       - {{ .Values.gloo.virtualservice.spec.virtualHost.domains }}
