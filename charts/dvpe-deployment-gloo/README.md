@@ -1,6 +1,6 @@
 # dvpe-deployment-gloo
 
-![Version: 1.2.3](https://img.shields.io/badge/Version-1.2.3-informational?style=flat-square)
+![Version: 1.3.0](https://img.shields.io/badge/Version-1.3.0-informational?style=flat-square)
 
 Helm chart for installing microservices as gloo enabled VirtualService definitions.
 
@@ -56,7 +56,7 @@ You can create this secret with the following `kubectl` command:
   ```
   If you like to use a different name, please adjust the name of the secret in your `values.yaml`
 
-* (_deprecated - since version #1.2.3 this can be set up by the template via an [`ExternalSecret`](https://github.com/external-secrets/kubernetes-external-secrets) - see below_) a K8S secret with name `webeam-oidc` exists in the same namespace in which your service is going to be deployed.
+* (_deprecated - since version #1.3.0 this can be set up by the template via an [`ExternalSecret`](https://github.com/external-secrets/kubernetes-external-secrets) - see below_) a K8S secret with name `webeam-oidc` exists in the same namespace in which your service is going to be deployed.
 This secret needs to contain the client_secret information as base64 encoded string.
 Gloo expects a trailing newline at the secret string.
 You can encode your secret with the following command:
@@ -80,7 +80,7 @@ You can encode your secret with the following command:
     EOF
     ```
 
-* (_new since version #1.2.3_)
+* (_new since version #1.3.0_)
 The `<webeam-oidc>` secret can be set up as an external secret charged from an AWS secrets manager one.
 To use this feature, please sepecify `externalSecrets.oidc.key` as the name of the AWS secrets manager secret. This secret is expected in format:
     ```yaml
