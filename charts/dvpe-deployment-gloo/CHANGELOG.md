@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * `gloo.virtualservice.spec.virtualHost.routes.swagger.rewriteUrl` was renamed to `.Values.gloo.virtualservice.spec.virtualHost.routes.swagger.alternativePath`
   * routing from `...swagger.alternativePath` to `...swagger.path` is done by HTTP redirect now because URL rewrite does not work due to a quirk in `springfox.js` which relies on the name `swagger-ui.html`.
 * Added `gloo.authConfig.spec.configs.backendPlugin.config.jwksUrl` value. This has no default but is mandatory for each service using the `backendPlugin`.
+* Reworked M2M authentication:
+  * Renamed `gloo.authConfig.spec.configs.m2mPlugin.config.oidcUrl` to `gloo.authConfig.spec.configs.m2mPlugin.config.amBaseUrl` to match WebEAM naming.
+  * Added `gloo.authConfig.spec.configs.m2mPlugin.config.mode` which has no default but is mandatory.
+  * Reworked K8S resource (`AuthConfig`) to match the API of the latest `AuthM2m` plugin.
 
 ### Added
 

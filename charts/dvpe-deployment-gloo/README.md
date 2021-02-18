@@ -224,11 +224,12 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.authConfig.spec.configs.backendPlugin.config.oidcUrl | string | `nil` | `oidcUrl` where the access token can be verified at the IDP |
 | gloo.authConfig.spec.configs.backendPlugin.enabled | bool | `false` | If `enabled` set to true the backend plugin will be used |
 | gloo.authConfig.spec.configs.backendPlugin.name | string | `"AuthFlowBackend"` | `Name` of the cache plugin |
+| gloo.authConfig.spec.configs.m2mPlugin.config.amBaseUrl | string | `nil` | `amBaseUrl` (access management base URL) - where the access token can be verified at the IDP |
 | gloo.authConfig.spec.configs.m2mPlugin.config.awsRegion | string | `"eu-west-1"` | `awsRegion` where the cache is located |
 | gloo.authConfig.spec.configs.m2mPlugin.config.cacheTableName | string | `"auth-cache-prod"` | `cacheTableName` in DynamoDB of the auth cache |
 | gloo.authConfig.spec.configs.m2mPlugin.config.clientId | string | `nil` | `clientId` of the machine2machine client registered at the IDP |
 | gloo.authConfig.spec.configs.m2mPlugin.config.clientSecret | string | `nil` | `clientSecret` of the machine2machine client registered at the IDP |
-| gloo.authConfig.spec.configs.m2mPlugin.config.oidcUrl | string | `nil` | `oidcUrl` where the access token can be verified at the IDP |
+| gloo.authConfig.spec.configs.m2mPlugin.config.mode | string | `nil` | The AuthM2m plugin can work in two modes: `GatherCredentials` and `VerifyAccessToken` |
 | gloo.authConfig.spec.configs.m2mPlugin.enabled | bool | `false` | If `enabled` set to true the machine to machine plugin will be used |
 | gloo.authConfig.spec.configs.m2mPlugin.name | string | `"AuthM2m"` | `Name` of the cache plugin |
 | gloo.authConfig.spec.configs.oauth.client_id | string | `nil` | Registered `ClientID` at the IDP |

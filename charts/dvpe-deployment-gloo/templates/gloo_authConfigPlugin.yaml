@@ -54,9 +54,10 @@ spec:
         config:
           CacheTableName: {{ .Values.gloo.authConfig.spec.configs.m2mPlugin.config.cacheTableName }}
           AwsRegion:  {{ .Values.gloo.authConfig.spec.configs.m2mPlugin.config.awsRegion }}
-          OidcUrl: {{ .Values.gloo.authConfig.spec.configs.m2mPlugin.config.oidcUrl }}
-          OidcClientId: {{ .Values.gloo.authConfig.spec.configs.m2mPlugin.config.clientId }}
-          OidcClientSecret: {{ .Values.gloo.authConfig.spec.configs.m2mPlugin.config.clientSecret }}
+          AMBaseURL: {{ .Values.gloo.authConfig.spec.configs.m2mPlugin.config.amBaseUrl }}
+          ClientId: {{ .Values.gloo.authConfig.spec.configs.m2mPlugin.config.clientId }}
+          ClientSecret: {{ .Values.gloo.authConfig.spec.configs.m2mPlugin.config.clientSecret }}
+          Mode: {{ .Values.gloo.authConfig.spec.configs.m2mPlugin.config.mode }}
       {{- end }}
       {{- if .Values.gloo.authConfig.spec.configs.additionalPlugins }}
     {{- toYaml .Values.gloo.authConfig.spec.configs.additionalPlugins | nindent 4 }}
