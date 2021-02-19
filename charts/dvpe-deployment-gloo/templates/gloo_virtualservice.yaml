@@ -3,6 +3,7 @@
 
 {{- if .Values.gloo.enabled }}
 
+---
 apiVersion: gateway.solo.io/v1
 kind: VirtualService
 metadata:
@@ -13,20 +14,40 @@ spec:
     secretRef:
       name: {{ .Values.gloo.virtualservice.spec.sslConfig.secretRef.name }}
       namespace: {{default .Values.gloo.namespace .Values.gloo.virtualservice.spec.sslConfig.secretRef.namespace }}
+    sniDomains:
+      - {{ .Values.gloo.virtualservice.spec.virtualHost.domains }}
   virtualHost:
     domains:
       - {{ .Values.gloo.virtualservice.spec.virtualHost.domains }}
+    {{- if .Values.gloo.virtualservice.spec.virtualHost.cors.allowOrigin }}
+    options:
+      cors:
+        allowCredentials: true
+        allowHeaders:
+          {{- range .Values.gloo.virtualservice.spec.virtualHost.cors.allowHeaders }}
+          - {{ . }}
+          {{- end }}
+        allowMethods:
+          {{- range .Values.gloo.virtualservice.spec.virtualHost.cors.allowMethods }}
+          - {{ . }}
+          {{- end }}
+        allowOrigin:
+          {{- range .Values.gloo.virtualservice.spec.virtualHost.cors.allowOrigin }}
+          - {{ . | quote }}
+          {{- end }}
+        allowOriginRegex:
+        exposeHeaders:
+          {{- range .Values.gloo.virtualservice.spec.virtualHost.cors.exposeHeaders }}
+          - {{ . }}
+          {{- end }}
+        maxAge: {{ .Values.gloo.virtualservice.spec.virtualHost.cors.maxAge }}
+    {{- end }}
     routes:
-      {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.swagger.rewriteUrl }}
+      {{- if and .Values.gloo.virtualservice.spec.virtualHost.routes.swagger.enabled .Values.gloo.virtualservice.spec.virtualHost.routes.swagger.alternativePath }}
       - matchers:
-          - prefix: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.swagger.rewriteUrl }}
-        routeAction:
-          single:
-            upstream:
-              name: {{ $upstreamName }}
-              namespace: {{ .Values.gloo.upstream.namespace }}
-        options:
-          prefixRewrite: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.swagger.path }}
+          - prefix: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.swagger.alternativePath }}
+        redirectAction:
+          pathRedirect: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.swagger.path }}
       {{- end }}
       {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath }}
       - matchers:
@@ -68,4 +89,31 @@ spec:
       {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.additionalRoutes }}
     {{- toYaml .Values.gloo.virtualservice.spec.virtualHost.routes.additionalRoutes | nindent 6 }}
       {{- end }}
+
+{{- if or .Values.gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath .Values.gloo.virtualservice.spec.virtualHost.routes.swagger.enabled }}
+---
+apiVersion: gateway.solo.io/v1
+kind: VirtualService
+metadata:
+  name: {{ $serviceName }}-http-to-https
+  namespace: {{ .Release.Namespace }}
+spec:
+  virtualHost:
+    domains:
+      - {{ .Values.gloo.virtualservice.spec.virtualHost.domains }}
+    routes:
+      - matchers:
+        {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath }}
+        - prefix: /
+        {{- else }}
+        - prefix: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.swagger.path }}
+        {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.swagger.alternativePath }}
+        - prefix: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.swagger.alternativePath }}
+        {{- end }}
+        {{- end }}
+        redirectAction:
+          hostRedirect: {{ .Values.gloo.virtualservice.spec.virtualHost.domains }}
+          httpsRedirect: true
+{{- end }}
+
 {{- end }}

@@ -1,6 +1,6 @@
 # dvpe-deployment-gloo
 
-![Version: 1.2.2](https://img.shields.io/badge/Version-1.2.2-informational?style=flat-square)
+![Version: 1.3.0](https://img.shields.io/badge/Version-1.3.0-informational?style=flat-square)
 
 Helm chart for installing microservices as gloo enabled VirtualService definitions.
 
@@ -56,7 +56,7 @@ You can create this secret with the following `kubectl` command:
   ```
   If you like to use a different name, please adjust the name of the secret in your `values.yaml`
 
-* a K8S secret with name `webeam-oidc` exists in the same namespace in which your service is going to be deployed.
+* (_deprecated - since version #1.3.0 this can be set up by the template via an [`ExternalSecret`](https://github.com/external-secrets/kubernetes-external-secrets) - see below_) a K8S secret with name `webeam-oidc` exists in the same namespace in which your service is going to be deployed.
 This secret needs to contain the client_secret information as base64 encoded string.
 Gloo expects a trailing newline at the secret string.
 You can encode your secret with the following command:
@@ -80,13 +80,29 @@ You can encode your secret with the following command:
     EOF
     ```
 
+* (_new since version #1.3.0_)
+The `<webeam-oidc>` secret can be set up as an external secret charged from an AWS secrets manager one.
+To use this feature, please sepecify `externalSecrets.oidc.key` as the name of the AWS secrets manager secret. This secret is expected in format:
+    ```yaml
+    {
+      "<client_id>": "clientSecret: <client_secret>",
+      ...
+    }
+    ```
+  with `<client_id>` equals to the value (UUID) given as `gloo.authConfig.spec.configs.oauth.client_id`.
+  The format allows multiple client IDs and secrets (e.g. for different services in a common business domain) to be defined within a single secrets manager secret.
+  >**Note:**\
+  >The name of the `<webeam-oidc>` secret gets changed to `<service-name>-oidc-secrets` to distinguish the secrets dedicated to different services deployed to
+  >the same K8S namespace.
+
 ### Using config from a file:
 
 ```bash
 helm install -f config.yaml --namespace `TARGET_K8S_NAMESPACE` `HELM_RELEASE_NAME` dvpe/dvpe-deployment-gloo
 ```
-**Note**: The structure of `config.yaml` needs to adhere to the chart's value fields (see config section below). `config.yaml` can be defined as a default helm
-values file.
+>**Note**:\
+>The structure of `config.yaml` needs to adhere to the chart's value fields (see config section below). `config.yaml` can be defined as a default helm
+>values file.
 
 #### Notes on gloo VirtualService definitions
 
@@ -150,6 +166,16 @@ gloo:
                   namespace: gloo-system
 ```
 
+For user interface services and services which provide a [Swagger](https://swagger.io/) API documentation an additional
+`VirtualService` is generated to provide a HTTP to HTTPS redirect for user convenience. This is done for all services
+which have either a `gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath` value set or the
+`gloo.virtualservice.spec.virtualHost.routes.swagger.enabled` switched on.
+The first value is related to the OAuth flow with the IDP and thus a good indicator for an user interfaces service.
+The second one switches on routing for the Swagger API documentation indicating the service to provide an according UI.
+>**Note:**\
+>For Swagger API documentation this redirect is limited to the paths given as `gloo.virtualservice.spec.virtualHost.routes.swagger.path` and
+>`gloo.virtualservice.spec.virtualHost.routes.swagger.alternativePath`.
+
 ## Chart Configuration Parameters
 
 The following table lists the configurable parameters of the chart and its default values.
@@ -187,29 +213,29 @@ The following table lists the configurable parameters of the chart and its defau
 | deployment.spec.resources.requests.cpu | string | `"150m"` | Fractional amount of CPU allowed for a Pod. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage. |
 | deployment.spec.resources.requests.memory | string | `"200M"` | Amount of memory reserved for a Pod. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage. |
 | deployment.spec.serviceAccountName | string | `nil` | The ServiceAccount this service will be associated with. If empty, `serviceAccountName` will be `<namespace>-sa` |
+| externalSecrets.oidc.key | string | `nil` | `Key` to AWS Secret Manager object where the client secret for OIDC provider should be stored. The key in the Secret Manager Object has to be named as the given `gloo.authConfig.spec.configs.oauth.client_id`. The value has to be formated as `clientSecret: <secret>`. **This definition is exclusive to `gloo.authConfig.spec.configs.oauth.client_secret_ref`. If defined, `gloo.authConfig.spec.configs.oauth.client_secret_ref` is ignored.** |
 | externalSecrets.service.key | string | `nil` | `Key` to AWS Secret Manager object where all sensitive application data should be stored. Each key in the Secret Manager Object should be named like your needed environment variable |
 | gloo.authConfig.name | string | `"auth-plugin"` | Prefix of the `Auth Config Plugin`. Final name will be <prefix>-<service-name> |
 | gloo.authConfig.namespace | string | `nil` | Namespace where the `Auth Config Plugin` is located. If empty, release namespace is used. |
 | gloo.authConfig.spec.configs.additionalPlugins | string | `nil` | List of plugins which should be added to the plugin chain. Expected format is a valid yaml with the `pluginAuth`. See [gloo Plugin Auth](https://docs.solo.io/gloo/latest/guides/security/auth/extauth/plugin_auth/#create-an-authconfig-resource) for details |
 | gloo.authConfig.spec.configs.backendPlugin.config.awsRegion | string | `"eu-west-1"` | `awsRegion` where the cache is located |
 | gloo.authConfig.spec.configs.backendPlugin.config.cacheTableName | string | `"auth-cache-prod"` | `cacheTableName` of the auth cache |
+| gloo.authConfig.spec.configs.backendPlugin.config.jwksUrl | string | `nil` | `jwksUrl` where the JWKS (JSON Web Key Store) can be retrieved from the IDP |
 | gloo.authConfig.spec.configs.backendPlugin.config.oidcUrl | string | `nil` | `oidcUrl` where the access token can be verified at the IDP |
 | gloo.authConfig.spec.configs.backendPlugin.enabled | bool | `false` | If `enabled` set to true the backend plugin will be used |
 | gloo.authConfig.spec.configs.backendPlugin.name | string | `"AuthFlowBackend"` | `Name` of the cache plugin |
-| gloo.authConfig.spec.configs.cachePlugin.config.AwsRegion | string | `"eu-west-1"` | `AwsRegion` where the cache is located |
-| gloo.authConfig.spec.configs.cachePlugin.config.CacheTableName | string | `"auth-cache-prod"` | `CacheTableName` of the auth cache |
-| gloo.authConfig.spec.configs.cachePlugin.enabled | bool | `false` | If `enabled` set to true the cache plugin will be used |
-| gloo.authConfig.spec.configs.cachePlugin.name | string | `"SessionCache"` | `Name` of the cache plugin |
+| gloo.authConfig.spec.configs.m2mPlugin.config.amBaseUrl | string | `nil` | `amBaseUrl` (access management base URL) - where the access token can be verified at the IDP |
 | gloo.authConfig.spec.configs.m2mPlugin.config.awsRegion | string | `"eu-west-1"` | `awsRegion` where the cache is located |
 | gloo.authConfig.spec.configs.m2mPlugin.config.cacheTableName | string | `"auth-cache-prod"` | `cacheTableName` in DynamoDB of the auth cache |
 | gloo.authConfig.spec.configs.m2mPlugin.config.clientId | string | `nil` | `clientId` of the machine2machine client registered at the IDP |
 | gloo.authConfig.spec.configs.m2mPlugin.config.clientSecret | string | `nil` | `clientSecret` of the machine2machine client registered at the IDP |
-| gloo.authConfig.spec.configs.m2mPlugin.config.oidcUrl | string | `nil` | `oidcUrl` where the access token can be verified at the IDP |
+| gloo.authConfig.spec.configs.m2mPlugin.config.mode | string | `nil` | The AuthM2m plugin can work in two modes: `GatherCredentials` and `VerifyAccessToken` |
 | gloo.authConfig.spec.configs.m2mPlugin.enabled | bool | `false` | If `enabled` set to true the machine to machine plugin will be used |
 | gloo.authConfig.spec.configs.m2mPlugin.name | string | `"AuthM2m"` | `Name` of the cache plugin |
 | gloo.authConfig.spec.configs.oauth.client_id | string | `nil` | Registered `ClientID` at the IDP |
-| gloo.authConfig.spec.configs.oauth.client_secret_ref.name | string | `"webeam-oidc"` | Name of the `Secret`. Gloo expects a k8s secret with the key `oauth` and base64 encoded value `clientSecret: secretValue` |
-| gloo.authConfig.spec.configs.oauth.client_secret_ref.namespace | string | `nil` | Namespace were the `Secret` is located. If empty, release namespace is used. |
+| gloo.authConfig.spec.configs.oauth.client_secret_ref.name | string | `"webeam-oidc"` | Name of the `Secret`. Gloo expects a k8s secret with the key `oauth` and base64 encoded value `clientSecret: secretValue` **This value is ignored if `externalSecrets.oidc.key` is present.** |
+| gloo.authConfig.spec.configs.oauth.client_secret_ref.namespace | string | `nil` | Namespace were the `Secret` is located. If empty, release namespace is used. **This value is ignored if `externalSecrets.oidc.key` is present.** |
+| gloo.authConfig.spec.configs.oauth.cookie_domain | string | `nil` | The domain to be used for `id_token` and `access_token` cookies set after successful authentication. This has to be some kind of wildcard to support cross origin requests. If unset, the cookies get no domain set. |
 | gloo.authConfig.spec.configs.oauth.enabled | bool | `false` | If `enabled` set to true the oauth plugin from Gloo will be used |
 | gloo.authConfig.spec.configs.oauth.issuer_url | string | `nil` | Issuer URL to the Identity Provider. Gloo adds `.well-known/openid-configuration` to the url automatically |
 | gloo.authConfig.spec.configs.oauth.scopes | string | `nil` | List of OIDC scopes. `openid` is set per default by Gloo and must not be added here |
@@ -219,12 +245,18 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.upstream.namespace | string | `"gloo-system"` | `Namespace` where gloo upstream is deployed. |
 | gloo.virtualservice.spec.sslConfig.secretRef.name | string | `"gloo-public-tls"` | Name of the secret containing the certificate information for this deployment. |
 | gloo.virtualservice.spec.sslConfig.secretRef.namespace | string | `nil` | Namespace where the secret is located. If empty, gloo namespace is used. |
+| gloo.virtualservice.spec.virtualHost.cors.allowHeaders | list | `["origin"]` | Specifies the content for the `access-control-allow-headers` header. In general this should not be changed. |
+| gloo.virtualservice.spec.virtualHost.cors.allowMethods | list | `["GET","POST","PUT","DELETE"]` | Specifies the HTTP methods to allow CORS for. |
+| gloo.virtualservice.spec.virtualHost.cors.allowOrigin | string | `nil` | Specifies the URLs of origins to allow CORS for. Origin URLs have to contain scheme, domain and port (if none-standard port is used). |
+| gloo.virtualservice.spec.virtualHost.cors.exposeHeaders | list | `["origin"]` | Specifies the content for the `access-control-expose-headers` header. In general this should not be changed. |
+| gloo.virtualservice.spec.virtualHost.cors.maxAge | string | `"1d"` | Specifies the content for the `access-control-max-age` header. In general this should not be changed. |
 | gloo.virtualservice.spec.virtualHost.domains | string | `nil` | `DNS domain name` this service will be published to. |
 | gloo.virtualservice.spec.virtualHost.routes.additionalRoutes | string | `nil` | List of route configurations for this `VirtualService`. See [gloo VirtualService Specification](https://docs.solo.io/gloo-edge/latest/introduction/architecture/concepts/#virtual-services) for details |
 | gloo.virtualservice.spec.virtualHost.routes.appPath | string | `"/api"` | Path to `appUrl` where the service can be accessed. Pre-defined route in `VirtualService`. |
 | gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath | string | `nil` | Path to `callbackUrl` which needs to be registered at the Identity Provider. Pre-defined route in `VirtualService`. |
+| gloo.virtualservice.spec.virtualHost.routes.swagger.alternativePath | string | `"/docs"` | Alternative path to Swagger UI, this redirects to `...swagger.path`. |
+| gloo.virtualservice.spec.virtualHost.routes.swagger.enabled | bool | `false` | If set to `true` routing for `...swagger.path` and `...swagger.alternativePath` gets enabled. |
 | gloo.virtualservice.spec.virtualHost.routes.swagger.path | string | `"/swagger-ui.html"` | Path to `swagger-ui.html` page. |
-| gloo.virtualservice.spec.virtualHost.routes.swagger.rewriteUrl | string | `"/docs"` | Prefix Rewrite URL which points to `swagger.path`. |
 | istio.destinationRule.spec.trafficPolicy.tls.mode | string | `"ISTIO_MUTUAL"` | trafficPolicy [ClientTLSSettings-TLSmode](https://istio.io/latest/docs/reference/config/networking/destination-rule/#ClientTLSSettings-TLSmode) |
 | istio.enabled | bool | `true` | Enables mtls per workload (pod) |
 | istio.peerAuthentication.spec.mtls.mode | string | `"STRICT"` | mTLS mode for istio. [PeerAuthentication-MutualTLS-Mode](https://istio.io/latest/docs/reference/config/security/peer_authentication/#PeerAuthentication-MutualTLS-Mode) |

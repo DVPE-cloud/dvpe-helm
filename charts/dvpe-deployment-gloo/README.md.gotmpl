@@ -55,7 +55,7 @@ You can create this secret with the following `kubectl` command:
   ```
   If you like to use a different name, please adjust the name of the secret in your `values.yaml`
 
-* a K8S secret with name `webeam-oidc` exists in the same namespace in which your service is going to be deployed.
+* (_deprecated - since version #1.3.0 this can be set up by the template via an [`ExternalSecret`](https://github.com/external-secrets/kubernetes-external-secrets) - see below_) a K8S secret with name `webeam-oidc` exists in the same namespace in which your service is going to be deployed.
 This secret needs to contain the client_secret information as base64 encoded string.
 Gloo expects a trailing newline at the secret string.
 You can encode your secret with the following command:
@@ -79,13 +79,29 @@ You can encode your secret with the following command:
     EOF
     ```
 
+* (_new since version #1.3.0_)
+The `<webeam-oidc>` secret can be set up as an external secret charged from an AWS secrets manager one.
+To use this feature, please sepecify `externalSecrets.oidc.key` as the name of the AWS secrets manager secret. This secret is expected in format:
+    ```yaml
+    {
+      "<client_id>": "clientSecret: <client_secret>",
+      ...
+    }
+    ```
+  with `<client_id>` equals to the value (UUID) given as `gloo.authConfig.spec.configs.oauth.client_id`.
+  The format allows multiple client IDs and secrets (e.g. for different services in a common business domain) to be defined within a single secrets manager secret.
+  >**Note:**\
+  >The name of the `<webeam-oidc>` secret gets changed to `<service-name>-oidc-secrets` to distinguish the secrets dedicated to different services deployed to
+  >the same K8S namespace.
+
 ### Using config from a file:
 
 ```bash
 helm install -f config.yaml --namespace `TARGET_K8S_NAMESPACE` `HELM_RELEASE_NAME` dvpe/dvpe-deployment-gloo
 ```
-**Note**: The structure of `config.yaml` needs to adhere to the chart's value fields (see config section below). `config.yaml` can be defined as a default helm
-values file.
+>**Note**:\
+>The structure of `config.yaml` needs to adhere to the chart's value fields (see config section below). `config.yaml` can be defined as a default helm
+>values file.
 
 #### Notes on gloo VirtualService definitions
 
@@ -148,6 +164,16 @@ gloo:
                   name: sample-sample-svc-80
                   namespace: gloo-system
 ```
+
+For user interface services and services which provide a [Swagger](https://swagger.io/) API documentation an additional
+`VirtualService` is generated to provide a HTTP to HTTPS redirect for user convenience. This is done for all services
+which have either a `gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath` value set or the
+`gloo.virtualservice.spec.virtualHost.routes.swagger.enabled` switched on.
+The first value is related to the OAuth flow with the IDP and thus a good indicator for an user interfaces service.
+The second one switches on routing for the Swagger API documentation indicating the service to provide an according UI.
+>**Note:**\
+>For Swagger API documentation this redirect is limited to the paths given as `gloo.virtualservice.spec.virtualHost.routes.swagger.path` and
+>`gloo.virtualservice.spec.virtualHost.routes.swagger.alternativePath`.
 
 ## Chart Configuration Parameters
 

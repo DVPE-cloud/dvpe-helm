@@ -10,27 +10,30 @@ metadata:
 spec:
   configs:
     {{- if .Values.gloo.authConfig.spec.configs.oauth.enabled }}
-    - oauth:
-        app_url: "https://{{ .Values.gloo.virtualservice.spec.virtualHost.domains }}"
-        callback_path: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath }}
-        client_id: {{ .Values.gloo.authConfig.spec.configs.oauth.client_id }}
-        client_secret_ref:
-          name: {{ .Values.gloo.authConfig.spec.configs.oauth.client_secret_ref.name }}
-          namespace: {{default .Release.Namespace .Values.gloo.authConfig.spec.configs.oauth.client_secret_ref.namespace }}
-        issuer_url: {{ .Values.gloo.authConfig.spec.configs.oauth.issuer_url }}
-        scopes:
-        {{- if .Values.gloo.authConfig.spec.configs.oauth.scopes }}
-        {{- toYaml .Values.gloo.authConfig.spec.configs.oauth.scopes | nindent 8 }}
-    {{- end }}
-    {{- end }}
-    {{- if .Values.gloo.authConfig.spec.configs.cachePlugin.enabled }}
-    - pluginAuth:
-        name: {{ .Values.gloo.authConfig.spec.configs.cachePlugin.name }}
-        pluginFileName: {{ .Values.gloo.authConfig.spec.configs.cachePlugin.name }}.so
-        exportedSymbolName: Plugin
-        config:
-          CacheTableName: {{ .Values.gloo.authConfig.spec.configs.cachePlugin.config.CacheTableName }}
-          AwsRegion:  {{ .Values.gloo.authConfig.spec.configs.cachePlugin.config.AwsRegion }}
+    - oauth2:
+        oidcAuthorizationCode:
+          app_url: "https://{{ .Values.gloo.virtualservice.spec.virtualHost.domains }}"
+          callback_path: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath }}
+          client_id: {{ .Values.gloo.authConfig.spec.configs.oauth.client_id }}
+          client_secret_ref:
+            {{- if .Values.externalSecrets.oidc.key }}
+            name: {{ $serviceName }}-oidc-secrets
+            namespace: {{ .Release.Namespace }}
+            {{- else }}
+            name: {{ .Values.gloo.authConfig.spec.configs.oauth.client_secret_ref.name }}
+            namespace: {{default .Release.Namespace .Values.gloo.authConfig.spec.configs.oauth.client_secret_ref.namespace }}
+            {{- end }}
+          issuer_url: {{ .Values.gloo.authConfig.spec.configs.oauth.issuer_url }}
+          scopes:
+          {{- if .Values.gloo.authConfig.spec.configs.oauth.scopes }}
+          {{- toYaml .Values.gloo.authConfig.spec.configs.oauth.scopes | nindent 8 }}
+          {{- end }}
+          session:
+            cookieOptions:
+              {{- if .Values.gloo.authConfig.spec.configs.oauth.cookie_domain }}
+              domain: {{ .Values.gloo.authConfig.spec.configs.oauth.cookie_domain | quote }}
+              {{- end }}
+              maxAge: 0
     {{- end }}
     {{- if .Values.gloo.authConfig.spec.configs.backendPlugin.enabled }}
     - pluginAuth:
@@ -41,6 +44,7 @@ spec:
           CacheTableName: {{ .Values.gloo.authConfig.spec.configs.backendPlugin.config.cacheTableName }}
           AwsRegion:  {{ .Values.gloo.authConfig.spec.configs.backendPlugin.config.awsRegion }}
           OidcUrl: {{ .Values.gloo.authConfig.spec.configs.backendPlugin.config.oidcUrl }}
+          JwksUrl: {{ .Values.gloo.authConfig.spec.configs.backendPlugin.config.jwksUrl }}
     {{- end }}
     {{- if .Values.gloo.authConfig.spec.configs.m2mPlugin.enabled }}
     - pluginAuth:
@@ -50,9 +54,10 @@ spec:
         config:
           CacheTableName: {{ .Values.gloo.authConfig.spec.configs.m2mPlugin.config.cacheTableName }}
           AwsRegion:  {{ .Values.gloo.authConfig.spec.configs.m2mPlugin.config.awsRegion }}
-          OidcUrl: {{ .Values.gloo.authConfig.spec.configs.m2mPlugin.config.oidcUrl }}
-          OidcClientId: {{ .Values.gloo.authConfig.spec.configs.m2mPlugin.config.clientId }}
-          OidcClientSecret: {{ .Values.gloo.authConfig.spec.configs.m2mPlugin.config.clientSecret }}
+          AMBaseURL: {{ .Values.gloo.authConfig.spec.configs.m2mPlugin.config.amBaseUrl }}
+          ClientId: {{ .Values.gloo.authConfig.spec.configs.m2mPlugin.config.clientId }}
+          ClientSecret: {{ .Values.gloo.authConfig.spec.configs.m2mPlugin.config.clientSecret }}
+          Mode: {{ .Values.gloo.authConfig.spec.configs.m2mPlugin.config.mode }}
       {{- end }}
       {{- if .Values.gloo.authConfig.spec.configs.additionalPlugins }}
     {{- toYaml .Values.gloo.authConfig.spec.configs.additionalPlugins | nindent 4 }}
