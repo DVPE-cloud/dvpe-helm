@@ -8,6 +8,12 @@ kind: Deployment
 metadata:
   name: {{ $serviceName }}
   namespace: {{ .Release.Namespace }}
+  labels:
+    {{- if .Values.datadog.enabled }}
+    tags.datadoghq.com/env: {{ .Values.datadog.env }}
+    tags.datadoghq.com/service: {{ $serviceName }}
+    tags.datadoghq.com/version: {{ if .Values.datadog.version }}{{- .Values.datadog.version }}{{- else }}{{- .Values.deployment.spec.image.tag }}{{- end }}
+    {{- end }}
 spec:
   replicas: {{ .Values.deployment.spec.replicas }}
   selector:
@@ -17,6 +23,11 @@ spec:
     metadata:
       labels:
         app: {{ $serviceName }}
+        {{- if .Values.datadog.enabled }}
+        tags.datadoghq.com/env: {{ .Values.datadog.env }}
+        tags.datadoghq.com/service: {{ $serviceName }}
+        tags.datadoghq.com/version: {{ if .Values.datadog.version }}{{- .Values.datadog.version }}{{- else }}{{- .Values.deployment.spec.image.tag }}{{- end }}
+        {{- end }}
       annotations:
         {{- if .Values.datadog.enabled }}
         ad.datadoghq.com/{{ $serviceName }}.check_names: '["{{ $serviceName }}"]'
@@ -48,8 +59,18 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
-          - name: "DD_SERVICE_NAME"
-            value: {{ $serviceName }}
+          - name: DD_ENV
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.labels['tags.datadoghq.com/env']
+          - name: DD_SERVICE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.labels['tags.datadoghq.com/service']
+          - name: DD_VERSION
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.labels['tags.datadoghq.com/version']
           {{- end}}
           {{- if .Values.additionalparameters.configMapApplied }}
           {{- range $key, $value := .Values.additionalparameters.config }}

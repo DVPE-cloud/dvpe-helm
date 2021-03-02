@@ -7,7 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.3.0] - 2021-02-??
+### Added
+
+* Added tags `env`, `service` and `version` for DataDog according to [Unified Service Tagging](https://docs.datadoghq.com/getting_started/tagging/unified_service_tagging?tab=kubernetes).
+
+## [1.3.0] - 2021-02-19
 
 ### Breaking Changes
 
