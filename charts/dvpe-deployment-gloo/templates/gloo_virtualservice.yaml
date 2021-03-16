@@ -37,7 +37,7 @@ spec:
           {{- end }}
         allowOriginRegex:
           {{- range .Values.gloo.virtualservice.spec.virtualHost.cors.allowSubdomain }}
-          - {{ . | replace "." "[.]" | replace "://" "://[a-zA-Z0-9.-]+[.]" | quote }}
+          - {{ . | replace "." "[.]" | replace "://" "://([a-zA-Z0-9]+[.-])*[a-zA-Z0-9]+[.]" | quote }}
           {{- end }}
         exposeHeaders:
           {{- range .Values.gloo.virtualservice.spec.virtualHost.cors.exposeHeaders }}
