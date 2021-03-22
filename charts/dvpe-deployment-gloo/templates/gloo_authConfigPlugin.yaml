@@ -62,7 +62,14 @@ spec:
           CacheTableName: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cacheTableName }}
           AwsRegion:  {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.awsRegion }}
           ClientId: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientId }}
-          ClientSecretRef: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientSecret }}
+          ClientSecretRef: # TODO KK check with Alex
+            {{- if .Values.externalSecrets.oidc.key }}
+            name: {{ $serviceName }}-oidc-secrets
+            namespace: {{ .Release.Namespace }}
+            {{- else }}
+            name: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientSecretRef.name }}
+            namespace: {{ default .Release.Namespace .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientSecretRef.namespace }}
+            {{- end }}
           Mode: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.mode }}
           OpenIdConfigurationUrl: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.oidcUrl }}
           AllowedClientIds: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.allowedClientIds }}
