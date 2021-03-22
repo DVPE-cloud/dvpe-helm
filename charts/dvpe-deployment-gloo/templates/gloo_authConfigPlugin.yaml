@@ -35,16 +35,23 @@ spec:
               {{- end }}
               maxAge: 0
     {{- end }}
-    {{- if .Values.gloo.authConfig.spec.configs.backendPlugin.enabled }}
+    {{- if .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.enabled }}
     - pluginAuth:
-        name: {{ .Values.gloo.authConfig.spec.configs.backendPlugin.name }}
-        pluginFileName: {{ .Values.gloo.authConfig.spec.configs.backendPlugin.name }}.so
+        name: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.name }}
+        pluginFileName: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.name }}.so
         exportedSymbolName: Plugin
         config:
-          CacheTableName: {{ .Values.gloo.authConfig.spec.configs.backendPlugin.config.cacheTableName }}
-          AwsRegion:  {{ .Values.gloo.authConfig.spec.configs.backendPlugin.config.awsRegion }}
-          OidcUrl: {{ .Values.gloo.authConfig.spec.configs.backendPlugin.config.oidcUrl }}
-          JwksUrl: {{ .Values.gloo.authConfig.spec.configs.backendPlugin.config.jwksUrl }}
+          OpenIdConfigurationUrl: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.oidcUrl }}
+          Cache:
+            DynamoDBTableName: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.cacheTableName }}
+            AwsRegion:  {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.awsRegion }}
+          {{- if .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds }}
+          AllowedClientIds: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds }}
+          {{- end }}
+          {{- if .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.authLevel }}
+          # TODO KK why ternary if we have mapping in code?
+          StrongAuthenticationLevel: {{ eq .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.authLevel 4000 | ternary 4000 7000 }}
+    {{- end }}
     {{- end }}
     {{- if .Values.gloo.authConfig.spec.configs.m2mPlugin.enabled }}
     - pluginAuth:

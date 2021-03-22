@@ -220,12 +220,12 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.authConfig.name | string | `"auth-plugin"` | Prefix of the `Auth Config Plugin`. Final name will be <prefix>-<service-name> |
 | gloo.authConfig.namespace | string | `nil` | Namespace where the `Auth Config Plugin` is located. If empty, release namespace is used. |
 | gloo.authConfig.spec.configs.additionalPlugins | string | `nil` | List of plugins which should be added to the plugin chain. Expected format is a valid yaml with the `pluginAuth`. See [gloo Plugin Auth](https://docs.solo.io/gloo/latest/guides/security/auth/extauth/plugin_auth/#create-an-authconfig-resource) for details |
-| gloo.authConfig.spec.configs.backendPlugin.config.awsRegion | string | `"eu-west-1"` | `awsRegion` where the cache is located |
-| gloo.authConfig.spec.configs.backendPlugin.config.cacheTableName | string | `"auth-cache-prod"` | `cacheTableName` of the auth cache |
-| gloo.authConfig.spec.configs.backendPlugin.config.jwksUrl | string | `nil` | `jwksUrl` where the JWKS (JSON Web Key Store) can be retrieved from the IDP |
-| gloo.authConfig.spec.configs.backendPlugin.config.oidcUrl | string | `nil` | `oidcUrl` where the access token can be verified at the IDP |
-| gloo.authConfig.spec.configs.backendPlugin.enabled | bool | `false` | If `enabled` set to true the backend plugin will be used |
-| gloo.authConfig.spec.configs.backendPlugin.name | string | `"AuthFlowBackend"` | `Name` of the cache plugin |
+| gloo.authConfig.spec.configs.tokenValidationPlugin.config.awsRegion | string | `"eu-west-1"` | `awsRegion` where the cache is located |
+| gloo.authConfig.spec.configs.tokenValidationPlugin.config.cacheTableName | string | `"auth-cache-prod"` | `cacheTableName` of the auth cache |
+| gloo.authConfig.spec.configs.tokenValidationPlugin.config.jwksUrl | string | `nil` | `jwksUrl` where the JWKS (JSON Web Key Store) can be retrieved from the IDP |
+| gloo.authConfig.spec.configs.tokenValidationPlugin.config.oidcUrl | string | `nil` | `oidcUrl` where the access token can be verified at the IDP |
+| gloo.authConfig.spec.configs.tokenValidationPlugin.enabled | bool | `false` | If `enabled` set to true the backend plugin will be used |
+| gloo.authConfig.spec.configs.tokenValidationPlugin.name | string | `"AuthFlowBackend"` | `Name` of the cache plugin |
 | gloo.authConfig.spec.configs.m2mPlugin.config.amBaseUrl | string | `nil` | `amBaseUrl` (access management base URL) - where the access token can be verified at the IDP |
 | gloo.authConfig.spec.configs.m2mPlugin.config.awsRegion | string | `"eu-west-1"` | `awsRegion` where the cache is located |
 | gloo.authConfig.spec.configs.m2mPlugin.config.cacheTableName | string | `"auth-cache-prod"` | `cacheTableName` in DynamoDB of the auth cache |

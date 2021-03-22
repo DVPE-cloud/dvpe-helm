@@ -192,11 +192,11 @@ gloo:
           scopes:
           # gloo.authConfig.spec.configs.oauth.cookie_domain -- The domain to be used for `id_token` and `access_token` cookies set after successful authentication. This has to be some kind of wildcard to support cross origin requests. If unset, the cookies get no domain set.
           cookie_domain:
-        backendPlugin:
+        tokenValidationPlugin:
           # gloo.authConfig.spec.configs.backendPlugin.enabled -- If `enabled` set to true the backend plugin will be used
           enabled: false
           # gloo.authConfig.spec.configs.backendPlugin.name -- `Name` of the cache plugin
-          name: AuthFlowBackend
+          name: AuthTokenValidation
           config:
             # gloo.authConfig.spec.configs.backendPlugin.config.cacheTableName -- `cacheTableName` of the auth cache
             cacheTableName: auth-cache-prod
@@ -204,8 +204,10 @@ gloo:
             awsRegion: eu-west-1
             # gloo.authConfig.spec.configs.backendPlugin.config.oidcUrl -- `oidcUrl` where the access token can be verified at the IDP
             oidcUrl:
-            # gloo.authConfig.spec.configs.backendPlugin.config.jwksUrl -- `jwksUrl` where the JWKS (JSON Web Key Store) can be retrieved from the IDP
-            jwksUrl:
+            # gloo.authConfig.spec.configs.backendPlugin.config.allowedClientIds -- `allowedClientIds` ids that are allowed by the plugin
+            allowedClientIds: # TODO KK add something here?
+            # gloo.authConfig.spec.configs.backendPlugin.config.authLevel -- `authLevel` minimum strong authentication level
+            authLevel: # TODO KK add something here?
         m2mPlugin:
           # gloo.authConfig.spec.configs.m2mPlugin.enabled -- If `enabled` set to true the machine to machine plugin will be used
           enabled: false
