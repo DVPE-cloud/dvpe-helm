@@ -193,39 +193,41 @@ gloo:
           # gloo.authConfig.spec.configs.oauth.cookie_domain -- The domain to be used for `id_token` and `access_token` cookies set after successful authentication. This has to be some kind of wildcard to support cross origin requests. If unset, the cookies get no domain set.
           cookie_domain:
         tokenValidationPlugin:
-          # gloo.authConfig.spec.configs.backendPlugin.enabled -- If `enabled` set to true the backend plugin will be used
+          # gloo.authConfig.spec.configs.tokenValidationPlugin.enabled -- If `enabled` set to true the backend plugin will be used
           enabled: false
-          # gloo.authConfig.spec.configs.backendPlugin.name -- `Name` of the cache plugin
+          # gloo.authConfig.spec.configs.tokenValidationPlugin.name -- `Name` of the cache plugin
           name: AuthTokenValidation
           config:
-            # gloo.authConfig.spec.configs.backendPlugin.config.cacheTableName -- `cacheTableName` of the auth cache
+            # gloo.authConfig.spec.configs.tokenValidationPlugin.config.cacheTableName -- `cacheTableName` of the auth cache
             cacheTableName: auth-cache-prod
-            # gloo.authConfig.spec.configs.backendPlugin.config.awsRegion -- `awsRegion` where the cache is located
+            # gloo.authConfig.spec.configs.tokenValidationPlugin.config.awsRegion -- `awsRegion` where the cache is located
             awsRegion: eu-west-1
-            # gloo.authConfig.spec.configs.backendPlugin.config.oidcUrl -- `oidcUrl` where the access token can be verified at the IDP
+            # gloo.authConfig.spec.configs.tokenValidationPlugin.config.oidcUrl -- `oidcUrl` where the access token can be verified at the IDP
             oidcUrl:
-            # gloo.authConfig.spec.configs.backendPlugin.config.allowedClientIds -- `allowedClientIds` ids that are allowed by the plugin
+            # gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds -- `allowedClientIds` ids that are allowed by the plugin
             allowedClientIds: # TODO KK add something here?
-            # gloo.authConfig.spec.configs.backendPlugin.config.authLevel -- `authLevel` minimum strong authentication level
+            # gloo.authConfig.spec.configs.tokenValidationPlugin.config.authLevel -- `authLevel` minimum strong authentication level
             authLevel: # TODO KK add something here?
-        m2mPlugin:
-          # gloo.authConfig.spec.configs.m2mPlugin.enabled -- If `enabled` set to true the machine to machine plugin will be used
+        clientCredentialsPlugin:
+          # gloo.authConfig.spec.configs.clientCredentialsPlugin.enabled -- If `enabled` set to true the machine to machine plugin will be used
           enabled: false
-          # gloo.authConfig.spec.configs.m2mPlugin.name -- `Name` of the cache plugin
-          name: AuthM2m
+          # gloo.authConfig.spec.configs.clientCredentialsPlugin.name -- `Name` of the cache plugin
+          name: AuthClientCredentials
           config:
-            # gloo.authConfig.spec.configs.m2mPlugin.config.cacheTableName -- `cacheTableName` in DynamoDB of the auth cache
+            # gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cacheTableName -- `cacheTableName` in DynamoDB of the auth cache
             cacheTableName: auth-cache-prod
-            # gloo.authConfig.spec.configs.m2mPlugin.config.awsRegion -- `awsRegion` where the cache is located
+            # gloo.authConfig.spec.configs.clientCredentialsPlugin.config.awsRegion -- `awsRegion` where the cache is located
             awsRegion: eu-west-1
-            # gloo.authConfig.spec.configs.m2mPlugin.config.amBaseUrl -- `amBaseUrl` (access management base URL) - where the access token can be verified at the IDP
-            amBaseUrl:
-            # gloo.authConfig.spec.configs.m2mPlugin.config.clientId -- `clientId` of the machine2machine client registered at the IDP
+            # gloo.authConfig.spec.configs.clientCredentialsPlugin.config.oidcUrl -- `oidcUrl`  - where the access token can be verified at the IDP
+            oidcUrl:
+            # gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientId -- `clientId` of the machine2machine client registered at the IDP
             clientId:
-            # gloo.authConfig.spec.configs.m2mPlugin.config.clientSecret -- `clientSecret` of the machine2machine client registered at the IDP
+            # gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientSecret -- `clientSecret` of the machine2machine client registered at the IDP
             clientSecret:
-            # gloo.authConfig.spec.configs.m2mPlugin.config.mode -- The AuthM2m plugin can work in two modes: `GatherCredentials` and `VerifyAccessToken`
+            # gloo.authConfig.spec.configs.clientCredentialsPlugin.config.mode -- The AuthClientCredentials plugin can work in two modes: `GatherCredentials` and `VerifyAccessToken`
             mode:
+            # gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds -- `allowedClientIds` ids that are allowed by the plugin
+            allowedClientIds: # TODO KK add something here?
         # gloo.authConfig.spec.configs.additionalPlugins -- List of plugins which should be added to the plugin chain. Expected format is a valid yaml with the `pluginAuth`. See [gloo Plugin Auth](https://docs.solo.io/gloo/latest/guides/security/auth/extauth/plugin_auth/#create-an-authconfig-resource) for details
         additionalPlugins:
 

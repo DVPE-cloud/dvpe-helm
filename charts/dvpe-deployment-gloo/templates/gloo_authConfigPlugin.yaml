@@ -53,18 +53,22 @@ spec:
           StrongAuthenticationLevel: {{ eq .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.authLevel 4000 | ternary 4000 7000 }}
     {{- end }}
     {{- end }}
-    {{- if .Values.gloo.authConfig.spec.configs.m2mPlugin.enabled }}
+    {{- if .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.enabled }}
     - pluginAuth:
-        name: {{ .Values.gloo.authConfig.spec.configs.m2mPlugin.name }}
-        pluginFileName: {{ .Values.gloo.authConfig.spec.configs.m2mPlugin.name }}.so
+        name: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.name }}
+        pluginFileName: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.name }}.so
         exportedSymbolName: Plugin
         config:
-          CacheTableName: {{ .Values.gloo.authConfig.spec.configs.m2mPlugin.config.cacheTableName }}
-          AwsRegion:  {{ .Values.gloo.authConfig.spec.configs.m2mPlugin.config.awsRegion }}
-          AMBaseURL: {{ .Values.gloo.authConfig.spec.configs.m2mPlugin.config.amBaseUrl }}
-          ClientId: {{ .Values.gloo.authConfig.spec.configs.m2mPlugin.config.clientId }}
-          ClientSecret: {{ .Values.gloo.authConfig.spec.configs.m2mPlugin.config.clientSecret }}
-          Mode: {{ .Values.gloo.authConfig.spec.configs.m2mPlugin.config.mode }}
+          CacheTableName: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cacheTableName }}
+          AwsRegion:  {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.awsRegion }}
+          ClientId: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientId }}
+          ClientSecretRef: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientSecret }}
+          Mode: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.mode }}
+          OpenIdConfigurationUrl: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.oidcUrl }}
+          AllowedClientIds: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.allowedClientIds }}
+          Cache:
+            DynamoDBTableName: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cacheTableName }}
+            AwsRegion: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.awsRegion }}
       {{- end }}
       {{- if .Values.gloo.authConfig.spec.configs.additionalPlugins }}
     {{- toYaml .Values.gloo.authConfig.spec.configs.additionalPlugins | nindent 4 }}
