@@ -49,8 +49,8 @@ spec:
           AllowedClientIds: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds }}
           {{- end }}
           {{- if .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.authLevel }}
-          # TODO KK why ternary if we have mapping in code?
-          StrongAuthenticationLevel: {{ eq .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.authLevel 4000 | ternary 4000 7000 }}
+          StrongAuthenticationLevel: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.authLevel }}
+          {{- end }}
     {{- end }}
     {{- end }}
     {{- if .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.enabled }}

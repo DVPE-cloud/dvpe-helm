@@ -8,7 +8,7 @@ externalSecrets:
     # externalSecrets.service.key -- `Key` to AWS Secret Manager object where all sensitive application data should be stored. Each key in the Secret Manager Object should be named like your needed environment variable
     key:
   oidc:
-    # externalSecrets.oidc.key -- `Key` to AWS Secret Manager object where the client secret for OIDC provider should be stored. The key in the Secret Manager Object has to be named as the given `gloo.authConfig.spec.configs.oauth.client_id`. The value has to be formated as `clientSecret: <secret>`.
+    # externalSecrets.oidc.key -- `Key` to AWS Secret Manager object where the client secret for OIDC provider should be stored. The key in the Secret Manager Object has to be named as the given `gloo.authConfig.spec.configs.oauth.client_id`. The value has to be formatted as `clientSecret: <secret>`.
     # **This definition is exclusive to `gloo.authConfig.spec.configs.oauth.client_secret_ref`. If defined, `gloo.authConfig.spec.configs.oauth.client_secret_ref` is ignored.**
     key:
 
@@ -205,9 +205,9 @@ gloo:
             # gloo.authConfig.spec.configs.tokenValidationPlugin.config.oidcUrl -- `oidcUrl` where the access token can be verified at the IDP
             oidcUrl:
             # gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds -- `allowedClientIds` ids that are allowed by the plugin
-            allowedClientIds: # TODO KK add something here?
+            allowedClientIds:
             # gloo.authConfig.spec.configs.tokenValidationPlugin.config.authLevel -- `authLevel` minimum strong authentication level
-            authLevel: # TODO KK add something here?
+            authLevel:
         clientCredentialsPlugin:
           # gloo.authConfig.spec.configs.clientCredentialsPlugin.enabled -- If `enabled` set to true the machine to machine plugin will be used
           enabled: false
@@ -226,14 +226,14 @@ gloo:
             clientSecretRef:
               # gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientSecretRef.name -- Name of the `Secret`. Gloo expects a k8s secret with the key `oauth` and base64 encoded value `clientSecret: secretValue`
               # **This value is ignored if `externalSecrets.oidc.key` is present.**
-              name: webeam-oidc # TODO KK ?
+              name: webeam-oidc
               # gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientSecretRef.namespace -- Namespace were the `Secret` is located. If empty, release namespace is used.
               # **This value is ignored if `externalSecrets.oidc.key` is present.**
               namespace:
             # gloo.authConfig.spec.configs.clientCredentialsPlugin.config.mode -- The AuthClientCredentials plugin can work in two modes: `GatherCredentials` and `VerifyAccessToken`
             mode:
             # gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds -- `allowedClientIds` ids that are allowed by the plugin
-            allowedClientIds: # TODO KK add something here?
+            allowedClientIds:
         # gloo.authConfig.spec.configs.additionalPlugins -- List of plugins which should be added to the plugin chain. Expected format is a valid yaml with the `pluginAuth`. See [gloo Plugin Auth](https://docs.solo.io/gloo/latest/guides/security/auth/extauth/plugin_auth/#create-an-authconfig-resource) for details
         additionalPlugins:
 
