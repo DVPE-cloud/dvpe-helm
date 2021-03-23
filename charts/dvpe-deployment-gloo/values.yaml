@@ -192,6 +192,8 @@ gloo:
           scopes:
           # gloo.authConfig.spec.configs.oauth.cookie_domain -- The domain to be used for `id_token` and `access_token` cookies set after successful authentication. This has to be some kind of wildcard to support cross origin requests. If unset, the cookies get no domain set.
           cookie_domain:
+          # gloo.authConfig.spec.configs.oauth.strong_authentication_level -- The strong authentication level. Possible values are: 4000, 7000. If not set, there is no strong authentication.
+          strong_authentication_level:
         tokenValidationPlugin:
           # gloo.authConfig.spec.configs.tokenValidationPlugin.enabled -- If `enabled` set to true the backend plugin will be used
           enabled: false
