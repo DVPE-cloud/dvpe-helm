@@ -1,6 +1,6 @@
 # dvpe-deployment-gloo
 
-![Version: 1.3.1](https://img.shields.io/badge/Version-1.3.1-informational?style=flat-square)
+![Version: 1.3.2](https://img.shields.io/badge/Version-1.3.2-informational?style=flat-square)
 
 Helm chart for installing microservices as gloo enabled VirtualService definitions.
 
@@ -220,18 +220,22 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.authConfig.name | string | `"auth-plugin"` | Prefix of the `Auth Config Plugin`. Final name will be <prefix>-<service-name> |
 | gloo.authConfig.namespace | string | `nil` | Namespace where the `Auth Config Plugin` is located. If empty, release namespace is used. |
 | gloo.authConfig.spec.configs.additionalPlugins | string | `nil` | List of plugins which should be added to the plugin chain. Expected format is a valid yaml with the `pluginAuth`. See [gloo Plugin Auth](https://docs.solo.io/gloo/latest/guides/security/auth/extauth/plugin_auth/#create-an-authconfig-resource) for details |
-| gloo.authConfig.spec.configs.tokenValidationPlugin.config.awsRegion | string | `"eu-west-1"` | `awsRegion` where the cache is located |
-| gloo.authConfig.spec.configs.tokenValidationPlugin.config.cacheTableName | string | `"auth-cache-prod"` | `cacheTableName` of the auth cache |
-| gloo.authConfig.spec.configs.tokenValidationPlugin.config.jwksUrl | string | `nil` | `jwksUrl` where the JWKS (JSON Web Key Store) can be retrieved from the IDP |
+| gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.enabled | bool | `true` | If `enabled` is set to true, the cache is used |
+| gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.awsRegion | string | `"eu-west-1"` | `awsRegion` where the cache is located |
+| gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.tableName | string | `"auth-cache-prod"` | `tableName` of the auth cache |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.config.oidcUrl | string | `nil` | `oidcUrl` where the access token can be verified at the IDP |
+| gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds | list | `nil` | `allowedClientIds` ids that are allowed by the plugin |
+| gloo.authConfig.spec.configs.tokenValidationPlugin.config.authLevel | int | `nil` | `authLevel` strong authentication level: nil/4000/7000 |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.enabled | bool | `false` | If `enabled` set to true the backend plugin will be used |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.name | string | `"AuthTokenValidation"` | `Name` of the cache plugin |
-| gloo.authConfig.spec.configs.clientCredentialsPlugin.config.amBaseUrl | string | `nil` | `amBaseUrl` (access management base URL) - where the access token can be verified at the IDP |
-| gloo.authConfig.spec.configs.clientCredentialsPlugin.config.awsRegion | string | `"eu-west-1"` | `awsRegion` where the cache is located |
-| gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cacheTableName | string | `"auth-cache-prod"` | `cacheTableName` in DynamoDB of the auth cache |
+| gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.enabled | bool | `true` | If `enabled` is set to true, the cache is used |
+| gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.awsRegion | string | `"eu-west-1"` | `awsRegion` where the cache is located |
+| gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.ableName | string | `"auth-cache-prod"` | `cacheTableName` in DynamoDB of the auth cache |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientId | string | `nil` | `clientId` of the machine2machine client registered at the IDP |
-| gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientSecret | string | `nil` | `clientSecret` of the machine2machine client registered at the IDP |
+| gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientSecretRef.name | string | `"webeam-oidc"` | Name of the `Secret`. Gloo expects a k8s secret with the key `m2m` and base64 encoded value `clientSecret: secretValue` **This value is ignored if `externalSecrets.oidc.key` is present.** |
+| gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientSecretRef.namespace | string | `nil` | Namespace were the `Secret` is located. If empty, release namespace is used. **This value is ignored if `externalSecrets.oidc.key` is present.** |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.config.mode | string | `nil` | The AuthClientCredentials plugin can work in two modes: `GatherCredentials` and `VerifyAccessToken` |
+| gloo.authConfig.spec.configs.clientCredentialsPlugin.config.allowedClientIds | list | `nil` | `allowedClientIds` ids that are allowed by the plugin |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.enabled | bool | `false` | If `enabled` set to true the machine to machine plugin will be used |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.name | string | `"AuthClientCredentials"` | `Name` of the cache plugin |
 | gloo.authConfig.spec.configs.oauth.client_id | string | `nil` | Registered `ClientID` at the IDP |
@@ -267,3 +271,4 @@ The following table lists the configurable parameters of the chart and its defau
 | service.spec.ports.https.port | string | `"443"` | The https port the service is exposed to in the cluster. |
 | service.spec.ports.https.targetPort | string | `"443"` | The http port the service listens to and to which requests will be sent. |
 | service.spec.type | string | `"ClusterIP"` | Specify what kind of service to deploy. See [Kubernetes Service Spec](https://kubernetes.io/docs/concepts/services-networking/service/) for details |
+.

@@ -200,15 +200,19 @@ gloo:
           # gloo.authConfig.spec.configs.tokenValidationPlugin.name -- `Name` of the cache plugin
           name: AuthTokenValidation
           config:
-            # gloo.authConfig.spec.configs.tokenValidationPlugin.config.cacheTableName -- `cacheTableName` of the auth cache
-            cacheTableName: auth-cache-prod
-            # gloo.authConfig.spec.configs.tokenValidationPlugin.config.awsRegion -- `awsRegion` where the cache is located
-            awsRegion: eu-west-1
+            # gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache -- `cache` of the auth cache
+            cache:
+              # gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.tableName -- if `enabled` is false, no cache is used
+              enabled: true
+              # gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.tableName -- `tableName` of the auth cache
+              tableName: auth-cache-prod
+              # gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.awsRegion -- `awsRegion` where the cache is located
+              awsRegion: eu-west-1
             # gloo.authConfig.spec.configs.tokenValidationPlugin.config.oidcUrl -- `oidcUrl` where the access token can be verified at the IDP
             oidcUrl:
             # gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds -- `allowedClientIds` ids that are allowed by the plugin
             allowedClientIds:
-            # gloo.authConfig.spec.configs.tokenValidationPlugin.config.authLevel -- `authLevel` minimum strong authentication level
+            # gloo.authConfig.spec.configs.tokenValidationPlugin.config.authLevel -- `authLevel` strong authentication level: nil/4000/7000
             authLevel:
         clientCredentialsPlugin:
           # gloo.authConfig.spec.configs.clientCredentialsPlugin.enabled -- If `enabled` set to true the machine to machine plugin will be used
@@ -216,10 +220,14 @@ gloo:
           # gloo.authConfig.spec.configs.clientCredentialsPlugin.name -- `Name` of the cache plugin
           name: AuthClientCredentials
           config:
-            # gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cacheTableName -- `cacheTableName` in DynamoDB of the auth cache
-            cacheTableName: auth-cache-prod
-            # gloo.authConfig.spec.configs.clientCredentialsPlugin.config.awsRegion -- `awsRegion` where the cache is located
-            awsRegion: eu-west-1
+            # gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache -- `cache` of the auth cache
+            cache:
+              # gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.tableName -- if `enabled` is false, no cache is used
+              enabled: true
+              # gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.tableName -- `tableName` of the auth cache
+              tableName: auth-cache-prod
+              # gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.awsRegion -- `awsRegion` where the cache is located
+              awsRegion: eu-west-1
             # gloo.authConfig.spec.configs.clientCredentialsPlugin.config.oidcUrl -- `oidcUrl`  - where the access token can be verified at the IDP
             oidcUrl:
             # gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientId -- `clientId` of the machine2machine client registered at the IDP
@@ -234,7 +242,7 @@ gloo:
               namespace:
             # gloo.authConfig.spec.configs.clientCredentialsPlugin.config.mode -- The AuthClientCredentials plugin can work in two modes: `GatherCredentials` and `VerifyAccessToken`
             mode:
-            # gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds -- `allowedClientIds` ids that are allowed by the plugin
+            # gloo.authConfig.spec.configs.clientCredentialsPlugin.config.allowedClientIds -- `allowedClientIds` ids that are allowed by the plugin
             allowedClientIds:
         # gloo.authConfig.spec.configs.additionalPlugins -- List of plugins which should be added to the plugin chain. Expected format is a valid yaml with the `pluginAuth`. See [gloo Plugin Auth](https://docs.solo.io/gloo/latest/guides/security/auth/extauth/plugin_auth/#create-an-authconfig-resource) for details
         additionalPlugins:
