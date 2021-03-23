@@ -220,23 +220,22 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.authConfig.name | string | `"auth-plugin"` | Prefix of the `Auth Config Plugin`. Final name will be <prefix>-<service-name> |
 | gloo.authConfig.namespace | string | `nil` | Namespace where the `Auth Config Plugin` is located. If empty, release namespace is used. |
 | gloo.authConfig.spec.configs.additionalPlugins | string | `nil` | List of plugins which should be added to the plugin chain. Expected format is a valid yaml with the `pluginAuth`. See [gloo Plugin Auth](https://docs.solo.io/gloo/latest/guides/security/auth/extauth/plugin_auth/#create-an-authconfig-resource) for details |
-| gloo.authConfig.spec.configs.clientCredentialsPlugin.config.allowedClientIds | string | `nil` | `allowedClientIds` ids that are allowed by the plugin |
-| gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache | object | `{"awsRegion":"eu-west-1","enabled":true,"tableName":"auth-cache-prod"}` | `cache` of the auth cache |
-| gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.awsRegion | string | `"eu-west-1"` | `awsRegion` where the cache is located |
-| gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.tableName | string | `"auth-cache-prod"` | `tableName` of the auth cache |
+| gloo.authConfig.spec.configs.clientCredentialsPlugin.config.allowedClientIds | string | `nil` | `allowedClientIds` list of ids that are allowed by the plugin. If not given at all, all clients are allowed. If [], then no client is allowed. If [a, b], then a, b are allowed |
+| gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.awsRegion | string | `nil` | `awsRegion` where the cache is located |
+| gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.enabled | bool | `false` | if `enabled` is false, no cache is used |
+| gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.tableName | string | `nil` | `tableName` of the auth cache |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientId | string | `nil` | `clientId` of the machine2machine client registered at the IDP |
-| gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientSecretRef | object | `{"name":"webeam-oidc","namespace":null}` | `clientSecretRef` of the machine2machine client registered at the IDP |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientSecretRef.name | string | `"webeam-oidc"` | Name of the `Secret`. Gloo expects a k8s secret with the key `oauth` and base64 encoded value `clientSecret: secretValue` **This value is ignored if `externalSecrets.oidc.key` is present.** |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientSecretRef.namespace | string | `nil` | Namespace were the `Secret` is located. If empty, release namespace is used. **This value is ignored if `externalSecrets.oidc.key` is present.** |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.config.mode | string | `nil` | The AuthClientCredentials plugin can work in two modes: `GatherCredentials` and `VerifyAccessToken` |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.config.oidcUrl | string | `nil` | `oidcUrl`  - where the access token can be verified at the IDP |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.enabled | bool | `false` | If `enabled` set to true the machine to machine plugin will be used |
-| gloo.authConfig.spec.configs.clientCredentialsPlugin.name | string | `"AuthClientCredentials"` | `Name` of the cache plugin |
-| gloo.authConfig.spec.configs.codeFlowExtensionPlugin.config.enableAccessTokenForwarding | bool | `false` |  |
-| gloo.authConfig.spec.configs.codeFlowExtensionPlugin.config.enableSubjectForwarding | bool | `false` |  |
-| gloo.authConfig.spec.configs.codeFlowExtensionPlugin.config.oidcUrl | string | `nil` |  |
-| gloo.authConfig.spec.configs.codeFlowExtensionPlugin.enabled | bool | `false` |  |
-| gloo.authConfig.spec.configs.codeFlowExtensionPlugin.name | string | `"AuthCodeFlowExtensionPlugin"` |  |
+| gloo.authConfig.spec.configs.clientCredentialsPlugin.name | string | `"AuthClientCredentials"` | `Name` of the auth client credentials plugin |
+| gloo.authConfig.spec.configs.codeFlowExtensionPlugin.config.enableAccessTokenForwarding | bool | `false` | `enableAccessTokenForwarding` is a flag which tells whether the access_token should be forwarded or not |
+| gloo.authConfig.spec.configs.codeFlowExtensionPlugin.config.enableSubjectForwarding | bool | `false` | `enableSubjectForwarding` is a flag which tells whether the subject (q-number) should be forwarded or not |
+| gloo.authConfig.spec.configs.codeFlowExtensionPlugin.config.oidcUrl | string | `nil` | `oidcUrl`  - where the access token can be verified at the IDP |
+| gloo.authConfig.spec.configs.codeFlowExtensionPlugin.enabled | bool | `false` | If `enabled` set to true the auth code flow extension plugin will be used |
+| gloo.authConfig.spec.configs.codeFlowExtensionPlugin.name | string | `"AuthCodeFlowExtensionPlugin"` | `Name` of the auth code flow extension plugin |
 | gloo.authConfig.spec.configs.oauth.client_id | string | `nil` | Registered `ClientID` at the IDP |
 | gloo.authConfig.spec.configs.oauth.client_secret_ref.name | string | `"webeam-oidc"` | Name of the `Secret`. Gloo expects a k8s secret with the key `oauth` and base64 encoded value `clientSecret: secretValue` **This value is ignored if `externalSecrets.oidc.key` is present.** |
 | gloo.authConfig.spec.configs.oauth.client_secret_ref.namespace | string | `nil` | Namespace were the `Secret` is located. If empty, release namespace is used. **This value is ignored if `externalSecrets.oidc.key` is present.** |
@@ -245,14 +244,14 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.authConfig.spec.configs.oauth.issuer_url | string | `nil` | Issuer URL to the Identity Provider. Gloo adds `.well-known/openid-configuration` to the url automatically |
 | gloo.authConfig.spec.configs.oauth.scopes | string | `nil` | List of OIDC scopes. `openid` is set per default by Gloo and must not be added here |
 | gloo.authConfig.spec.configs.oauth.strong_authentication_level | string | `nil` | The strong authentication level. Possible values are: 4000, 7000. If not set, there is no strong authentication. |
-| gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds | string | `nil` | `allowedClientIds` ids that are allowed by the plugin |
+| gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds | string | `nil` | `allowedClientIds` list of ids that are allowed by the plugin. If not given at all, all clients are allowed. If [], then no client is allowed. If [a, b], then a, b are allowed |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.config.authLevel | string | `nil` | `authLevel` strong authentication level: nil/4000/7000 |
-| gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache | object | `{"awsRegion":"eu-west-1","enabled":true,"tableName":"auth-cache-prod"}` | `cache` of the auth cache |
+| gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache | object | `{"awsRegion":"eu-west-1","enabled":false,"tableName":"auth-cache-prod"}` | `cache` of the auth cache |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.awsRegion | string | `"eu-west-1"` | `awsRegion` where the cache is located |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.tableName | string | `"auth-cache-prod"` | `tableName` of the auth cache |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.config.oidcUrl | string | `nil` | `oidcUrl` where the access token can be verified at the IDP |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.enabled | bool | `false` | If `enabled` set to true the backend plugin will be used |
-| gloo.authConfig.spec.configs.tokenValidationPlugin.name | string | `"AuthTokenValidation"` | `Name` of the cache plugin |
+| gloo.authConfig.spec.configs.tokenValidationPlugin.name | string | `"AuthTokenValidation"` | `Name` of the auth token validation plugin |
 | gloo.enabled | bool | `true` | When set to true only the application's deployment resources will be installed with this chart. Can be used to explicitly avoid deploying a VirtualService resource. |
 | gloo.namespace | string | `"gloo-system"` | `Namespace` where all Gloo resources are deployed. |
 | gloo.upstream.fds | bool | `false` | Whitelist this upstream for `FDS`. [Gloo Function Discovery Mode] (https://docs.solo.io/gloo-edge/latest/installation/advanced_configuration/fds_mode/) |
