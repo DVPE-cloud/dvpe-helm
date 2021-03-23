@@ -62,9 +62,9 @@ spec:
           CacheTableName: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cacheTableName }}
           AwsRegion:  {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.awsRegion }}
           ClientId: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientId }}
-          ClientSecretRef: # TODO KK check with Alex
+          ClientSecretRef:
             {{- if .Values.externalSecrets.oidc.key }}
-            name: {{ $serviceName }}-oidc-secrets
+            name: {{ $serviceName }}-oidc-m2m-secrets
             namespace: {{ .Release.Namespace }}
             {{- else }}
             name: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientSecretRef.name }}
