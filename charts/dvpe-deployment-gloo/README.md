@@ -228,6 +228,7 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.authConfig.spec.configs.tokenValidationPlugin.config.authLevel | int | `nil` | `authLevel` strong authentication level: nil/4000/7000 |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.enabled | bool | `false` | If `enabled` set to true the backend plugin will be used |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.name | string | `"AuthTokenValidation"` | `Name` of the cache plugin |
+| gloo.authConfig.spec.configs.clientCredentialsPlugin.config.oidcUrl | string | `nil` | `oidcUrl` where the access token can be verified at the IDP |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.enabled | bool | `true` | If `enabled` is set to true, the cache is used |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.awsRegion | string | `"eu-west-1"` | `awsRegion` where the cache is located |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.ableName | string | `"auth-cache-prod"` | `cacheTableName` in DynamoDB of the auth cache |
@@ -238,6 +239,10 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.config.allowedClientIds | list | `nil` | `allowedClientIds` ids that are allowed by the plugin |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.enabled | bool | `false` | If `enabled` set to true the machine to machine plugin will be used |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.name | string | `"AuthClientCredentials"` | `Name` of the cache plugin |
+| gloo.authConfig.spec.configs.codeFlowExtensionPlugin.name | string | `"AuthCodeFlowExtension"` | `Name` of the cache plugin |
+| gloo.authConfig.spec.configs.codeFlowExtensionPlugin.config.oidcUrl | string | `nil` | `oidcUrl` where the access token can be verified at the IDP |
+| gloo.authConfig.spec.configs.codeFlowExtensionPlugin.config.enableAccessTokenForwarding | bool | `false` | `enableAccessTokenForwarding` is a flag which tells whether the access_token should be forwarded or not |
+| gloo.authConfig.spec.configs.codeFlowExtensionPlugin.config.enableSubjectForwarding | bool | `false` | `enableSubjectForwarding` is a flag which tells whether the subject (q-number) should be forwarded or not |
 | gloo.authConfig.spec.configs.oauth.client_id | string | `nil` | Registered `ClientID` at the IDP |
 | gloo.authConfig.spec.configs.oauth.client_secret_ref.name | string | `"webeam-oidc"` | Name of the `Secret`. Gloo expects a k8s secret with the key `oauth` and base64 encoded value `clientSecret: secretValue` **This value is ignored if `externalSecrets.oidc.key` is present.** |
 | gloo.authConfig.spec.configs.oauth.client_secret_ref.namespace | string | `nil` | Namespace were the `Secret` is located. If empty, release namespace is used. **This value is ignored if `externalSecrets.oidc.key` is present.** |

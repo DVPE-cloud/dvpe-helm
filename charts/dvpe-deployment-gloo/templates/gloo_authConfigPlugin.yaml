@@ -58,7 +58,6 @@ spec:
           StrongAuthenticationLevel: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.authLevel }}
           {{- end }}
     {{- end }}
-    {{- end }}
     {{- if .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.enabled }}
     - pluginAuth:
         name: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.name }}
@@ -84,6 +83,16 @@ spec:
           {{- if .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.allowedClientIds }}
           AllowedClientIds: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.allowedClientIds }}
           {{- end }}
+      {{- end }}
+      {{- if .Values.gloo.authConfig.spec.configs.codeFlowExtensionPlugin.enabled }}
+      - pluginAuth:
+          name: {{ .Values.gloo.authConfig.spec.configs.codeFlowExtensionPlugin.name }}
+          pluginFileName: {{ .Values.gloo.authConfig.spec.configs.codeFlowExtensionPlugin.name }}.so
+          exportedSymbolName: Plugin
+          config:
+            OpenIdConfigurationUrl: {{ .Values.gloo.authConfig.spec.configs.codeFlowExtensionPlugin.config.oidcUrl }}
+            EnableAccessTokenForwarding: {{ .Values.gloo.authConfig.spec.configs.codeFlowExtensionPlugin.config.enableAccessTokenForwarding }}
+            EnableSubjectForwarding: {{ .Values.gloo.authConfig.spec.configs.codeFlowExtensionPlugin.config.enableSubjectForwarding }}
       {{- end }}
       {{- if .Values.gloo.authConfig.spec.configs.additionalPlugins }}
     {{- toYaml .Values.gloo.authConfig.spec.configs.additionalPlugins | nindent 4 }}
