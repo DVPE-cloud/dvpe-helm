@@ -220,7 +220,7 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.authConfig.name | string | `"auth-plugin"` | Prefix of the `Auth Config Plugin`. Final name will be <prefix>-<service-name> |
 | gloo.authConfig.namespace | string | `nil` | Namespace where the `Auth Config Plugin` is located. If empty, release namespace is used. |
 | gloo.authConfig.spec.configs.additionalPlugins | string | `nil` | List of plugins which should be added to the plugin chain. Expected format is a valid yaml with the `pluginAuth`. See [gloo Plugin Auth](https://docs.solo.io/gloo/latest/guides/security/auth/extauth/plugin_auth/#create-an-authconfig-resource) for details |
-| gloo.authConfig.spec.configs.clientCredentialsPlugin.config.allowedClientIds | string | `nil` | `allowedClientIds` list of ids that are allowed by the plugin. If not given at all, all clients are allowed. If [], then no client is allowed. If [a, b], then a, b are allowed |
+| gloo.authConfig.spec.configs.clientCredentialsPlugin.config.allowedClientIds | string | `nil` | `allowedClientIds` **list (NOT string!)** of ids that are allowed by the plugin. If not given at all, all clients are allowed. If [], then no client is allowed. If [a, b], then a, b are allowed |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.awsRegion | string | `nil` | `awsRegion` where the cache is located |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.enabled | bool | `false` | if `enabled` is false, no cache is used |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.tableName | string | `nil` | `tableName` of the auth cache |
@@ -244,10 +244,10 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.authConfig.spec.configs.oauth.issuer_url | string | `nil` | Issuer URL to the Identity Provider. Gloo adds `.well-known/openid-configuration` to the url automatically |
 | gloo.authConfig.spec.configs.oauth.scopes | string | `nil` | List of OIDC scopes. `openid` is set per default by Gloo and must not be added here |
 | gloo.authConfig.spec.configs.oauth.strong_authentication_level | string | `nil` | The strong authentication level. Possible values are: 4000, 7000. If not set, there is no strong authentication. |
-| gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds | string | `nil` | `allowedClientIds` list of ids that are allowed by the plugin. If not given at all, all clients are allowed. If [], then no client is allowed. If [a, b], then a, b are allowed |
+| gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds | string | `nil` | `allowedClientIds` **list (NOT string!)** of ids that are allowed by the plugin. If not given at all, all clients are allowed. If [], then no client is allowed. If [a, b], then a, b are allowed |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.config.authLevel | string | `nil` | `authLevel` strong authentication level: nil/4000/7000 |
-| gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache | object | `{"awsRegion":"eu-west-1","enabled":false,"tableName":"auth-cache-prod"}` | `cache` of the auth cache |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.awsRegion | string | `"eu-west-1"` | `awsRegion` where the cache is located |
+| gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.enabled | bool | `false` | if `enabled` is false, no cache is used |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.tableName | string | `"auth-cache-prod"` | `tableName` of the auth cache |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.config.oidcUrl | string | `nil` | `oidcUrl` where the access token can be verified at the IDP |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.enabled | bool | `false` | If `enabled` set to true the backend plugin will be used |
