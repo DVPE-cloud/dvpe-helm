@@ -248,6 +248,11 @@ datadog:
   source:
   # datadog.team -- Label in Datadog for the responsible team
   team:
+  # datadog.env -- Label in Datadog for the target environment - e.g. test, int, prod or an abbreviated k8s cluster name.
+  env: none
+  # datadog.version -- Label in Datadog for the service version. If undefined, the value of `deployment.spec.image.tag` is used.
+  # This value should not be set by ordinary deployments. It is intended for special cases (e.g. CI triggered deployments).
+  version:
 
 # -------------------------------------#
 # Istio value section                  #

@@ -1,6 +1,6 @@
 # dvpe-deployment-gloo
 
-![Version: 1.3.0](https://img.shields.io/badge/Version-1.3.0-informational?style=flat-square)
+![Version: 1.3.1](https://img.shields.io/badge/Version-1.3.1-informational?style=flat-square)
 
 Helm chart for installing microservices as gloo enabled VirtualService definitions.
 
@@ -191,8 +191,10 @@ The following table lists the configurable parameters of the chart and its defau
 | autoscaling.metrics.resource.cpu.targetAverageUtilization | int | `80` | Defines cpu utilization threshold in % for the HPA to scale up new pods. |
 | autoscaling.minReplicas | int | `1` | Defines `minReplicas` of Pods scaled automatically by Horizontal Pod Autoscaler (HPA). |
 | datadog.enabled | bool | `true` | When set to true Datadog is enabled and all logs, metrics and traces will be sent to Datadog. |
+| datadog.env | string | `"none"` | Label in Datadog for the target environment - e.g. test, int, prod or an abbreviated k8s cluster name. |
 | datadog.source | string | `nil` | Defines the source which creates log outputs. Source defines the log format and triggers Datadog parser pipelines |
 | datadog.team | string | `nil` | Label in Datadog for the responsible team |
+| datadog.version | string | `nil` | Label in Datadog for the service version. If undefined, the value of `deployment.spec.image.tag` is used. This value should not be set by ordinary deployments. It is intended for special cases (e.g. CI triggered deployments). |
 | deployment.podAnnotations | object | `{}` | Object of additional `podAnnotations`. |
 | deployment.spec.containers.readinessProbe.failureThreshold | int | `3` | Number of times to retry the probe before giving up. |
 | deployment.spec.containers.readinessProbe.httpGet.path | string | `"/"` | Service's http path on which to execute a readinessProbe |

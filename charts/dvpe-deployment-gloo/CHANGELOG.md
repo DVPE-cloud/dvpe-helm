@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Extended CORS configuration support by adding  `gloo.virtualservice.spec.virtualHost.cors.allowSubdomain` value.
 
+## [1.3.1] - 2021-03-08
+
+### Added
+
+* Added tags `env`, `service` and `version` for DataDog according to [Unified Service Tagging](https://docs.datadoghq.com/getting_started/tagging/unified_service_tagging?tab=kubernetes).
+
 ## [1.3.0] - 2021-02-19
 
 ### Breaking Changes
@@ -99,4 +105,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [0.0.2]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-0.0.2/charts/dvpe-deployment-gloo
 [1.0.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-1.0.0/charts/dvpe-deployment-gloo
 [1.1.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-1.1.0/charts/dvpe-deployment-gloo
+[1.3.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-1.3.0/charts/dvpe-deployment-gloo
+[1.3.1]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-1.3.1/charts/dvpe-deployment-gloo
 
