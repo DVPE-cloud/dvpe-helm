@@ -1,6 +1,6 @@
 # dvpe-deployment-gloo
 
-![Version: 1.3.2](https://img.shields.io/badge/Version-1.3.2-informational?style=flat-square)
+![Version: 1.3.1](https://img.shields.io/badge/Version-1.3.1-informational?style=flat-square)
 
 Helm chart for installing microservices as gloo enabled VirtualService definitions.
 
@@ -256,7 +256,7 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.namespace | string | `"gloo-system"` | `Namespace` where all Gloo resources are deployed. |
 | gloo.upstream.fds | bool | `false` | Whitelist this upstream for `FDS`. [Gloo Function Discovery Mode] (https://docs.solo.io/gloo-edge/latest/installation/advanced_configuration/fds_mode/) |
 | gloo.upstream.namespace | string | `"gloo-system"` | `Namespace` where gloo upstream is deployed. |
-| gloo.virtualservice.spec.sslConfig.secretRef.name | string | `"gloo-public-tls"` | Name of the secret containing the certificate information for this deployment. |
+| gloo.virtualservice.spec.sslConfig.secretRef.name | string | `"gloo-public-tlsC"` | Name of the secret containing the certificate information for this deployment. |
 | gloo.virtualservice.spec.sslConfig.secretRef.namespace | string | `nil` | Namespace where the secret is located. If empty, gloo namespace is used. |
 | gloo.virtualservice.spec.virtualHost.cors.allowHeaders | list | `["origin"]` | Specifies the content for the `access-control-allow-headers` header. In general this should not be changed. |
 | gloo.virtualservice.spec.virtualHost.cors.allowMethods | list | `["GET","POST","PUT","DELETE"]` | Specifies the HTTP methods to allow CORS for. |

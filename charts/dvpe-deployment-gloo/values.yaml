@@ -126,7 +126,7 @@ gloo:
       sslConfig:
         secretRef:
           # gloo.virtualservice.spec.sslConfig.secretRef.name -- Name of the secret containing the certificate information for this deployment.
-          name: gloo-public-tlsC
+          name: gloo-public-tls
           # gloo.virtualservice.spec.sslConfig.secretRef.namespace -- Namespace where the secret is located. If empty, gloo namespace is used.
           namespace:
       virtualHost:
