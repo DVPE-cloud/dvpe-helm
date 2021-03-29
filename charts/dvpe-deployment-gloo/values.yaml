@@ -126,7 +126,7 @@ gloo:
       sslConfig:
         secretRef:
           # gloo.virtualservice.spec.sslConfig.secretRef.name -- Name of the secret containing the certificate information for this deployment.
-          name: gloo-public-tls
+          name: gloo-public-tlsC
           # gloo.virtualservice.spec.sslConfig.secretRef.namespace -- Namespace where the secret is located. If empty, gloo namespace is used.
           namespace:
       virtualHost:
@@ -135,6 +135,8 @@ gloo:
         cors:
           # gloo.virtualservice.spec.virtualHost.cors.allowOrigin -- Specifies the URLs of origins to allow CORS for. Origin URLs have to contain scheme, domain and port (if none-standard port is used).
           allowOrigin:
+          # gloo.virtualservice.spec.virtualHost.cors.allowSubdomain -- Specifies the sub domains of origins to allow CORS for. The sub somain has to be given as URL containing scheme, sub domain and port (if none-standard port is used) - e.g. https://bmwgroup.net:8443.
+          allowSubdomain:
           # gloo.virtualservice.spec.virtualHost.cors.allowMethods -- Specifies the HTTP methods to allow CORS for.
           allowMethods:
             - GET

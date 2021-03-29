@@ -19,7 +19,7 @@ spec:
   virtualHost:
     domains:
       - {{ .Values.gloo.virtualservice.spec.virtualHost.domains }}
-    {{- if .Values.gloo.virtualservice.spec.virtualHost.cors.allowOrigin }}
+    {{- if or .Values.gloo.virtualservice.spec.virtualHost.cors.allowOrigin .Values.gloo.virtualservice.spec.virtualHost.cors.allowSubdomain }}
     options:
       cors:
         allowCredentials: true
@@ -36,6 +36,9 @@ spec:
           - {{ . | quote }}
           {{- end }}
         allowOriginRegex:
+          {{- range .Values.gloo.virtualservice.spec.virtualHost.cors.allowSubdomain }}
+          - {{ . | replace "." "[.]" | replace "://" "://([a-zA-Z0-9]+[.-])*[a-zA-Z0-9]+[.]" | quote }}
+          {{- end }}
         exposeHeaders:
           {{- range .Values.gloo.virtualservice.spec.virtualHost.cors.exposeHeaders }}
           - {{ . }}
