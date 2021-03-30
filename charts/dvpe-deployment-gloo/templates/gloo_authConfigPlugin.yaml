@@ -18,24 +18,24 @@ spec:
           {{- end }}
           app_url: "https://{{ .Values.gloo.virtualservice.spec.virtualHost.domains }}"
           callback_path: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath }}
-          client_id: {{ .Values.gloo.authConfig.spec.configs.oauth.client_id }}
+          client_id: {{ .Values.gloo.authConfig.spec.configs.oauth.clientId }}
           client_secret_ref:
             {{- if .Values.externalSecrets.oauth2.key }}
             name: {{ $serviceName }}-oidc-secrets
             namespace: {{ .Release.Namespace }}
             {{- else }}
-            name: {{ .Values.gloo.authConfig.spec.configs.oauth.client_secret_ref.name }}
-            namespace: {{default .Release.Namespace .Values.gloo.authConfig.spec.configs.oauth.client_secret_ref.namespace }}
+            name: {{ .Values.gloo.authConfig.spec.configs.oauth.clientSecretRef.name }}
+            namespace: {{default .Release.Namespace .Values.gloo.authConfig.spec.configs.oauth.clientSecretRef.namespace }}
             {{- end }}
-          issuer_url: {{ .Values.gloo.authConfig.spec.configs.oauth.issuer_url }}
+          issuer_url: {{ .Values.gloo.authConfig.spec.configs.oauth.issuerUrl }}
           scopes:
           {{- if .Values.gloo.authConfig.spec.configs.oauth.scopes }}
           {{- toYaml .Values.gloo.authConfig.spec.configs.oauth.scopes | nindent 8 }}
           {{- end }}
           session:
             cookieOptions:
-              {{- if .Values.gloo.authConfig.spec.configs.oauth.cookie_domain }}
-              domain: {{ .Values.gloo.authConfig.spec.configs.oauth.cookie_domain | quote }}
+              {{- if .Values.gloo.authConfig.spec.configs.oauth.cookieDomain }}
+              domain: {{ .Values.gloo.authConfig.spec.configs.oauth.cookieDomain | quote }}
               {{- end }}
               maxAge: 0
     {{- end }}
