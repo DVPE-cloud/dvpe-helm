@@ -215,7 +215,7 @@ The following table lists the configurable parameters of the chart and its defau
 | deployment.spec.resources.requests.cpu | string | `"150m"` | Fractional amount of CPU allowed for a Pod. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage. |
 | deployment.spec.resources.requests.memory | string | `"200M"` | Amount of memory reserved for a Pod. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage. |
 | deployment.spec.serviceAccountName | string | `nil` | The ServiceAccount this service will be associated with. If empty, `serviceAccountName` will be `<namespace>-sa` |
-| externalSecrets.oidc.key | string | `nil` | `Key` to AWS Secret Manager object where the client secret for OIDC provider should be stored. The key in the Secret Manager Object has to be named as the given `gloo.authConfig.spec.configs.oauth.client_id`. The value has to be formatted as `clientSecret: <secret>`. **This definition is exclusive to `gloo.authConfig.spec.configs.oauth.client_secret_ref`. If defined, `gloo.authConfig.spec.configs.oauth.client_secret_ref` is ignored.** |
+| externalSecrets.oauth2.key | string | `nil` | `Key` to AWS Secret Manager object where the client secret for OAuth2 provider should be stored. The key in the Secret Manager Object has to be named as the given `gloo.authConfig.spec.configs.oauth.client_id`. The value has to be formatted as `clientSecret: <secret>`. **This definition is exclusive to `gloo.authConfig.spec.configs.oauth.client_secret_ref`. If defined, `gloo.authConfig.spec.configs.oauth.client_secret_ref` is ignored.** |
 | externalSecrets.service.key | string | `nil` | `Key` to AWS Secret Manager object where all sensitive application data should be stored. Each key in the Secret Manager Object should be named like your needed environment variable |
 | gloo.authConfig.name | string | `"auth-plugin"` | Prefix of the `Auth Config Plugin`. Final name will be <prefix>-<service-name> |
 | gloo.authConfig.namespace | string | `nil` | Namespace where the `Auth Config Plugin` is located. If empty, release namespace is used. |
@@ -227,8 +227,8 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientId | string | `nil` | `clientId` of the machine2machine client registered at the IDP |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientSecretRef.name | string | `"webeam-oidc"` | Name of the `Secret`. Gloo expects a k8s secret with the key `oauth` and base64 encoded value `clientSecret: secretValue` **This value is ignored if `externalSecrets.oidc.key` is present.** |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientSecretRef.namespace | string | `nil` | Namespace were the `Secret` is located. If empty, release namespace is used. **This value is ignored if `externalSecrets.oidc.key` is present.** |
+| gloo.authConfig.spec.configs.clientCredentialsPlugin.config.idpUrl | string | `nil` | `idpUrl`  - where the access token can be verified at the IDP |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.config.mode | string | `nil` | The AuthClientCredentials plugin can work in two modes: `GatherCredentials` and `VerifyAccessToken` |
-| gloo.authConfig.spec.configs.clientCredentialsPlugin.config.oidcUrl | string | `nil` | `oidcUrl`  - where the access token can be verified at the IDP |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.enabled | bool | `false` | If `enabled` set to true the machine to machine plugin will be used |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.name | string | `"AuthClientCredentials"` | `Name` of the auth client credentials plugin |
 | gloo.authConfig.spec.configs.codeFlowExtensionPlugin.config.enableAccessTokenForwarding | bool | `false` | `enableAccessTokenForwarding` is a flag which tells whether the access_token should be forwarded or not |
@@ -243,13 +243,13 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.authConfig.spec.configs.oauth.enabled | bool | `false` | If `enabled` set to true the oauth plugin from Gloo will be used |
 | gloo.authConfig.spec.configs.oauth.issuer_url | string | `nil` | Issuer URL to the Identity Provider. Gloo adds `.well-known/openid-configuration` to the url automatically |
 | gloo.authConfig.spec.configs.oauth.scopes | string | `nil` | List of OIDC scopes. `openid` is set per default by Gloo and must not be added here |
-| gloo.authConfig.spec.configs.oauth.strong_authentication_level | string | `nil` | The strong authentication level. Possible values are: 4000, 7000. If not set, there is no strong authentication. |
+| gloo.authConfig.spec.configs.oauth.strongAuthenticationLevel | string | `nil` | The strong authentication level. Possible values are: 4000, 7000. If not set, there is no strong authentication. |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds | string | `nil` | `allowedClientIds` **list (NOT string!)** of ids that are allowed by the plugin. If not given at all, all clients are allowed. If [], then no client is allowed. If [a, b], then a, b are allowed |
-| gloo.authConfig.spec.configs.tokenValidationPlugin.config.authLevel | string | `nil` | `authLevel` strong authentication level: nil/4000/7000 |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.awsRegion | string | `"eu-west-1"` | `awsRegion` where the cache is located |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.enabled | bool | `false` | if `enabled` is false, no cache is used |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.tableName | string | `"auth-cache-prod"` | `tableName` of the auth cache |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.config.oidcUrl | string | `nil` | `oidcUrl` where the access token can be verified at the IDP |
+| gloo.authConfig.spec.configs.tokenValidationPlugin.config.strongAuthenticationLevel | string | `nil` | The strong authentication level. Possible values are: 4000, 7000. If not set, there is no strong authentication. |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.enabled | bool | `false` | If `enabled` set to true the backend plugin will be used |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.name | string | `"AuthTokenValidation"` | `Name` of the auth token validation plugin |
 | gloo.enabled | bool | `true` | When set to true only the application's deployment resources will be installed with this chart. Can be used to explicitly avoid deploying a VirtualService resource. |
