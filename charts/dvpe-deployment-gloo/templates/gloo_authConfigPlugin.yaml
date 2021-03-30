@@ -72,7 +72,7 @@ spec:
           clientId: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientId }}
           clientSecretRef:
             {{- if .Values.externalSecrets.oauth2.key }}
-            name: {{ $serviceName }}-oauth2-clientCredentials-secrets
+            name: {{ $serviceName }}-oauth2-client-credentials-secrets
             namespace: {{ .Release.Namespace }}
             {{- else }}
             name: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientSecretRef.name }}
