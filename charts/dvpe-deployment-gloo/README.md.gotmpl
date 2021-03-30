@@ -88,7 +88,7 @@ To use this feature, please sepecify `externalSecrets.oidc.key` as the name of t
       ...
     }
     ```
-  with `<client_id>` equals to the value (UUID) given as `gloo.authConfig.spec.configs.oauth.client_id`.
+  with `<client_id>` equals to the value (UUID) given as `gloo.authConfig.spec.configs.oauth.clientId`.
   The format allows multiple client IDs and secrets (e.g. for different services in a common business domain) to be defined within a single secrets manager secret.
   >**Note:**\
   >The name of the `<webeam-oidc>` secret gets changed to `<service-name>-oidc-secrets` to distinguish the secrets dedicated to different services deployed to

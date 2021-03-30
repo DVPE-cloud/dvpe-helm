@@ -7,9 +7,9 @@ externalSecrets:
   service:
     # externalSecrets.service.key -- `Key` to AWS Secret Manager object where all sensitive application data should be stored. Each key in the Secret Manager Object should be named like your needed environment variable
     key:
-  oidc:
-    # externalSecrets.oidc.key -- `Key` to AWS Secret Manager object where the client secret for OIDC provider should be stored. The key in the Secret Manager Object has to be named as the given `gloo.authConfig.spec.configs.oauth.client_id`. The value has to be formated as `clientSecret: <secret>`.
-    # **This definition is exclusive to `gloo.authConfig.spec.configs.oauth.client_secret_ref`. If defined, `gloo.authConfig.spec.configs.oauth.client_secret_ref` is ignored.**
+  oauth2:
+    # externalSecrets.oauth2.key -- `Key` to AWS Secret Manager object where the client secret for OAuth2 provider should be stored. The key in the Secret Manager Object has to be named as the given `gloo.authConfig.spec.configs.oauth2.clientId`. The value has to be formatted as `clientSecret: <secret>`.
+    # **This definition is exclusive to `gloo.authConfig.spec.configs.oauth.clientSecretRef`. If defined, `gloo.authConfig.spec.configs.oauth.clientSecretRef` is ignored.**
     key:
 
 # -------------------------------#
@@ -179,53 +179,83 @@ gloo:
         oauth:
           # gloo.authConfig.spec.configs.oauth.enabled -- If `enabled` set to true the oauth plugin from Gloo will be used
           enabled: false
-          # gloo.authConfig.spec.configs.oauth.client_id -- Registered `ClientID` at the IDP
-          client_id:
-          client_secret_ref:
-            # gloo.authConfig.spec.configs.oauth.client_secret_ref.name -- Name of the `Secret`. Gloo expects a k8s secret with the key `oauth` and base64 encoded value `clientSecret: secretValue`
+          # gloo.authConfig.spec.configs.oauth.clientId -- Registered `ClientID` at the IDP
+          clientId:
+          clientSecretRef:
+            # gloo.authConfig.spec.configs.oauth.clientSecretRef.name -- Name of the `Secret`. Gloo expects a k8s secret with the key `oauth` and base64 encoded value `clientSecret: secretValue`
             # **This value is ignored if `externalSecrets.oidc.key` is present.**
             name: webeam-oidc
-            # gloo.authConfig.spec.configs.oauth.client_secret_ref.namespace -- Namespace were the `Secret` is located. If empty, release namespace is used.
+            # gloo.authConfig.spec.configs.oauth.clientSecretRef.namespace -- Namespace were the `Secret` is located. If empty, release namespace is used.
             # **This value is ignored if `externalSecrets.oidc.key` is present.**
             namespace:
-          # gloo.authConfig.spec.configs.oauth.issuer_url -- Issuer URL to the Identity Provider. Gloo adds `.well-known/openid-configuration` to the url automatically
-          issuer_url:
+          # gloo.authConfig.spec.configs.oauth.issuerUrl -- Issuer URL to the Identity Provider. Gloo adds `.well-known/openid-configuration` to the url automatically
+          issuerUrl:
           # gloo.authConfig.spec.configs.oauth.scopes -- List of OIDC scopes. `openid` is set per default by Gloo and must not be added here
           scopes:
-          # gloo.authConfig.spec.configs.oauth.cookie_domain -- The domain to be used for `id_token` and `access_token` cookies set after successful authentication. This has to be some kind of wildcard to support cross origin requests. If unset, the cookies get no domain set.
-          cookie_domain:
-        backendPlugin:
-          # gloo.authConfig.spec.configs.backendPlugin.enabled -- If `enabled` set to true the backend plugin will be used
+          # gloo.authConfig.spec.configs.oauth.cookieDomain -- The domain to be used for `id_token` and `access_token` cookies set after successful authentication. This has to be some kind of wildcard to support cross origin requests. If unset, the cookies get no domain set.
+          cookieDomain:
+          # gloo.authConfig.spec.configs.oauth.strongAuthenticationLevel -- The strong authentication level. Possible values are: 4000, 7000. If not set, there is no strong authentication.
+          strongAuthenticationLevel:
+        tokenValidationPlugin:
+          # gloo.authConfig.spec.configs.tokenValidationPlugin.enabled -- If `enabled` set to true the backend plugin will be used
           enabled: false
-          # gloo.authConfig.spec.configs.backendPlugin.name -- `Name` of the cache plugin
-          name: AuthFlowBackend
+          # gloo.authConfig.spec.configs.tokenValidationPlugin.name -- `Name` of the auth token validation plugin
+          name: AuthTokenValidation
           config:
-            # gloo.authConfig.spec.configs.backendPlugin.config.cacheTableName -- `cacheTableName` of the auth cache
-            cacheTableName: auth-cache-prod
-            # gloo.authConfig.spec.configs.backendPlugin.config.awsRegion -- `awsRegion` where the cache is located
-            awsRegion: eu-west-1
-            # gloo.authConfig.spec.configs.backendPlugin.config.oidcUrl -- `oidcUrl` where the access token can be verified at the IDP
+            cache:
+              # gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.enabled -- if `enabled` is false, no cache is used
+              enabled: false
+              # gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.tableName -- `tableName` of the auth cache
+              tableName: auth-cache-prod
+              # gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.awsRegion -- `awsRegion` where the cache is located
+              awsRegion: eu-west-1
+            # gloo.authConfig.spec.configs.tokenValidationPlugin.config.oidcUrl -- `oidcUrl` where the access token can be verified at the IDP
             oidcUrl:
-            # gloo.authConfig.spec.configs.backendPlugin.config.jwksUrl -- `jwksUrl` where the JWKS (JSON Web Key Store) can be retrieved from the IDP
-            jwksUrl:
-        m2mPlugin:
-          # gloo.authConfig.spec.configs.m2mPlugin.enabled -- If `enabled` set to true the machine to machine plugin will be used
+            # gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds -- `allowedClientIds` **list (NOT string!)** of ids that are allowed by the plugin. If not given at all, all clients are allowed. If [], then no client is allowed. If [a, b], then a, b are allowed
+            allowedClientIds:
+            # gloo.authConfig.spec.configs.tokenValidationPlugin.config.strongAuthenticationLevel -- The strong authentication level. Possible values are: 4000, 7000. If not set, there is no strong authentication.
+            strongAuthenticationLevel:
+        clientCredentialsPlugin:
+          # gloo.authConfig.spec.configs.clientCredentialsPlugin.enabled -- If `enabled` set to true the machine to machine plugin will be used
           enabled: false
-          # gloo.authConfig.spec.configs.m2mPlugin.name -- `Name` of the cache plugin
-          name: AuthM2m
+          # gloo.authConfig.spec.configs.clientCredentialsPlugin.name -- `Name` of the auth client credentials plugin
+          name: AuthClientCredentials
           config:
-            # gloo.authConfig.spec.configs.m2mPlugin.config.cacheTableName -- `cacheTableName` in DynamoDB of the auth cache
-            cacheTableName: auth-cache-prod
-            # gloo.authConfig.spec.configs.m2mPlugin.config.awsRegion -- `awsRegion` where the cache is located
-            awsRegion: eu-west-1
-            # gloo.authConfig.spec.configs.m2mPlugin.config.amBaseUrl -- `amBaseUrl` (access management base URL) - where the access token can be verified at the IDP
-            amBaseUrl:
-            # gloo.authConfig.spec.configs.m2mPlugin.config.clientId -- `clientId` of the machine2machine client registered at the IDP
+            # `cache` of the auth cache
+            cache:
+              # gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.enabled -- if `enabled` is false, no cache is used
+              enabled: false
+              # gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.tableName -- `tableName` of the auth cache
+              tableName:
+              # gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.awsRegion -- `awsRegion` where the cache is located
+              awsRegion:
+            # gloo.authConfig.spec.configs.clientCredentialsPlugin.config.oidcUrl -- `oidcUrl`  - where the access token can be verified at the IDP
+            oidcUrl:
+            # gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientId -- `clientId` of the machine2machine client registered at the IDP
             clientId:
-            # gloo.authConfig.spec.configs.m2mPlugin.config.clientSecret -- `clientSecret` of the machine2machine client registered at the IDP
-            clientSecret:
-            # gloo.authConfig.spec.configs.m2mPlugin.config.mode -- The AuthM2m plugin can work in two modes: `GatherCredentials` and `VerifyAccessToken`
+            clientSecretRef:
+              # gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientSecretRef.name -- Name of the `Secret`. Gloo expects a k8s secret with the key `oauth` and base64 encoded value `clientSecret: secretValue`
+              # **This value is ignored if `externalSecrets.oidc.key` is present.**
+              name: webeam-oidc
+              # gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientSecretRef.namespace -- Namespace were the `Secret` is located. If empty, release namespace is used.
+              # **This value is ignored if `externalSecrets.oidc.key` is present.**
+              namespace:
+            # gloo.authConfig.spec.configs.clientCredentialsPlugin.config.mode -- The AuthClientCredentials plugin can work in two modes: `GatherCredentials` and `VerifyAccessToken`
             mode:
+            # gloo.authConfig.spec.configs.clientCredentialsPlugin.config.allowedClientIds -- `allowedClientIds` **list (NOT string!)** of ids that are allowed by the plugin. If not given at all, all clients are allowed. If [], then no client is allowed. If [a, b], then a, b are allowed
+            allowedClientIds:
+        authExtensionPlugin:
+          # gloo.authConfig.spec.configs.authExtensionPlugin.enabled -- If `enabled` set to true the auth code flow extension plugin will be used
+          enabled: false
+          # gloo.authConfig.spec.configs.authExtensionPlugin.name -- `Name` of the auth code flow extension plugin
+          name: AuthExtension
+          config:
+            # gloo.authConfig.spec.configs.authExtensionPlugin.config.oidcUrl -- `oidcUrl`  - where the access token can be verified at the IDP
+            oidcUrl:
+            # gloo.authConfig.spec.configs.authExtensionPlugin.config.enableAccessTokenForwarding -- `enableAccessTokenForwarding` is a flag which tells whether the access_token should be forwarded or not
+            enableAccessTokenForwarding: false
+            # gloo.authConfig.spec.configs.authExtensionPlugin.config.enableSubjectForwarding -- `enableSubjectForwarding` is a flag which tells whether the subject (q-number) should be forwarded or not
+            enableSubjectForwarding: false
         # gloo.authConfig.spec.configs.additionalPlugins -- List of plugins which should be added to the plugin chain. Expected format is a valid yaml with the `pluginAuth`. See [gloo Plugin Auth](https://docs.solo.io/gloo/latest/guides/security/auth/extauth/plugin_auth/#create-an-authconfig-resource) for details
         additionalPlugins:
 
