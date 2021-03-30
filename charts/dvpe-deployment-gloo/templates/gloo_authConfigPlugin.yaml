@@ -83,18 +83,18 @@ spec:
           {{- if .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.allowedClientIds }}
           allowedClientIds: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.allowedClientIds }}
           {{- end }}
-      {{- end }}
-      {{- if .Values.gloo.authConfig.spec.configs.authExtensionPlugin.enabled }}
-      - pluginAuth:
-          name: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.name }}
-          pluginFileName: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.name }}.so
-          exportedSymbolName: Plugin
-          config:
-            openIdConfigurationUrl: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.config.oidcUrl }}
-            enableAccessTokenForwarding: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.config.enableAccessTokenForwarding }}
-            enableSubjectForwarding: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.config.enableSubjectForwarding }}
-      {{- end }}
-      {{- if .Values.gloo.authConfig.spec.configs.additionalPlugins }}
+    {{- end }}
+    {{- if .Values.gloo.authConfig.spec.configs.authExtensionPlugin.enabled }}
+    - pluginAuth:
+        name: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.name }}
+        pluginFileName: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.name }}.so
+        exportedSymbolName: Plugin
+        config:
+          openIdConfigurationUrl: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.config.oidcUrl }}
+          enableAccessTokenForwarding: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.config.enableAccessTokenForwarding }}
+          enableSubjectForwarding: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.config.enableSubjectForwarding }}
+    {{- end }}
+    {{- if .Values.gloo.authConfig.spec.configs.additionalPlugins }}
     {{- toYaml .Values.gloo.authConfig.spec.configs.additionalPlugins | nindent 4 }}
   {{- end }}
   {{- end }}
