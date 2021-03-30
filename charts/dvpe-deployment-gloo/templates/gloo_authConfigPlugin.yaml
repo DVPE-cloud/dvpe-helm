@@ -79,20 +79,20 @@ spec:
             namespace: {{ default .Release.Namespace .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientSecretRef.namespace }}
             {{- end }}
           mode: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.mode }}
-          openIdConfigurationUrl: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.idpUrl }}
+          openIdConfigurationUrl: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.oidcUrl }}
           {{- if .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.allowedClientIds }}
           allowedClientIds: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.allowedClientIds }}
           {{- end }}
       {{- end }}
-      {{- if .Values.gloo.authConfig.spec.configs.codeFlowExtensionPlugin.enabled }}
+      {{- if .Values.gloo.authConfig.spec.configs.authExtensionPlugin.enabled }}
       - pluginAuth:
-          name: {{ .Values.gloo.authConfig.spec.configs.codeFlowExtensionPlugin.name }}
-          pluginFileName: {{ .Values.gloo.authConfig.spec.configs.codeFlowExtensionPlugin.name }}.so
+          name: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.name }}
+          pluginFileName: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.name }}.so
           exportedSymbolName: Plugin
           config:
-            openIdConfigurationUrl: {{ .Values.gloo.authConfig.spec.configs.codeFlowExtensionPlugin.config.oidcUrl }}
-            enableAccessTokenForwarding: {{ .Values.gloo.authConfig.spec.configs.codeFlowExtensionPlugin.config.enableAccessTokenForwarding }}
-            enableSubjectForwarding: {{ .Values.gloo.authConfig.spec.configs.codeFlowExtensionPlugin.config.enableSubjectForwarding }}
+            openIdConfigurationUrl: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.config.oidcUrl }}
+            enableAccessTokenForwarding: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.config.enableAccessTokenForwarding }}
+            enableSubjectForwarding: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.config.enableSubjectForwarding }}
       {{- end }}
       {{- if .Values.gloo.authConfig.spec.configs.additionalPlugins }}
     {{- toYaml .Values.gloo.authConfig.spec.configs.additionalPlugins | nindent 4 }}
