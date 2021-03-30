@@ -20,7 +20,7 @@ spec:
           callback_path: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath }}
           client_id: {{ .Values.gloo.authConfig.spec.configs.oauth.client_id }}
           client_secret_ref:
-            {{- if .Values.externalSecrets.oidc.key }}
+            {{- if .Values.externalSecrets.oauth2.key }}
             name: {{ $serviceName }}-oidc-secrets
             namespace: {{ .Release.Namespace }}
             {{- else }}
@@ -71,8 +71,8 @@ spec:
           {{- end }}
           ClientId: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientId }}
           ClientSecretRef:
-            {{- if .Values.externalSecrets.oidc.key }}
-            name: {{ $serviceName }}-oidc-m2m-secrets
+            {{- if .Values.externalSecrets.oauth2.key }}
+            name: {{ $serviceName }}-oauth2-clientCredentials-secrets
             namespace: {{ .Release.Namespace }}
             {{- else }}
             name: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientSecretRef.name }}

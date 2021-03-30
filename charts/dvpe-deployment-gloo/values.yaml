@@ -7,8 +7,8 @@ externalSecrets:
   service:
     # externalSecrets.service.key -- `Key` to AWS Secret Manager object where all sensitive application data should be stored. Each key in the Secret Manager Object should be named like your needed environment variable
     key:
-  oidc:
-    # externalSecrets.oidc.key -- `Key` to AWS Secret Manager object where the client secret for OIDC provider should be stored. The key in the Secret Manager Object has to be named as the given `gloo.authConfig.spec.configs.oauth.client_id`. The value has to be formatted as `clientSecret: <secret>`.
+  oauth2:
+    # externalSecrets.oauth2.key -- `Key` to AWS Secret Manager object where the client secret for OAuth2 provider should be stored. The key in the Secret Manager Object has to be named as the given `gloo.authConfig.spec.configs.oauth.client_id`. The value has to be formatted as `clientSecret: <secret>`.
     # **This definition is exclusive to `gloo.authConfig.spec.configs.oauth.client_secret_ref`. If defined, `gloo.authConfig.spec.configs.oauth.client_secret_ref` is ignored.**
     key:
 
