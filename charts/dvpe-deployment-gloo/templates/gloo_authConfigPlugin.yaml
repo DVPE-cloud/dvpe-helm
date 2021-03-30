@@ -45,17 +45,17 @@ spec:
         pluginFileName: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.name }}.so
         exportedSymbolName: Plugin
         config:
-          OpenIdConfigurationUrl: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.oidcUrl }}
+          openIdConfigurationUrl: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.oidcUrl }}
           {{- if .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.enabled }}
-          Cache:
-            DynamoDBTableName: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.tableName }}
-            AwsRegion:  {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.awsRegion }}
+          cache:
+            dynamoDBTableName: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.tableName }}
+            awsRegion:  {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.awsRegion }}
           {{- end }}
           {{- if .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds }}
-          AllowedClientIds: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds }}
+          allowedClientIds: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds }}
           {{- end }}
           {{- if .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.strongAuthenticationLevel }}
-          StrongAuthenticationLevel: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.strongAuthenticationLevel }}
+          strongAuthenticationLevel: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.strongAuthenticationLevel }}
           {{- end }}
     {{- end }}
     {{- if .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.enabled }}
@@ -65,12 +65,12 @@ spec:
         exportedSymbolName: Plugin
         config:
           {{- if .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.enabled }}
-          Cache:
-            DynamoDBTableName: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.tableName }}
-            AwsRegion:  {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.awsRegion }}
+          cache:
+            dynamoDBTableName: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.tableName }}
+            awsRegion:  {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.awsRegion }}
           {{- end }}
-          ClientId: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientId }}
-          ClientSecretRef:
+          clientId: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientId }}
+          clientSecretRef:
             {{- if .Values.externalSecrets.oauth2.key }}
             name: {{ $serviceName }}-oauth2-clientCredentials-secrets
             namespace: {{ .Release.Namespace }}
@@ -78,10 +78,10 @@ spec:
             name: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientSecretRef.name }}
             namespace: {{ default .Release.Namespace .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientSecretRef.namespace }}
             {{- end }}
-          Mode: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.mode }}
-          OpenIdConfigurationUrl: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.idpUrl }}
+          mode: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.mode }}
+          openIdConfigurationUrl: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.idpUrl }}
           {{- if .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.allowedClientIds }}
-          AllowedClientIds: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.allowedClientIds }}
+          allowedClientIds: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.allowedClientIds }}
           {{- end }}
       {{- end }}
       {{- if .Values.gloo.authConfig.spec.configs.codeFlowExtensionPlugin.enabled }}
@@ -90,9 +90,9 @@ spec:
           pluginFileName: {{ .Values.gloo.authConfig.spec.configs.codeFlowExtensionPlugin.name }}.so
           exportedSymbolName: Plugin
           config:
-            OpenIdConfigurationUrl: {{ .Values.gloo.authConfig.spec.configs.codeFlowExtensionPlugin.config.oidcUrl }}
-            EnableAccessTokenForwarding: {{ .Values.gloo.authConfig.spec.configs.codeFlowExtensionPlugin.config.enableAccessTokenForwarding }}
-            EnableSubjectForwarding: {{ .Values.gloo.authConfig.spec.configs.codeFlowExtensionPlugin.config.enableSubjectForwarding }}
+            openIdConfigurationUrl: {{ .Values.gloo.authConfig.spec.configs.codeFlowExtensionPlugin.config.oidcUrl }}
+            enableAccessTokenForwarding: {{ .Values.gloo.authConfig.spec.configs.codeFlowExtensionPlugin.config.enableAccessTokenForwarding }}
+            enableSubjectForwarding: {{ .Values.gloo.authConfig.spec.configs.codeFlowExtensionPlugin.config.enableSubjectForwarding }}
       {{- end }}
       {{- if .Values.gloo.authConfig.spec.configs.additionalPlugins }}
     {{- toYaml .Values.gloo.authConfig.spec.configs.additionalPlugins | nindent 4 }}

@@ -248,7 +248,7 @@ gloo:
           # gloo.authConfig.spec.configs.codeFlowExtensionPlugin.enabled -- If `enabled` set to true the auth code flow extension plugin will be used
           enabled: false
           # gloo.authConfig.spec.configs.codeFlowExtensionPlugin.name -- `Name` of the auth code flow extension plugin
-          name: AuthCodeFlowExtensionPlugin
+          name: AuthExtension
           config:
             # gloo.authConfig.spec.configs.codeFlowExtensionPlugin.config.oidcUrl -- `oidcUrl`  - where the access token can be verified at the IDP
             oidcUrl:

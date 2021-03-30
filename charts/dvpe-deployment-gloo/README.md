@@ -235,7 +235,7 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.authConfig.spec.configs.codeFlowExtensionPlugin.config.enableSubjectForwarding | bool | `false` | `enableSubjectForwarding` is a flag which tells whether the subject (q-number) should be forwarded or not |
 | gloo.authConfig.spec.configs.codeFlowExtensionPlugin.config.oidcUrl | string | `nil` | `oidcUrl`  - where the access token can be verified at the IDP |
 | gloo.authConfig.spec.configs.codeFlowExtensionPlugin.enabled | bool | `false` | If `enabled` set to true the auth code flow extension plugin will be used |
-| gloo.authConfig.spec.configs.codeFlowExtensionPlugin.name | string | `"AuthCodeFlowExtensionPlugin"` | `Name` of the auth code flow extension plugin |
+| gloo.authConfig.spec.configs.codeFlowExtensionPlugin.name | string | `"AuthExtension"` | `Name` of the auth code flow extension plugin |
 | gloo.authConfig.spec.configs.oauth.clientId | string | `nil` | Registered `ClientID` at the IDP |
 | gloo.authConfig.spec.configs.oauth.clientSecretRef.name | string | `"webeam-oidc"` | Name of the `Secret`. Gloo expects a k8s secret with the key `oauth` and base64 encoded value `clientSecret: secretValue` **This value is ignored if `externalSecrets.oidc.key` is present.** |
 | gloo.authConfig.spec.configs.oauth.clientSecretRef.namespace | string | `nil` | Namespace were the `Secret` is located. If empty, release namespace is used. **This value is ignored if `externalSecrets.oidc.key` is present.** |
