@@ -14,7 +14,7 @@ spec:
         oidcAuthorizationCode:
           {{- if .Values.gloo.authConfig.spec.configs.oauth.strongAuthenticationLevel }}
           authEndpointQueryParams:
-            acr_values : {{ eq .Values.gloo.authConfig.spec.configs.oauth.strongAuthenticationLevel 4000 | ternary "strongAuth4000Service" "strongAuth7000Service" }}
+            acr_values : {{ eq (int .Values.gloo.authConfig.spec.configs.oauth.strongAuthenticationLevel) 4000 | ternary "strongAuth4000Service" "strongAuth7000Service" }}
           {{- end }}
           app_url: "https://{{ .Values.gloo.virtualservice.spec.virtualHost.domains }}"
           callback_path: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath }}
