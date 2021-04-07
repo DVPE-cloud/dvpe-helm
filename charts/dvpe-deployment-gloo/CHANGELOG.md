@@ -7,7 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.3.1] - 2021-03-??
+## [2.0.0] - 2021-??-??
+
+### Added
+
+* Extended CORS configuration support by adding  `gloo.virtualservice.spec.virtualHost.cors.allowSubdomain` value.
+
+### Breaking Changes
+
+* Gloo OAuth2 Plugins
+  * Improve error handling
+  * Secure handling of Client Secret
+  * Ensure Two-Factor Authentication
+  * Validate Client ID
+  * Refactoring
+
+## [1.3.1] - 2021-03-08
 
 ### Added
 
@@ -103,4 +118,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.1.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-1.1.0/charts/dvpe-deployment-gloo
 [1.3.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-1.3.0/charts/dvpe-deployment-gloo
 [1.3.1]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-1.3.1/charts/dvpe-deployment-gloo
+[2.0.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.0.0/charts/dvpe-deployment-gloo
 
