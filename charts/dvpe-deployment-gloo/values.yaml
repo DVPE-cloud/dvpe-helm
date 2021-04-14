@@ -130,13 +130,13 @@ gloo:
           # gloo.virtualservice.spec.sslConfig.secretRef.namespace -- Namespace where the secret is located. If empty, gloo namespace is used.
           namespace:
       virtualHost:
-        # gloo.virtualservice.spec.virtualHost.domains -- List of `DNS domain names` this service will be published to. *Note:* This domain will also be used for the `callbackUrl`. If multiple domains are given, the first one will be used.
+        # gloo.virtualservice.spec.virtualHost.domains -- **String or List** of `DNS domain names` this service will be published to. *Note:* This domain will also be used for the `callbackUrl`. If multiple domains are given, the first one will be used.
         domains:
         cors:
           # gloo.virtualservice.spec.virtualHost.cors.allowOrigin -- Specifies the URLs of origins to allow CORS for. Origin URLs have to contain scheme, domain and port (if none-standard port is used).
-          allowOrigin:
+          allowOrigin: []
           # gloo.virtualservice.spec.virtualHost.cors.allowSubdomain -- Specifies the sub domains of origins to allow CORS for. The sub somain has to be given as URL containing scheme, sub domain and port (if none-standard port is used) - e.g. https://bmwgroup.net:8443.
-          allowSubdomain:
+          allowSubdomain: []
           # gloo.virtualservice.spec.virtualHost.cors.allowMethods -- Specifies the HTTP methods to allow CORS for.
           allowMethods:
             - GET
@@ -157,7 +157,7 @@ gloo:
           # gloo.virtualservice.spec.virtualHost.routes.appPath -- Path to `appUrl` where the service can be accessed. Pre-defined route in `VirtualService`.
           appPath: /api
           # gloo.virtualservice.spec.virtualHost.routes.additionalRoutes -- List of route configurations for this `VirtualService`. See [gloo VirtualService Specification](https://docs.solo.io/gloo-edge/latest/introduction/architecture/concepts/#virtual-services) for details
-          additionalRoutes:
+          additionalRoutes: []
           swagger:
             # gloo.virtualservice.spec.virtualHost.routes.swagger.enabled -- If set to `true` routing for `...swagger.path` and `...swagger.alternativePath` gets enabled.
             enabled: false
@@ -191,7 +191,7 @@ gloo:
           # gloo.authConfig.spec.configs.oauth.issuerUrl -- Issuer URL to the Identity Provider. Gloo adds `.well-known/openid-configuration` to the url automatically
           issuerUrl:
           # gloo.authConfig.spec.configs.oauth.scopes -- List of OIDC scopes. `openid` is set per default by Gloo and must not be added here
-          scopes:
+          scopes: []
           # gloo.authConfig.spec.configs.oauth.cookieDomain -- The domain to be used for `id_token` and `access_token` cookies set after successful authentication. This has to be some kind of wildcard to support cross origin requests. If unset, the cookies get no domain set.
           cookieDomain:
           # gloo.authConfig.spec.configs.oauth.strongAuthenticationLevel -- The strong authentication level. Possible values are: 4000, 7000. If not set, there is no strong authentication.
@@ -243,7 +243,7 @@ gloo:
             # gloo.authConfig.spec.configs.clientCredentialsPlugin.config.mode -- The AuthClientCredentials plugin can work in two modes: `GatherCredentials` and `VerifyAccessToken`
             mode:
             # gloo.authConfig.spec.configs.clientCredentialsPlugin.config.allowedClientIds -- `allowedClientIds` **list (NOT string!)** of ids that are allowed by the plugin. If not given at all, all clients are allowed. If [], then no client is allowed. If [a, b], then a, b are allowed
-            allowedClientIds:
+            allowedClientIds: []
         authExtensionPlugin:
           # gloo.authConfig.spec.configs.authExtensionPlugin.enabled -- If `enabled` set to true the auth code flow extension plugin will be used
           enabled: false
