@@ -1,6 +1,6 @@
 {{- $serviceName := include "service.name" . -}}
 {{- $imageUrl := include "image.url" . -}}
-{{- $serviceAccountName := include "serviceAccountName" . -}}
+{{- $serviceAccountName := include "deployment.spec.serviceAccountName" . -}}
 
 ---
 apiVersion: apps/v1

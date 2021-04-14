@@ -7,7 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [2.0.0] - 2021-??-??
+## [2.1.0] - 2021-04-14
+
+### Added
+
+* Enable List and String for VirtualService Domain.
+* Helper Function to create authorizationCode.appUrl from the given Domain.
+
+
+## [2.0.0] - 2021-04-07
 
 ### Added
 
@@ -119,4 +127,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.3.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-1.3.0/charts/dvpe-deployment-gloo
 [1.3.1]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-1.3.1/charts/dvpe-deployment-gloo
 [2.0.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.0.0/charts/dvpe-deployment-gloo
+[2.1.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.1.0/charts/dvpe-deployment-gloo
 
