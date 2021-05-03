@@ -7,13 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [2.1.0] - 2021-04-14
+## [2.0.1]
 
-### Added
-
+### Changed
 * Enable List and String for VirtualService Domain.
 * Helper Function to create authorizationCode.appUrl from the given Domain.
 
+### Deprecated
++ VirtualService Domain as String will not be supported in `3.0.0`
 
 ## [2.0.0] - 2021-04-07
 

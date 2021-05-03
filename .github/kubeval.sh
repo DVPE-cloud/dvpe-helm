@@ -1,5 +1,5 @@
 #!/bin/bash
-set -exuo
+set -euo
 
 KUBEVAL_VERSION="v0.16.1"
 echo "Using Kubeval Version: ${KUBEVAL_VERSION}"
