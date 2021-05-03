@@ -13,7 +13,6 @@ then
       echo "Chart Directory is empty. Please check if you increased the Chart version."
       exit 1
 fi
-echo "Using Chart Directory: ${!$CHART_DIRS}"
 
 # install kubeval
 curl --silent --show-error --fail --location --output /tmp/kubeval.tar.gz https://github.com/instrumenta/kubeval/releases/download/"${KUBEVAL_VERSION}"/kubeval-linux-amd64.tar.gz
