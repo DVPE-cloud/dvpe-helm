@@ -22,7 +22,7 @@ deployment:
     # deployment.spec.replicas -- The number of service instances to deploy.
     replicas: 1
     # deployment.spec.serviceAccountName -- The ServiceAccount this service will be associated with. If empty, `serviceAccountName` will be `<namespace>-sa`
-    serviceAccountName: test
+    serviceAccountName:
     # deployment.spec.imagePullSecrets -- Image Pull Secret to access docker registry.
     imagePullSecrets: docker-reg-secret
     image:
@@ -131,7 +131,7 @@ gloo:
           namespace:
       virtualHost:
         # gloo.virtualservice.spec.virtualHost.domains -- **String or List** of `DNS domain names` this service will be published to. *Note:* This domain will also be used for the `callbackUrl`. If multiple domains are given, the first one will be used.
-        domains:
+        domains: []
         cors:
           # gloo.virtualservice.spec.virtualHost.cors.allowOrigin -- Specifies the URLs of origins to allow CORS for. Origin URLs have to contain scheme, domain and port (if none-standard port is used).
           allowOrigin: []
