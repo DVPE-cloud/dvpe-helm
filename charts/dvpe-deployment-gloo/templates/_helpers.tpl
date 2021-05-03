@@ -40,8 +40,11 @@
 {{/* Expand the oauth2.oidcAuthorizationCode.appUrl with the protocol and the domain */}}
 {{- define "oauth2.oidcAuthorizationCode.appUrl" -}}
   {{- if kindIs "string" .Values.gloo.virtualservice.spec.virtualHost.domains -}}
-    {{- printf "https://%s" .Values.gloo.virtualservice.spec.virtualHost.domains }}
+    {{- printf "https://%s" .Values.gloo.virtualservice.spec.virtualHost.domains -}}
+{{/* Prevents from failing if domain value is empty  */}}
+  {{- else if .Values.gloo.virtualservice.spec.virtualHost.domains }}
+    {{- index .Values.gloo.virtualservice.spec.virtualHost.domains 0 | printf "https://%s" -}}
   {{- else -}}
-    {{- index .Values.gloo.virtualservice.spec.virtualHost.domains 0 | printf "https://%s" }}
+      {{- .Values.gloo.virtualservice.spec.virtualHost.domains | printf "https://%s" -}}
   {{- end }}
 {{- end -}}
