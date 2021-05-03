@@ -128,5 +128,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.3.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-1.3.0/charts/dvpe-deployment-gloo
 [1.3.1]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-1.3.1/charts/dvpe-deployment-gloo
 [2.0.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.0.0/charts/dvpe-deployment-gloo
-[2.1.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.1.0/charts/dvpe-deployment-gloo
+[2.0.1]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.0.1/charts/dvpe-deployment-gloo
 
