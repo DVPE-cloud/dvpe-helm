@@ -22,7 +22,7 @@ deployment:
     # deployment.spec.replicas -- The number of service instances to deploy.
     replicas: 1
     # deployment.spec.serviceAccountName -- The ServiceAccount this service will be associated with. If empty, `serviceAccountName` will be `<namespace>-sa`
-    serviceAccountName:
+    serviceAccountName: test
     # deployment.spec.imagePullSecrets -- Image Pull Secret to access docker registry.
     imagePullSecrets: docker-reg-secret
     image:
