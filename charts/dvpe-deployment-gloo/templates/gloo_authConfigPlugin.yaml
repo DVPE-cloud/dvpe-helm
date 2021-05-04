@@ -1,4 +1,6 @@
 {{- $serviceName := include "service.name" . -}}
+{{- $appUrl := include "oauth2.oidcAuthorizationCode.appUrl" . -}}
+
 
   {{- if .Values.gloo.enabled }}
 
@@ -16,7 +18,7 @@ spec:
           authEndpointQueryParams:
             acr_values: {{ eq (int .Values.gloo.authConfig.spec.configs.oauth.strongAuthenticationLevel) 4000 | ternary "strongAuth4000Service" "strongAuth7000Service" }}
           {{- end }}
-          app_url: "https://{{ .Values.gloo.virtualservice.spec.virtualHost.domains }}"
+          app_url: {{ $appUrl }}
           callback_path: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath }}
           client_id: {{ .Values.gloo.authConfig.spec.configs.oauth.clientId }}
           client_secret_ref:

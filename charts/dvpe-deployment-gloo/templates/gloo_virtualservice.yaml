@@ -1,5 +1,6 @@
 {{- $upstreamName := include "upstream.name" . -}}
 {{- $serviceName := include "service.name" . -}}
+{{- $domain := include "gloo.virtualservice.spec.virtualHost.domains" . -}}
 
 {{- if .Values.gloo.enabled }}
 
@@ -14,11 +15,9 @@ spec:
     secretRef:
       name: {{ .Values.gloo.virtualservice.spec.sslConfig.secretRef.name }}
       namespace: {{default .Values.gloo.namespace .Values.gloo.virtualservice.spec.sslConfig.secretRef.namespace }}
-    sniDomains:
-      - {{ .Values.gloo.virtualservice.spec.virtualHost.domains }}
+    sniDomains: {{ $domain }}
   virtualHost:
-    domains:
-      - {{ .Values.gloo.virtualservice.spec.virtualHost.domains }}
+    domain: {{ $domain }}
     {{- if or .Values.gloo.virtualservice.spec.virtualHost.cors.allowOrigin .Values.gloo.virtualservice.spec.virtualHost.cors.allowSubdomain }}
     options:
       cors:
@@ -94,6 +93,7 @@ spec:
       {{- end }}
 
 {{- if or .Values.gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath .Values.gloo.virtualservice.spec.virtualHost.routes.swagger.enabled }}
+
 ---
 apiVersion: gateway.solo.io/v1
 kind: VirtualService
