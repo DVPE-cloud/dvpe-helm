@@ -11,8 +11,8 @@ data:
     apk add iptables
     {{- range $if := .Values.netfilter.blocked.interfaces }}
     {{- range $ip := $.Values.netfilter.blocked.ipv4 }}
-    /sbin/iptables-legacy --insert FORWARD 1 --in-interface {{ $if }} --destination {{ $ip }} --jump DROP
-    /sbin/iptables-legacy -t mangle -A POSTROUTING -o {{ $if }} --destination {{ $ip }} --jump DROP
+    /sbin/iptables --insert FORWARD 1 --in-interface {{ $if }} --destination {{ $ip }} --jump DROP
+    /sbin/iptables -t mangle -A POSTROUTING -o {{ $if }} --destination {{ $ip }} --jump DROP
     {{- end }}
     {{- end }}
 {{- end }}
