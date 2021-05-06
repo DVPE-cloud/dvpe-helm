@@ -17,7 +17,7 @@ spec:
       namespace: {{default .Values.gloo.namespace .Values.gloo.virtualservice.spec.sslConfig.secretRef.namespace }}
     sniDomains: {{ $domain }}
   virtualHost:
-    domain: {{ $domain }}
+    domains: {{ $domain }}
     {{- if or .Values.gloo.virtualservice.spec.virtualHost.cors.allowOrigin .Values.gloo.virtualservice.spec.virtualHost.cors.allowSubdomain }}
     options:
       cors:
@@ -102,8 +102,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   virtualHost:
-    domains:
-      - {{ .Values.gloo.virtualservice.spec.virtualHost.domains }}
+    domains: {{ $domain }}
     routes:
       - matchers:
         {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath }}
@@ -115,7 +114,6 @@ spec:
         {{- end }}
         {{- end }}
         redirectAction:
-          hostRedirect: {{ .Values.gloo.virtualservice.spec.virtualHost.domains }}
           httpsRedirect: true
 {{- end }}
 
