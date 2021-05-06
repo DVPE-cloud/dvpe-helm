@@ -2,12 +2,13 @@
 
 ![Version: 0.1](https://img.shields.io/badge/Version-0.1-informational?style=flat-square)
 
-Helm chart for set netfilter rules on Kubelet node
+Helm chart for setting netfilter rules on Kubelet node
 
 ## Installation
 Installs dvpe-helm netfilter injector on an existing Kubernetes cluster.
 
 **Note**: The netfilter injector needs to run as root with NET_ADMIN capabilties and use hostNetwork in namespace kube-system.
+When Pod Security Policies are used in your cluster, then they need to reflect those requirements.
 
 ### Add Helm repository
 

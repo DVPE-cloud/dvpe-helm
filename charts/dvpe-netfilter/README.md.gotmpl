@@ -7,6 +7,7 @@
 Installs dvpe-helm netfilter injector on an existing Kubernetes cluster.
 
 **Note**: The netfilter injector needs to run as root with NET_ADMIN capabilties and use hostNetwork in namespace kube-system.
+When Pod Security Policies are used in your cluster, then they need to reflect those requirements.
 
 ### Add Helm repository
 
