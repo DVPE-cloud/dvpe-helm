@@ -288,4 +288,23 @@ entries:
     urls:
     - https://github.com/DVPE-cloud/dvpe-helm/releases/download/dvpe-deployment-gloo-0.0.1/dvpe-deployment-gloo-0.0.1.tgz
     version: 0.0.1
-generated: "2021-05-04T09:07:13.023864458Z"
+  dvpe-netfilter:
+  - apiVersion: v1
+    appVersion: "0.1"
+    created: "2021-05-07T06:51:01.739053902Z"
+    description: Helm chart for setting netfilter rules on Kubelet node
+    digest: d5c848af5d6126a87b8b467bbd86b74b326a09a04e115ac1cf3f224b97b5a979
+    home: https://github.com/dvpe-cloud/dvpe-helm
+    keywords:
+    - netfilter
+    - automation
+    - gitops
+    maintainers:
+    - name: mithie
+    - name: herrLierb
+    - name: christodo
+    name: dvpe-netfilter
+    urls:
+    - https://github.com/DVPE-cloud/dvpe-helm/releases/download/dvpe-netfilter-0.1/dvpe-netfilter-0.1.tgz
+    version: "0.1"
+generated: "2021-05-07T06:51:01.739096902Z"
