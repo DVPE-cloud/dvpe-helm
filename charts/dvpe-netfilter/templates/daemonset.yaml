@@ -1,0 +1,56 @@
+{{- if .Values.netfilter.enabled }}
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  labels:
+    k8s-app: update-iptables
+  name: update-iptables
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      k8s-app: update-iptables
+  template:
+    metadata:
+      labels:
+        k8s-app: update-iptables
+    spec:
+      initContainers:
+      - name: bootstrap
+        image: alpine:edge
+        command: [ "/bin/sh" ]
+        args:
+        - -c
+        - /scripts/update-iptables.sh
+        securityContext:
+          privileged: true
+          capabilities:
+            add:
+              - NET_ADMIN
+        volumeMounts:
+          - mountPath: /mnt/host
+            name: rootfs
+          - name: updates-iptables-script
+            mountPath: /scripts/update-iptables.sh
+            subPath: update-iptables.sh
+      hostNetwork: true
+      containers:
+      - name: pause
+        image: gcr.io/google_containers/pause
+        resources:
+          limits:
+            cpu: 50m
+            memory: 50Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+      volumes:
+      - name: rootfs
+        hostPath:
+          path: /
+          type: ""
+      - name: updates-iptables-script
+        configMap:
+          name: updates-iptables-script
+          defaultMode: 0755
+{{- end }}
