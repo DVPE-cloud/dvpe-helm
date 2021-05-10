@@ -326,4 +326,22 @@ entries:
     urls:
     - https://github.com/DVPE-cloud/dvpe-helm/releases/download/dvpe-netfilter-0.1/dvpe-netfilter-0.1.tgz
     version: "0.1"
-generated: "2021-05-07T07:20:59.674299055Z"
+  - apiVersion: v1
+    appVersion: 0.0.1
+    created: "2021-05-10T14:31:16.657260262Z"
+    description: Helm chart for setting netfilter rules on Kubelet node
+    digest: cba1b75f1a82c003b96f2448dc7032610a11ea1c68c8534dfd0baf185289ca31
+    home: https://github.com/dvpe-cloud/dvpe-helm
+    keywords:
+    - netfilter
+    - automation
+    - gitops
+    maintainers:
+    - name: mithie
+    - name: herrLierb
+    - name: christodo
+    name: dvpe-netfilter
+    urls:
+    - https://github.com/DVPE-cloud/dvpe-helm/releases/download/dvpe-netfilter-0.0.1/dvpe-netfilter-0.0.1.tgz
+    version: 0.0.1
+generated: "2021-05-10T14:31:16.657312463Z"
