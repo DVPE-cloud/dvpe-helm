@@ -6,7 +6,7 @@ metadata:
   namespace: kube-system
 data:
   update-iptables.sh: |
-    #!/bin/bash
+    #!/bin/sh
     apk update
     apk add iptables
     {{- range $if := .Values.netfilter.blocked.interfaces }}

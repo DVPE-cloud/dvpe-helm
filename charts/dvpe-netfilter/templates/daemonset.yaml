@@ -3,17 +3,19 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   labels:
-    k8s-app: update-iptables
-  name: update-iptables
+    k8s-app: dvpe-netfilter
+    dvpe-netfilter-version: {{ .Chart.Version }}
+  name: dvpe-netfilter
   namespace: kube-system
 spec:
   selector:
     matchLabels:
-      k8s-app: update-iptables
+      k8s-app: dvpe-netfilter
   template:
     metadata:
       labels:
-        k8s-app: update-iptables
+        k8s-app: dvpe-netfilter
+        dvpe-netfilter-version: {{ .Chart.Version }}
     spec:
       initContainers:
       - name: bootstrap
@@ -30,7 +32,7 @@ spec:
         volumeMounts:
           - mountPath: /mnt/host
             name: rootfs
-          - name: updates-iptables-script
+          - name: update-iptables-script
             mountPath: /scripts/update-iptables.sh
             subPath: update-iptables.sh
       hostNetwork: true
@@ -49,8 +51,8 @@ spec:
         hostPath:
           path: /
           type: ""
-      - name: updates-iptables-script
+      - name: update-iptables-script
         configMap:
-          name: updates-iptables-script
+          name: update-iptables-script
           defaultMode: 0755
 {{- end }}
