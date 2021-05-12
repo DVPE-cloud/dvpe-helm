@@ -12,6 +12,8 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   sslConfig:
+    parameters:
+      minimumProtocolVersion: {{ .Values.gloo.virtualservice.spec.sslConfig.minimumProtocolVersion }}
     secretRef:
       name: {{ .Values.gloo.virtualservice.spec.sslConfig.secretRef.name }}
       namespace: {{default .Values.gloo.namespace .Values.gloo.virtualservice.spec.sslConfig.secretRef.namespace }}
@@ -20,6 +22,15 @@ spec:
     domain: {{ $domain }}
     {{- if or .Values.gloo.virtualservice.spec.virtualHost.cors.allowOrigin .Values.gloo.virtualservice.spec.virtualHost.cors.allowSubdomain }}
     options:
+      {{- if .Values.gloo.virtualservice.spec.virtualHost.responseHeadersToAdd }}
+      headerManipulation:
+        responseHeadersToAdd:
+        {{- range $key, $val := .Values.gloo.virtualservice.spec.virtualHost.responseHeadersToAdd}}
+        - header:
+            key: {{ $key }}
+            value: {{ $val }}
+        {{- end}}
+      {{- end}}
       cors:
         allowCredentials: true
         allowHeaders:

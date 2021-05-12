@@ -124,6 +124,8 @@ gloo:
   virtualservice:
     spec:
       sslConfig:
+        # gloo.virtualservice.spec.sslConfig.minimumProtocolVersion -- Value of the minimum TLS protocol version. Accepted values are: TLS_AUTO, TLSv1_0, TLSv1_1, TLSv1_2, TLSv1_3.
+        minimumProtocolVersion: TLSv1_2
         secretRef:
           # gloo.virtualservice.spec.sslConfig.secretRef.name -- Name of the secret containing the certificate information for this deployment.
           name: gloo-public-tls
@@ -151,6 +153,14 @@ gloo:
             - origin
           # gloo.virtualservice.spec.virtualHost.cors.maxAge -- Specifies the content for the `access-control-max-age` header. In general this should not be changed.
           maxAge: 1d
+        # gloo.virtualservice.spec.virtualHost.responseHeadersToAdd -- Map which specifies additional response headers which have to be added to every response of the VirtualHost. In general this map might be extended but the default values should not be removed as they are necessary for security reasons.
+        responseHeadersToAdd:
+          - name: X-Content-Type-Options
+            value: nosniff
+          - name: Strict-Transport-Security
+            value: max-age=31536000; includeSubDomains
+          - name: Content-Security-Policy
+            value: frame-ancestors 'self' *.bmwgroup.net *.bmw.com;
         routes:
           # gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath -- Path to `callbackUrl` which needs to be registered at the Identity Provider. Pre-defined route in `VirtualService`.
           callbackUrlPath:
