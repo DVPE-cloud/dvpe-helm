@@ -166,6 +166,8 @@ gloo:
           callbackUrlPath:
           # gloo.virtualservice.spec.virtualHost.routes.appPath -- Path to `appUrl` where the service can be accessed. Pre-defined route in `VirtualService`.
           appPath: /api
+          # gloo.virtualservice.spec.virtualHost.routes.timeout -- Custom timeout for requests to appPath. For example `60s`.
+          appPathTimeout:
           # gloo.virtualservice.spec.virtualHost.routes.additionalRoutes -- List of route configurations for this `VirtualService`. See [gloo VirtualService Specification](https://docs.solo.io/gloo-edge/latest/introduction/architecture/concepts/#virtual-services) for details
           additionalRoutes: []
           swagger:
