@@ -15,7 +15,9 @@ metadata:
     tags.datadoghq.com/version: {{ default .Values.deployment.spec.image.tag .Values.datadog.version }}
     {{- end }}
 spec:
+  {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.deployment.spec.replicas }}
+  {{- end }}
   selector:
     matchLabels:
       app: {{ $serviceName }}

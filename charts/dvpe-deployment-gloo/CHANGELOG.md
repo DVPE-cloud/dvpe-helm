@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.4]
+
+### Fixed
+* Remove replicas in the deployment.yaml when the HPA is enabled. Fixes an issue with the ArgoCD auto sync and the HPA (https://argoproj.github.io/argo-cd/user-guide/best_practices/#leaving-room-for-imperativeness).  
+
 ## [2.0.3]
 
 ### Fixed
@@ -136,4 +141,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [2.0.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.0.0/charts/dvpe-deployment-gloo
 [2.0.2]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.0.2/charts/dvpe-deployment-gloo
 [2.0.3]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.0.3/charts/dvpe-deployment-gloo
+[2.0.4]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.0.4/charts/dvpe-deployment-gloo
 

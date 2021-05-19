@@ -19,7 +19,7 @@ deployment:
   # deployment.podAnnotations -- Object of additional `podAnnotations`.
   podAnnotations: {}
   spec:
-    # deployment.spec.replicas -- The number of service instances to deploy.
+    # deployment.spec.replicas -- The number of service instances to deploy. Will be ignored when autoscaling.enabled is true
     replicas: 1
     # deployment.spec.serviceAccountName -- The ServiceAccount this service will be associated with. If empty, `serviceAccountName` will be `<namespace>-sa`
     serviceAccountName:
@@ -88,6 +88,8 @@ service:
 # autoscaling.yaml value section #
 # --------------------------------#
 autoscaling:
+  # autoscaling.enabled -- Enables `Horizontal Pod Autoscaler (HPA)` to control the replicas. If it is enabled, the replicas will be removed from the deployment.
+  enabled: true
   # autoscaling.maxReplicas -- Defines `maxReplicas` of Pods scaled automatically by Horizontal Pod Autoscaler (HPA).
   maxReplicas: 5
   # autoscaling.minReplicas -- Defines `minReplicas` of Pods scaled automatically by Horizontal Pod Autoscaler (HPA).
