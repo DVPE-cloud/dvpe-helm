@@ -1,6 +1,6 @@
 # dvpe-deployment-gloo
 
-![Version: 2.0.3](https://img.shields.io/badge/Version-2.0.3-informational?style=flat-square)
+![Version: 2.0.4](https://img.shields.io/badge/Version-2.0.4-informational?style=flat-square)
 
 Helm chart for installing microservices as gloo enabled VirtualService definitions.
 
@@ -187,6 +187,7 @@ The following table lists the configurable parameters of the chart and its defau
 | additionalparameters.configMapApplied | bool | `false` | Set to `true` if you want to add a custom `ConfigMap` for your deployment. |
 | additionalparameters.secretsApplied | bool | `false` | Set to `true` if you want to add a custom `Secret` for your deployment. |
 | additionalparameters.yamlConfigFileApplied | bool | `false` | Set to `true` if you want to add a custom yaml configuration for your deployment. |
+| autoscaling.enabled | bool | `true` | Enables `Horizontal Pod Autoscaler (HPA)` to control the replicas. If it is enabled, the replicas will be removed from the deployment. |
 | autoscaling.maxReplicas | int | `5` | Defines `maxReplicas` of Pods scaled automatically by Horizontal Pod Autoscaler (HPA). |
 | autoscaling.metrics.resource.cpu.targetAverageUtilization | int | `80` | Defines cpu utilization threshold in % for the HPA to scale up new pods. |
 | autoscaling.minReplicas | int | `1` | Defines `minReplicas` of Pods scaled automatically by Horizontal Pod Autoscaler (HPA). |
@@ -209,7 +210,7 @@ The following table lists the configurable parameters of the chart and its defau
 | deployment.spec.image.repository | string | `nil` | The docker repository to pull the service image from. |
 | deployment.spec.image.tag | string | `"latest"` | The image version to use. |
 | deployment.spec.imagePullSecrets | string | `"docker-reg-secret"` | Image Pull Secret to access docker registry. |
-| deployment.spec.replicas | int | `1` | The number of service instances to deploy. |
+| deployment.spec.replicas | int | `1` | The number of service instances to deploy. Will be ignored when autoscaling.enabled is true |
 | deployment.spec.resources.limits.cpu | string | `"200m"` | Total amount of CPU time that a container can use every 100 ms. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage. |
 | deployment.spec.resources.limits.memory | string | `"235M"` | The memory limit for a Pod. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage. |
 | deployment.spec.resources.requests.cpu | string | `"150m"` | Fractional amount of CPU allowed for a Pod. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage. |

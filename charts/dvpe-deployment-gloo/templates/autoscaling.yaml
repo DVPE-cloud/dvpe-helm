@@ -1,5 +1,5 @@
 {{- $serviceName := include "service.name" . -}}
-
+{{- if .Values.autoscaling.enabled }}
 ---
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
@@ -17,3 +17,4 @@ spec:
       resource:
         name: cpu
         targetAverageUtilization: {{ .Values.autoscaling.metrics.resource.cpu.targetAverageUtilization }}
+{{- end }}
