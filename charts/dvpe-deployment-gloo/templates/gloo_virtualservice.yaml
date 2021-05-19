@@ -12,14 +12,25 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   sslConfig:
+    parameters:
+      minimumProtocolVersion: {{ .Values.gloo.virtualservice.spec.sslConfig.minimumProtocolVersion }}
     secretRef:
       name: {{ .Values.gloo.virtualservice.spec.sslConfig.secretRef.name }}
       namespace: {{default .Values.gloo.namespace .Values.gloo.virtualservice.spec.sslConfig.secretRef.namespace }}
     sniDomains: {{ $domain }}
   virtualHost:
     domain: {{ $domain }}
-    {{- if or .Values.gloo.virtualservice.spec.virtualHost.cors.allowOrigin .Values.gloo.virtualservice.spec.virtualHost.cors.allowSubdomain }}
     options:
+      {{- if .Values.gloo.virtualservice.spec.virtualHost.responseHeadersToAdd }}
+      headerManipulation:
+        responseHeadersToAdd:
+        {{- range $key, $val := .Values.gloo.virtualservice.spec.virtualHost.responseHeadersToAdd}}
+        - header:
+            key: {{ $val.name }}
+            value: {{ $val.value }}
+        {{- end}}
+      {{- end}}
+      {{- if or .Values.gloo.virtualservice.spec.virtualHost.cors.allowOrigin .Values.gloo.virtualservice.spec.virtualHost.cors.allowSubdomain }}
       cors:
         allowCredentials: true
         allowHeaders:
@@ -43,7 +54,7 @@ spec:
           - {{ . }}
           {{- end }}
         maxAge: {{ .Values.gloo.virtualservice.spec.virtualHost.cors.maxAge }}
-    {{- end }}
+        {{- end }}
     routes:
       {{- if and .Values.gloo.virtualservice.spec.virtualHost.routes.swagger.enabled .Values.gloo.virtualservice.spec.virtualHost.routes.swagger.alternativePath }}
       - matchers:
@@ -74,6 +85,9 @@ spec:
               name: {{ $upstreamName }}
               namespace: {{ .Values.gloo.upstream.namespace }}
         options:
+          {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.appPathTimeout }}
+          timeout: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.appPathTimeout | quote }}
+          {{- end}}
           extauth:
             configRef:
               name: {{ $serviceName}}-{{ .Values.gloo.authConfig.name }}
