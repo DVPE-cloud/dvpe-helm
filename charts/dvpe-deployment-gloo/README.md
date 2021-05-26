@@ -256,9 +256,10 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.namespace | string | `"gloo-system"` | `Namespace` where all Gloo resources are deployed. |
 | gloo.upstream.fds | bool | `false` | Whitelist this upstream for `FDS`. [Gloo Function Discovery Mode] (https://docs.solo.io/gloo-edge/latest/installation/advanced_configuration/fds_mode/) |
 | gloo.upstream.namespace | string | `"gloo-system"` | `Namespace` where gloo upstream is deployed. |
-| gloo.virtualservice.spec.sslConfig.minimumProtocolVersion | string | `"TLSv1_2"` | Value of the minimum TLS protocol version. Accepted values are: TLS_AUTO, TLSv1_0, TLSv1_1, TLSv1_2, TLSv1_3. |
+| gloo.virtualservice.spec.sslConfig.minimumProtocolVersion | string | `"TLSv1_2"` | Value of the minimum TLS protocol version. Accepted values are: TLSv1_2, TLSv1_3. |
 | gloo.virtualservice.spec.sslConfig.secretRef.name | string | `"gloo-public-tls"` | Name of the secret containing the certificate information for this deployment. |
 | gloo.virtualservice.spec.sslConfig.secretRef.namespace | string | `nil` | Namespace where the secret is located. If empty, gloo namespace is used. |
+| gloo.virtualservice.spec.virtualHost.cors.allowCredentials | bool | `false` | Specifies the Access-Control-Allow-Credentials header. Value is `false` by default for security reasons. |
 | gloo.virtualservice.spec.virtualHost.cors.allowHeaders | list | `["origin"]` | Specifies the content for the `access-control-allow-headers` header. In general this should not be changed. |
 | gloo.virtualservice.spec.virtualHost.cors.allowMethods | list | `["GET","POST","PUT","DELETE"]` | Specifies the HTTP methods to allow CORS for. |
 | gloo.virtualservice.spec.virtualHost.cors.allowOrigin | list | `[]` | Specifies the URLs of origins to allow CORS for. Origin URLs have to contain scheme, domain and port (if none-standard port is used). |

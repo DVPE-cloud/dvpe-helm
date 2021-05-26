@@ -32,7 +32,7 @@ spec:
       {{- end}}
       {{- if or .Values.gloo.virtualservice.spec.virtualHost.cors.allowOrigin .Values.gloo.virtualservice.spec.virtualHost.cors.allowSubdomain }}
       cors:
-        allowCredentials: true
+        allowCredentials: {{ .Values.gloo.virtualservice.spec.virtualHost.cors.allowCredentials }}
         allowHeaders:
           {{- range .Values.gloo.virtualservice.spec.virtualHost.cors.allowHeaders }}
           - {{ . }}
