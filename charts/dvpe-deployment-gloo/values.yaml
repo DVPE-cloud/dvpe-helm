@@ -124,7 +124,7 @@ gloo:
   virtualservice:
     spec:
       sslConfig:
-        # gloo.virtualservice.spec.sslConfig.minimumProtocolVersion -- Value of the minimum TLS protocol version. Accepted values are: TLS_AUTO, TLSv1_0, TLSv1_1, TLSv1_2, TLSv1_3.
+        # gloo.virtualservice.spec.sslConfig.minimumProtocolVersion -- Value of the minimum TLS protocol version. Accepted values are: TLSv1_2, TLSv1_3.
         minimumProtocolVersion: TLSv1_2
         secretRef:
           # gloo.virtualservice.spec.sslConfig.secretRef.name -- Name of the secret containing the certificate information for this deployment.
@@ -139,6 +139,8 @@ gloo:
           allowOrigin: []
           # gloo.virtualservice.spec.virtualHost.cors.allowSubdomain -- Specifies the sub domains of origins to allow CORS for. The sub somain has to be given as URL containing scheme, sub domain and port (if none-standard port is used) - e.g. https://bmwgroup.net:8443.
           allowSubdomain: []
+          # gloo.virtualservice.spec.virtualHost.cors.allowCredentials -- Specifies the Access-Control-Allow-Credentials header. Value is `false` by default for security reasons.
+          allowCredentials: false
           # gloo.virtualservice.spec.virtualHost.cors.allowMethods -- Specifies the HTTP methods to allow CORS for.
           allowMethods:
             - GET
