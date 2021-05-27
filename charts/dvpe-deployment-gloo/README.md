@@ -1,6 +1,6 @@
 # dvpe-deployment-gloo
 
-![Version: 2.0.4](https://img.shields.io/badge/Version-2.0.4-informational?style=flat-square)
+![Version: 2.0.5](https://img.shields.io/badge/Version-2.0.5-informational?style=flat-square)
 
 Helm chart for installing microservices as gloo enabled VirtualService definitions.
 
@@ -275,8 +275,12 @@ The following table lists the configurable parameters of the chart and its defau
 | istio.destinationRule.spec.trafficPolicy.tls.mode | string | `"ISTIO_MUTUAL"` | trafficPolicy [ClientTLSSettings-TLSmode](https://istio.io/latest/docs/reference/config/networking/destination-rule/#ClientTLSSettings-TLSmode) |
 | istio.enabled | bool | `true` | Enables mtls per workload (pod) |
 | istio.peerAuthentication.spec.mtls.mode | string | `"STRICT"` | mTLS mode for istio. [PeerAuthentication-MutualTLS-Mode](https://istio.io/latest/docs/reference/config/security/peer_authentication/#PeerAuthentication-MutualTLS-Mode) |
-| service.spec.ports.http.port | string | `"80"` | The http port the service is exposed to in the cluster. |
-| service.spec.ports.http.targetPort | string | `"80"` | The http port the service listens to and to which requests will be sent. |
-| service.spec.ports.https.port | string | `"443"` | The https port the service is exposed to in the cluster. |
-| service.spec.ports.https.targetPort | string | `"443"` | The http port the service listens to and to which requests will be sent. |
+| service.spec.ports.http.name | string | `"http"` | Name of the port within the service. If Istio is enabled, please check [Istio naming conventions](https://istio.io/latest/docs/ops/configuration/traffic-management/protocol-selection/#manual-protocol-selection) |
+| service.spec.ports.http.port | string | `"8080"` | The http port the service is exposed to in the cluster. If no port is defined, port mapping is disabled. |
+| service.spec.ports.http.protocol | string | `"TCP"` | The protocol the service accepts. Allowed protocols are UDP, TCP, or SCTP. |
+| service.spec.ports.http.targetPort | string | `""` | The http port the service listens to and to which requests will be sent. If no `targetPort` is defined, port will be used. |
+| service.spec.ports.https.name | string | `"https"` | Name of the port within the service. If Istio is enabled, please check [Istio naming conventions](https://istio.io/latest/docs/ops/configuration/traffic-management/protocol-selection/#manual-protocol-selection) |
+| service.spec.ports.https.port | string | `""` | The https port the service is exposed to in the cluster. If no port is defined, port mapping is disabled. |
+| service.spec.ports.https.protocol | string | `"TCP"` | The protocol the service accepts. Allowed protocols are UDP, TCP, or SCTP. |
+| service.spec.ports.https.targetPort | string | `""` | The http port the service listens to and to which requests will be sent. If no `targetPort` is defined, port will be used. |
 | service.spec.type | string | `"ClusterIP"` | Specify what kind of service to deploy. See [Kubernetes Service Spec](https://kubernetes.io/docs/concepts/services-networking/service/) for details |
