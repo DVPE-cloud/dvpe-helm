@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+* Remove Istio SDS in Gloo upstream if Istio is not enabled.
+
 ## [2.0.1]
 
 ### Changed
