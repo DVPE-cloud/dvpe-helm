@@ -14,7 +14,8 @@
 {{/* Expand Gloo upstream.name */}}
 {{- define "upstream.name" -}}
 {{- $serviceName := include "service.name" . -}}
-{{- printf "%s-%s-%s" .Release.Namespace $serviceName .Values.service.spec.ports.https.port -}}
+{{- $servicePort := or .Values.service.spec.ports.https.port .Values.service.spec.ports.http.port -}}
+{{- printf "%s-%s-%s" .Release.Namespace $serviceName $servicePort -}}
 {{- end -}}
 
 {{/* Expand serviceAccountName */}}

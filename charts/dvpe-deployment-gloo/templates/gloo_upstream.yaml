@@ -18,7 +18,7 @@ spec:
       app: {{ $serviceName }}
     serviceName: {{ $serviceName }}-svc
     serviceNamespace: {{ .Release.Namespace }}
-    servicePort: {{ .Values.service.spec.ports.https.port }}
+    servicePort: {{or .Values.service.spec.ports.https.port .Values.service.spec.ports.http.port}}
   sslConfig:
     alpnProtocols:
       - istio

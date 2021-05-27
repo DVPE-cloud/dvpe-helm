@@ -74,15 +74,23 @@ service:
     type: ClusterIP
     ports:
       http:
-        # service.spec.ports.http.port -- The http port the service is exposed to in the cluster.
-        port: "80"
-        # service.spec.ports.http.targetPort -- The http port the service listens to and to which requests will be sent.
-        targetPort: "80"
+        # service.spec.ports.http.name -- Name of the port within the service. If Istio is enabled, please check [Istio naming conventions](https://istio.io/latest/docs/ops/configuration/traffic-management/protocol-selection/#manual-protocol-selection)
+        name: http
+        # service.spec.ports.http.protocol -- The protocol the service accepts. Allowed protocols are UDP, TCP, or SCTP.
+        protocol: TCP
+        # service.spec.ports.http.port -- The http port the service is exposed to in the cluster. If no port is defined, port mapping is disabled.
+        port: "8080"
+        # service.spec.ports.http.targetPort -- The http port the service listens to and to which requests will be sent. If no `targetPort` is defined, port will be used.
+        targetPort: ""
       https:
-        # service.spec.ports.https.port -- The https port the service is exposed to in the cluster.
-        port: "443"
-        # service.spec.ports.https.targetPort -- The http port the service listens to and to which requests will be sent.
-        targetPort: "443"
+        # service.spec.ports.https.name -- Name of the port within the service. If Istio is enabled, please check [Istio naming conventions](https://istio.io/latest/docs/ops/configuration/traffic-management/protocol-selection/#manual-protocol-selection)
+        name: https
+        # service.spec.ports.https.protocol -- The protocol the service accepts. Allowed protocols are UDP, TCP, or SCTP.
+        protocol: TCP
+        # service.spec.ports.https.port -- The https port the service is exposed to in the cluster. If no port is defined, port mapping is disabled.
+        port: ""
+        # service.spec.ports.https.targetPort -- The http port the service listens to and to which requests will be sent. If no `targetPort` is defined, port will be used.
+        targetPort: ""
 
 # --------------------------------#
 # autoscaling.yaml value section #
