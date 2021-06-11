@@ -1,0 +1,84 @@
+{{- $serviceName := include "service.name" . -}}
+
+{{- if .Values.gloo.enabled }}
+
+{{- range .Values.gloo.externalUpstreams }}
+apiVersion: gloo.solo.io/v1
+kind: Upstream
+metadata:
+  name: {{ .name }}-external
+  namespace: {{ $.Values.gloo.upstream.namespace }}
+spec:
+  static:
+    useTls: {{ .useTls }}
+    hosts:
+    {{- range $addr, $port := .hosts }}
+      - addr: {{ $addr }}
+        port: {{ $port }}
+    {{- end }}
+
+---
+
+apiVersion: gateway.solo.io/v1
+kind: VirtualService
+metadata:
+  name: {{ .name }}-external-virtualservice
+  namespace: {{ $.Release.Namespace }}
+spec:
+  virtualHost:
+    domains: {{ .name }}.external-service.svc
+    routes:
+      - name:
+        matchers:
+          - prefix: "/"
+        routeAction:
+          single:
+            upstream:
+              name: {{ .name }}-external
+              namespace: {{ $.Values.gloo.upstream.namespace }}
+        {{- if .useM2M }}
+        options:
+          extauth:
+            configRef:
+              name: {{ $serviceName }}-auth-plugin-m2m
+              namespace: {{default $.Release.Namespace $.Values.gloo.authConfig.namespace }}
+        {{- end }}
+
+---
+
+{{- end }}
+
+#AuthConfig must be there only once
+apiVersion: enterprise.gloo.solo.io/v1
+kind: AuthConfig
+metadata:
+  name: {{ $serviceName }}-auth-plugin-m2m
+  namespace: {{default $.Release.Namespace $.Values.gloo.authConfig.namespace }}
+spec:
+  configs:
+    - pluginAuth:
+        name: AuthTokenValidation
+        pluginFileName: AuthTokenValidation.so
+        config:
+          openIdConfigurationUrl: {{ $.Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.oidcUrl }}
+        exportedSymbolName: Plugin
+    - pluginAuth:
+        name: AuthClientCredentials
+        pluginFileName: AuthClientCredentials.so
+        config:
+          clientId: {{ $.Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientId }}
+          clientSecretRef:
+            {{- if $.Values.externalSecrets.oauth2.key }}
+            name: {{ $serviceName }}-oauth2-client-credentials-secrets
+            namespace: {{ $.Release.Namespace }}
+            {{- else }}
+            name: {{ $.Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientSecretRef.name }}
+            namespace: {{ default $.Release.Namespace $.Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientSecretRef.namespace }}
+            {{- end }}
+          mode: GatherCredentials
+          openIdConfigurationUrl: {{ $.Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.oidcUrl }}
+        exportedSymbolName: Plugin
+
+
+---
+{{- end }}

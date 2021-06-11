@@ -278,6 +278,15 @@ gloo:
     # gloo.upstream.fds -- Whitelist this upstream for `FDS`. [Gloo Function Discovery Mode] (https://docs.solo.io/gloo-edge/latest/installation/advanced_configuration/fds_mode/)
     fds: false
 
+  externalUpstreams:
+    - name:
+      useM2M:
+      useTls:
+      hosts:
+        - addr:
+        - port:
+
+
 # -------------------------------------#
 # DataDog value section                #
 # -------------------------------------#
