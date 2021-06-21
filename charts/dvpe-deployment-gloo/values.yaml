@@ -127,6 +127,9 @@ gloo:
   enabled: true
   # gloo.namespace -- `Namespace` where all Gloo resources are deployed.
   namespace: gloo-system
+  ingress:
+    # gloo.ingress.scope -- Signals Gloo which Gateway Proxy to use for deploying a Virtual Service into. Value must be one of `private`, `public` or `cluster-internal`.
+    scope:
 
   # -------------------------------------#
   # Gloo VirtualService value section    #
@@ -136,7 +139,7 @@ gloo:
       sslConfig:
         secretRef:
           # gloo.virtualservice.spec.sslConfig.secretRef.name -- Name of the secret containing the certificate information for this deployment.
-          name: gloo-public-tls
+          name:
           # gloo.virtualservice.spec.sslConfig.secretRef.namespace -- Namespace where the secret is located. If empty, gloo namespace is used.
           namespace:
       virtualHost:

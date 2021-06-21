@@ -8,12 +8,18 @@
 apiVersion: gateway.solo.io/v1
 kind: VirtualService
 metadata:
+  labels:
+    gloo.wadtfy.bmwgroup.net/ingress-scope: {{ .Values.gloo.ingress.scope }}
   name: {{ $serviceName }}-virtualservice
   namespace: {{ .Release.Namespace }}
 spec:
   sslConfig:
     secretRef:
+      {{- if eq .Values.gloo.ingress.scope "public" }}
+      name: gloo-public-tls
+      {{- else }}
       name: {{ .Values.gloo.virtualservice.spec.sslConfig.secretRef.name }}
+      {{- end }}
       namespace: {{default .Values.gloo.namespace .Values.gloo.virtualservice.spec.sslConfig.secretRef.namespace }}
     sniDomains: {{ $domain }}
   virtualHost:
