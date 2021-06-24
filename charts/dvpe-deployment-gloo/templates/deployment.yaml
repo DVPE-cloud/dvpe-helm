@@ -79,7 +79,7 @@ spec:
           - name: "{{$key}}"
             valueFrom:
               configMapKeyRef:
-                name:  {{ $serviceName }}-additional-parametes
+                name:  {{ $serviceName }}-additional-parameters
                 key: {{$key}}
           {{- end}}
           {{- end}}
