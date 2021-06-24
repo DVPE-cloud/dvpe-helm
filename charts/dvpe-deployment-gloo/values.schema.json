@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "required": [
+    "gloo"
+  ],
+  "properties": {
+    "gloo": {
+      "type": "object",
+      "required": [
+        "ingress"
+      ],
+      "properties": {
+        "ingress": {
+          "type": "object",
+          "required": [
+            "scope"
+          ],
+          "properties": {
+            "scope": {
+              "type": "string",
+              "enum": [
+                "public",
+                "private",
+                "cluster-internal"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

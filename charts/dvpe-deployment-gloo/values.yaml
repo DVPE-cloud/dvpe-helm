@@ -19,7 +19,7 @@ deployment:
   # deployment.podAnnotations -- Object of additional `podAnnotations`.
   podAnnotations: {}
   spec:
-    # deployment.spec.replicas -- The number of service instances to deploy.
+    # deployment.spec.replicas -- The number of service instances to deploy. Will be ignored when autoscaling.enabled is true
     replicas: 1
     # deployment.spec.serviceAccountName -- The ServiceAccount this service will be associated with. If empty, `serviceAccountName` will be `<namespace>-sa`
     serviceAccountName:
@@ -74,20 +74,30 @@ service:
     type: ClusterIP
     ports:
       http:
-        # service.spec.ports.http.port -- The http port the service is exposed to in the cluster.
-        port: "80"
-        # service.spec.ports.http.targetPort -- The http port the service listens to and to which requests will be sent.
-        targetPort: "80"
+        # service.spec.ports.http.name -- Name of the port within the service. If Istio is enabled, please check [Istio naming conventions](https://istio.io/latest/docs/ops/configuration/traffic-management/protocol-selection/#manual-protocol-selection)
+        name: http
+        # service.spec.ports.http.protocol -- The protocol the service accepts. Allowed protocols are UDP, TCP, or SCTP.
+        protocol: TCP
+        # service.spec.ports.http.port -- The http port the service is exposed to in the cluster. If no port is defined, port mapping is disabled.
+        port: "8080"
+        # service.spec.ports.http.targetPort -- The http port the service listens to and to which requests will be sent. If no `targetPort` is defined, port will be used.
+        targetPort: ""
       https:
-        # service.spec.ports.https.port -- The https port the service is exposed to in the cluster.
-        port: "443"
-        # service.spec.ports.https.targetPort -- The http port the service listens to and to which requests will be sent.
-        targetPort: "443"
+        # service.spec.ports.https.name -- Name of the port within the service. If Istio is enabled, please check [Istio naming conventions](https://istio.io/latest/docs/ops/configuration/traffic-management/protocol-selection/#manual-protocol-selection)
+        name: https
+        # service.spec.ports.https.protocol -- The protocol the service accepts. Allowed protocols are UDP, TCP, or SCTP.
+        protocol: TCP
+        # service.spec.ports.https.port -- The https port the service is exposed to in the cluster. If no port is defined, port mapping is disabled.
+        port: ""
+        # service.spec.ports.https.targetPort -- The http port the service listens to and to which requests will be sent. If no `targetPort` is defined, port will be used.
+        targetPort: ""
 
 # --------------------------------#
 # autoscaling.yaml value section #
 # --------------------------------#
 autoscaling:
+  # autoscaling.enabled -- Enables `Horizontal Pod Autoscaler (HPA)` to control the replicas. If it is enabled, the replicas will be removed from the deployment.
+  enabled: true
   # autoscaling.maxReplicas -- Defines `maxReplicas` of Pods scaled automatically by Horizontal Pod Autoscaler (HPA).
   maxReplicas: 5
   # autoscaling.minReplicas -- Defines `minReplicas` of Pods scaled automatically by Horizontal Pod Autoscaler (HPA).
@@ -117,6 +127,9 @@ gloo:
   enabled: true
   # gloo.namespace -- `Namespace` where all Gloo resources are deployed.
   namespace: gloo-system
+  ingress:
+    # gloo.ingress.scope -- Signals Gloo which Gateway Proxy to use for deploying a Virtual Service into. Value must be one of `private`, `public` or `cluster-internal`.
+    scope:
 
   # -------------------------------------#
   # Gloo VirtualService value section    #
@@ -128,7 +141,7 @@ gloo:
         minimumProtocolVersion: TLSv1_2
         secretRef:
           # gloo.virtualservice.spec.sslConfig.secretRef.name -- Name of the secret containing the certificate information for this deployment.
-          name: gloo-public-tls
+          name:
           # gloo.virtualservice.spec.sslConfig.secretRef.namespace -- Namespace where the secret is located. If empty, gloo namespace is used.
           namespace:
       virtualHost:
