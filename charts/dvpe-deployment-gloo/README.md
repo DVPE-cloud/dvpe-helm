@@ -1,6 +1,6 @@
 # dvpe-deployment-gloo
 
-![Version: 2.1.0](https://img.shields.io/badge/Version-2.1.0-informational?style=flat-square)
+![Version: 2.2.0](https://img.shields.io/badge/Version-2.2.0-informational?style=flat-square)
 
 Helm chart for installing microservices as gloo enabled VirtualService definitions.
 
@@ -187,6 +187,7 @@ The following table lists the configurable parameters of the chart and its defau
 | additionalparameters.configMapApplied | bool | `false` | Set to `true` if you want to add a custom `ConfigMap` for your deployment. |
 | additionalparameters.secretsApplied | bool | `false` | Set to `true` if you want to add a custom `Secret` for your deployment. |
 | additionalparameters.yamlConfigFileApplied | bool | `false` | Set to `true` if you want to add a custom yaml configuration for your deployment. |
+| autoscaling.enabled | bool | `true` | Enables `Horizontal Pod Autoscaler (HPA)` to control the replicas. If it is enabled, the replicas will be removed from the deployment. |
 | autoscaling.maxReplicas | int | `5` | Defines `maxReplicas` of Pods scaled automatically by Horizontal Pod Autoscaler (HPA). |
 | autoscaling.metrics.resource.cpu.targetAverageUtilization | int | `80` | Defines cpu utilization threshold in % for the HPA to scale up new pods. |
 | autoscaling.minReplicas | int | `1` | Defines `minReplicas` of Pods scaled automatically by Horizontal Pod Autoscaler (HPA). |
@@ -209,7 +210,7 @@ The following table lists the configurable parameters of the chart and its defau
 | deployment.spec.image.repository | string | `nil` | The docker repository to pull the service image from. |
 | deployment.spec.image.tag | string | `"latest"` | The image version to use. |
 | deployment.spec.imagePullSecrets | string | `"docker-reg-secret"` | Image Pull Secret to access docker registry. |
-| deployment.spec.replicas | int | `1` | The number of service instances to deploy. |
+| deployment.spec.replicas | int | `1` | The number of service instances to deploy. Will be ignored when autoscaling.enabled is true |
 | deployment.spec.resources.limits.cpu | string | `"200m"` | Total amount of CPU time that a container can use every 100 ms. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage. |
 | deployment.spec.resources.limits.memory | string | `"235M"` | The memory limit for a Pod. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage. |
 | deployment.spec.resources.requests.cpu | string | `"150m"` | Fractional amount of CPU allowed for a Pod. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage. |
@@ -220,11 +221,13 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.authConfig.name | string | `"auth-plugin"` | Prefix of the `Auth Config Plugin`. Final name will be <prefix>-<service-name> |
 | gloo.authConfig.namespace | string | `nil` | Namespace where the `Auth Config Plugin` is located. If empty, release namespace is used. |
 | gloo.authConfig.spec.configs.additionalPlugins | string | `nil` | List of plugins which should be added to the plugin chain. Expected format is a valid yaml with the `pluginAuth`. See [gloo Plugin Auth](https://docs.solo.io/gloo/latest/guides/security/auth/extauth/plugin_auth/#create-an-authconfig-resource) for details |
+| gloo.authConfig.spec.configs.authExtensionPlugin.config.cache.disabled | bool | `false` | If `disabled` set to true the gloo redis will be used as cache |
 | gloo.authConfig.spec.configs.authExtensionPlugin.config.enableAccessTokenForwarding | bool | `false` | `enableAccessTokenForwarding` is a flag which tells whether the access_token should be forwarded or not |
+| gloo.authConfig.spec.configs.authExtensionPlugin.config.enableQAccountMatching | bool | `false` | `enableQAccountMatching` is a flag which forwards the user id (q-number) to the upstream. Only relevant if the user is using a different user id (e.g. c-number) for logging |
 | gloo.authConfig.spec.configs.authExtensionPlugin.config.enableSubjectForwarding | bool | `false` | `enableSubjectForwarding` is a flag which tells whether the subject (q-number) should be forwarded or not |
+| gloo.authConfig.spec.configs.authExtensionPlugin.config.grpcAddress | string | `"auth-passthrough-extension.gloo-system.svc.cluster.local:9001"` | `grpcAddress`  - where the access token can be verified at the IDP |
 | gloo.authConfig.spec.configs.authExtensionPlugin.config.oidcUrl | string | `nil` | `oidcUrl`  - where the access token can be verified at the IDP |
 | gloo.authConfig.spec.configs.authExtensionPlugin.enabled | bool | `false` | If `enabled` set to true the auth code flow extension plugin will be used |
-| gloo.authConfig.spec.configs.authExtensionPlugin.name | string | `"AuthExtension"` | `Name` of the auth code flow extension plugin |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.config.allowedClientIds | list | `[]` | `allowedClientIds` **list (NOT string!)** of ids that are allowed by the plugin. If not given at all, all clients are allowed. If [], then no client is allowed. If [a, b], then a, b are allowed |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.awsRegion | string | `nil` | `awsRegion` where the cache is located |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.enabled | bool | `false` | if `enabled` is false, no cache is used |
@@ -236,28 +239,36 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.config.oidcUrl | string | `nil` | `oidcUrl`  - where the access token can be verified at the IDP |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.enabled | bool | `false` | If `enabled` set to true the machine to machine plugin will be used |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.name | string | `"AuthClientCredentials"` | `Name` of the auth client credentials plugin |
+| gloo.authConfig.spec.configs.oauth.cache.cookieName | string | `"auth0-session"` | `CookieName` of the session cookie. Need to be `auth0-session` otherwise the TokenValidation plugin will not validate the cookie |
+| gloo.authConfig.spec.configs.oauth.cache.enabled | bool | `true` | If `enabled` set to true the Gloo redis cache will be used |
+| gloo.authConfig.spec.configs.oauth.cache.host | string | `"redis.gloo-system.svc.cluster.local:6379"` | Redis `host`. |
 | gloo.authConfig.spec.configs.oauth.clientId | string | `nil` | Registered `ClientID` at the IDP |
 | gloo.authConfig.spec.configs.oauth.clientSecretRef.name | string | `"webeam-oidc"` | Name of the `Secret`. Gloo expects a k8s secret with the key `oauth` and base64 encoded value `clientSecret: secretValue` **This value is ignored if `externalSecrets.oidc.key` is present.** |
 | gloo.authConfig.spec.configs.oauth.clientSecretRef.namespace | string | `nil` | Namespace were the `Secret` is located. If empty, release namespace is used. **This value is ignored if `externalSecrets.oidc.key` is present.** |
 | gloo.authConfig.spec.configs.oauth.cookieDomain | string | `nil` | The domain to be used for `id_token` and `access_token` cookies set after successful authentication. This has to be some kind of wildcard to support cross origin requests. If unset, the cookies get no domain set. |
 | gloo.authConfig.spec.configs.oauth.enabled | bool | `false` | If `enabled` set to true the oauth plugin from Gloo will be used |
 | gloo.authConfig.spec.configs.oauth.issuerUrl | string | `nil` | Issuer URL to the Identity Provider. Gloo adds `.well-known/openid-configuration` to the url automatically |
+| gloo.authConfig.spec.configs.oauth.maxAge | int | `0` | The `maxAge` of the session cookie.If set to `0` the cookie is valid for the existing browser session. |
 | gloo.authConfig.spec.configs.oauth.scopes | list | `[]` | List of OIDC scopes. `openid` is set per default by Gloo and must not be added here |
 | gloo.authConfig.spec.configs.oauth.strongAuthenticationLevel | string | `nil` | The strong authentication level. Possible values are: 4000, 7000. If not set, there is no strong authentication. |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds | string | `nil` | `allowedClientIds` **list (NOT string!)** of ids that are allowed by the plugin. If not given at all, all clients are allowed. If [], then no client is allowed. If [a, b], then a, b are allowed |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.awsRegion | string | `"eu-west-1"` | `awsRegion` where the cache is located |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.enabled | bool | `false` | if `enabled` is false, no cache is used |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.tableName | string | `"auth-cache-prod"` | `tableName` of the auth cache |
+| gloo.authConfig.spec.configs.tokenValidationPlugin.config.grpcAddress | string | `"auth-passthrough-token-validation.gloo-system.svc.cluster.local:9001"` |  |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.config.oidcUrl | string | `nil` | `oidcUrl` where the access token can be verified at the IDP |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.config.strongAuthenticationLevel | string | `nil` | The strong authentication level. Possible values are: 4000, 7000. If not set, there is no strong authentication. |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.enabled | bool | `false` | If `enabled` set to true the backend plugin will be used |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.name | string | `"AuthTokenValidation"` | `Name` of the auth token validation plugin |
 | gloo.enabled | bool | `true` | When set to true only the application's deployment resources will be installed with this chart. Can be used to explicitly avoid deploying a VirtualService resource. |
+| gloo.ingress.scope | string | `nil` | Signals Gloo which Gateway Proxy to use for deploying a Virtual Service into. Value must be one of `private`, `public` or `cluster-internal`. |
 | gloo.namespace | string | `"gloo-system"` | `Namespace` where all Gloo resources are deployed. |
 | gloo.upstream.fds | bool | `false` | Whitelist this upstream for `FDS`. [Gloo Function Discovery Mode] (https://docs.solo.io/gloo-edge/latest/installation/advanced_configuration/fds_mode/) |
 | gloo.upstream.namespace | string | `"gloo-system"` | `Namespace` where gloo upstream is deployed. |
-| gloo.virtualservice.spec.sslConfig.secretRef.name | string | `"gloo-public-tls"` | Name of the secret containing the certificate information for this deployment. |
+| gloo.virtualservice.spec.sslConfig.minimumProtocolVersion | string | `"TLSv1_2"` | Value of the minimum TLS protocol version. Accepted values are: TLSv1_2, TLSv1_3. |
+| gloo.virtualservice.spec.sslConfig.secretRef.name | string | `nil` | Name of the secret containing the certificate information for this deployment. |
 | gloo.virtualservice.spec.sslConfig.secretRef.namespace | string | `nil` | Namespace where the secret is located. If empty, gloo namespace is used. |
+| gloo.virtualservice.spec.virtualHost.cors.allowCredentials | bool | `false` | Specifies the Access-Control-Allow-Credentials header. Value is `false` by default for security reasons. |
 | gloo.virtualservice.spec.virtualHost.cors.allowHeaders | list | `["origin"]` | Specifies the content for the `access-control-allow-headers` header. In general this should not be changed. |
 | gloo.virtualservice.spec.virtualHost.cors.allowMethods | list | `["GET","POST","PUT","DELETE"]` | Specifies the HTTP methods to allow CORS for. |
 | gloo.virtualservice.spec.virtualHost.cors.allowOrigin | list | `[]` | Specifies the URLs of origins to allow CORS for. Origin URLs have to contain scheme, domain and port (if none-standard port is used). |
@@ -265,8 +276,10 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.virtualservice.spec.virtualHost.cors.exposeHeaders | list | `["origin"]` | Specifies the content for the `access-control-expose-headers` header. In general this should not be changed. |
 | gloo.virtualservice.spec.virtualHost.cors.maxAge | string | `"1d"` | Specifies the content for the `access-control-max-age` header. In general this should not be changed. |
 | gloo.virtualservice.spec.virtualHost.domains | list | `[]` | **String (Deprecated) or List** of `DNS domain names` this service will be published to. *Note:* This domain will also be used for the `callbackUrl`. If multiple domains are given, the first one will be used. |
+| gloo.virtualservice.spec.virtualHost.responseHeadersToAdd | list | `[{"name":"X-Content-Type-Options","value":"nosniff"},{"name":"Strict-Transport-Security","value":"max-age=31536000; includeSubDomains"},{"name":"Content-Security-Policy","value":"frame-ancestors 'self' *.bmwgroup.net *.bmw.com;"}]` | Map which specifies additional response headers which have to be added to every response of the VirtualHost. In general this map might be extended but the default values should not be removed as they are necessary for security reasons. |
 | gloo.virtualservice.spec.virtualHost.routes.additionalRoutes | list | `[]` | List of route configurations for this `VirtualService`. See [gloo VirtualService Specification](https://docs.solo.io/gloo-edge/latest/introduction/architecture/concepts/#virtual-services) for details |
 | gloo.virtualservice.spec.virtualHost.routes.appPath | string | `"/api"` | Path to `appUrl` where the service can be accessed. Pre-defined route in `VirtualService`. |
+| gloo.virtualservice.spec.virtualHost.routes.appPathTimeout | string | `nil` |  |
 | gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath | string | `nil` | Path to `callbackUrl` which needs to be registered at the Identity Provider. Pre-defined route in `VirtualService`. |
 | gloo.virtualservice.spec.virtualHost.routes.swagger.alternativePath | string | `"/docs"` | Alternative path to Swagger UI, this redirects to `...swagger.path`. |
 | gloo.virtualservice.spec.virtualHost.routes.swagger.enabled | bool | `false` | If set to `true` routing for `...swagger.path` and `...swagger.alternativePath` gets enabled. |
@@ -274,8 +287,12 @@ The following table lists the configurable parameters of the chart and its defau
 | istio.destinationRule.spec.trafficPolicy.tls.mode | string | `"ISTIO_MUTUAL"` | trafficPolicy [ClientTLSSettings-TLSmode](https://istio.io/latest/docs/reference/config/networking/destination-rule/#ClientTLSSettings-TLSmode) |
 | istio.enabled | bool | `true` | Enables mtls per workload (pod) |
 | istio.peerAuthentication.spec.mtls.mode | string | `"STRICT"` | mTLS mode for istio. [PeerAuthentication-MutualTLS-Mode](https://istio.io/latest/docs/reference/config/security/peer_authentication/#PeerAuthentication-MutualTLS-Mode) |
-| service.spec.ports.http.port | string | `"80"` | The http port the service is exposed to in the cluster. |
-| service.spec.ports.http.targetPort | string | `"80"` | The http port the service listens to and to which requests will be sent. |
-| service.spec.ports.https.port | string | `"443"` | The https port the service is exposed to in the cluster. |
-| service.spec.ports.https.targetPort | string | `"443"` | The http port the service listens to and to which requests will be sent. |
+| service.spec.ports.http.name | string | `"http"` | Name of the port within the service. If Istio is enabled, please check [Istio naming conventions](https://istio.io/latest/docs/ops/configuration/traffic-management/protocol-selection/#manual-protocol-selection) |
+| service.spec.ports.http.port | string | `"8080"` | The http port the service is exposed to in the cluster. If no port is defined, port mapping is disabled. |
+| service.spec.ports.http.protocol | string | `"TCP"` | The protocol the service accepts. Allowed protocols are UDP, TCP, or SCTP. |
+| service.spec.ports.http.targetPort | string | `""` | The http port the service listens to and to which requests will be sent. If no `targetPort` is defined, port will be used. |
+| service.spec.ports.https.name | string | `"https"` | Name of the port within the service. If Istio is enabled, please check [Istio naming conventions](https://istio.io/latest/docs/ops/configuration/traffic-management/protocol-selection/#manual-protocol-selection) |
+| service.spec.ports.https.port | string | `""` | The https port the service is exposed to in the cluster. If no port is defined, port mapping is disabled. |
+| service.spec.ports.https.protocol | string | `"TCP"` | The protocol the service accepts. Allowed protocols are UDP, TCP, or SCTP. |
+| service.spec.ports.https.targetPort | string | `""` | The http port the service listens to and to which requests will be sent. If no `targetPort` is defined, port will be used. |
 | service.spec.type | string | `"ClusterIP"` | Specify what kind of service to deploy. See [Kubernetes Service Spec](https://kubernetes.io/docs/concepts/services-networking/service/) for details |

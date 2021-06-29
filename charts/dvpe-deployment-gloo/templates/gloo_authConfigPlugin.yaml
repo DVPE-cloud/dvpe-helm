@@ -39,20 +39,21 @@ spec:
               {{- if .Values.gloo.authConfig.spec.configs.oauth.cookieDomain }}
               domain: {{ .Values.gloo.authConfig.spec.configs.oauth.cookieDomain | quote }}
               {{- end }}
-              maxAge: 0
+              maxAge: {{ .Values.gloo.authConfig.spec.configs.oauth.maxAge }}
+            {{- if .Values.gloo.authConfig.spec.configs.oauth.cache.enabled }}
             redis:
               cookieName: {{ .Values.gloo.authConfig.spec.configs.oauth.cache.cookieName }}
               options:
                 host: {{ .Values.gloo.authConfig.spec.configs.oauth.cache.host }}
+            {{- end }}
     {{- end }}
     {{- if .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.enabled }}
     - passThroughAuth:
-        config: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.oidcUrl }}
         grpc:
           address: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.grpcAddress }}
-    - pluginAuth:
-        name: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.name }}
         config:
+          cache:
+            disabled: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.disabled }}
           openIdConfigurationUrl: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.oidcUrl }}
           {{- if .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds }}
           allowedClientIds: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds }}
