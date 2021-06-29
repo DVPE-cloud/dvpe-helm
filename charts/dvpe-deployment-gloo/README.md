@@ -245,21 +245,18 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.authConfig.spec.configs.oauth.clientId | string | `nil` | Registered `ClientID` at the IDP |
 | gloo.authConfig.spec.configs.oauth.clientSecretRef.name | string | `"webeam-oidc"` | Name of the `Secret`. Gloo expects a k8s secret with the key `oauth` and base64 encoded value `clientSecret: secretValue` **This value is ignored if `externalSecrets.oidc.key` is present.** |
 | gloo.authConfig.spec.configs.oauth.clientSecretRef.namespace | string | `nil` | Namespace were the `Secret` is located. If empty, release namespace is used. **This value is ignored if `externalSecrets.oidc.key` is present.** |
-| gloo.authConfig.spec.configs.oauth.cookieDomain | string | `nil` | The domain to be used for `id_token` and `access_token` cookies set after successful authentication. This has to be some kind of wildcard to support cross origin requests. If unset, the cookies get no domain set. |
+| gloo.authConfig.spec.configs.oauth.cookieDomain | string | `nil` | The domain to be used for `id_token`, `access_token` or `auth0-session` cookies set after successful authentication. This has to be some kind of wildcard to support cross origin requests. If unset, the cookies get no domain set. |
 | gloo.authConfig.spec.configs.oauth.enabled | bool | `false` | If `enabled` set to true the oauth plugin from Gloo will be used |
 | gloo.authConfig.spec.configs.oauth.issuerUrl | string | `nil` | Issuer URL to the Identity Provider. Gloo adds `.well-known/openid-configuration` to the url automatically |
-| gloo.authConfig.spec.configs.oauth.maxAge | int | `0` | The `maxAge` of the session cookie.If set to `0` the cookie is valid for the existing browser session. |
+| gloo.authConfig.spec.configs.oauth.maxAge | int | `0` | The `maxAge` of the session cookie. Gloo will use the `maxAge` as TTL in Redis as well .If set to `0` the cookie is valid for the existing browser session. |
 | gloo.authConfig.spec.configs.oauth.scopes | list | `[]` | List of OIDC scopes. `openid` is set per default by Gloo and must not be added here |
 | gloo.authConfig.spec.configs.oauth.strongAuthenticationLevel | string | `nil` | The strong authentication level. Possible values are: 4000, 7000. If not set, there is no strong authentication. |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds | string | `nil` | `allowedClientIds` **list (NOT string!)** of ids that are allowed by the plugin. If not given at all, all clients are allowed. If [], then no client is allowed. If [a, b], then a, b are allowed |
-| gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.awsRegion | string | `"eu-west-1"` | `awsRegion` where the cache is located |
-| gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.enabled | bool | `false` | if `enabled` is false, no cache is used |
-| gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.tableName | string | `"auth-cache-prod"` | `tableName` of the auth cache |
+| gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.disabled | bool | `false` |  |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.config.grpcAddress | string | `"auth-passthrough-token-validation.gloo-system.svc.cluster.local:9001"` |  |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.config.oidcUrl | string | `nil` | `oidcUrl` where the access token can be verified at the IDP |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.config.strongAuthenticationLevel | string | `nil` | The strong authentication level. Possible values are: 4000, 7000. If not set, there is no strong authentication. |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.enabled | bool | `false` | If `enabled` set to true the backend plugin will be used |
-| gloo.authConfig.spec.configs.tokenValidationPlugin.name | string | `"AuthTokenValidation"` | `Name` of the auth token validation plugin |
 | gloo.enabled | bool | `true` | When set to true only the application's deployment resources will be installed with this chart. Can be used to explicitly avoid deploying a VirtualService resource. |
 | gloo.ingress.scope | string | `nil` | Signals Gloo which Gateway Proxy to use for deploying a Virtual Service into. Value must be one of `private`, `public` or `cluster-internal`. |
 | gloo.namespace | string | `"gloo-system"` | `Namespace` where all Gloo resources are deployed. |
