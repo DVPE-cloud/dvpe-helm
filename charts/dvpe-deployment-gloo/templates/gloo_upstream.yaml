@@ -19,6 +19,7 @@ spec:
     serviceName: {{ $serviceName }}-svc
     serviceNamespace: {{ .Release.Namespace }}
     servicePort: {{or .Values.service.spec.ports.https.port .Values.service.spec.ports.http.port}}
+  {{- if .Values.istio.enabled }}
   sslConfig:
     alpnProtocols:
       - istio
@@ -28,4 +29,5 @@ spec:
       targetUri: 127.0.0.1:8234
       validationContextName: istio_validation_context
 
-{{- end }}
+  {{- end }}
+{{- end}}

@@ -39,20 +39,22 @@ spec:
               {{- if .Values.gloo.authConfig.spec.configs.oauth.cookieDomain }}
               domain: {{ .Values.gloo.authConfig.spec.configs.oauth.cookieDomain | quote }}
               {{- end }}
-              maxAge: 0
+              maxAge: {{ .Values.gloo.authConfig.spec.configs.oauth.maxAge }}
+            {{- if .Values.gloo.authConfig.spec.configs.oauth.cache.enabled }}
+            redis:
+              cookieName: {{ .Values.gloo.authConfig.spec.configs.oauth.cache.cookieName }}
+              options:
+                host: {{ .Values.gloo.authConfig.spec.configs.oauth.cache.host }}
+            {{- end }}
     {{- end }}
     {{- if .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.enabled }}
-    - pluginAuth:
-        name: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.name }}
-        pluginFileName: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.name }}.so
-        exportedSymbolName: Plugin
+    - passThroughAuth:
+        grpc:
+          address: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.grpcAddress }}
         config:
-          openIdConfigurationUrl: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.oidcUrl }}
-          {{- if .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.enabled }}
           cache:
-            dynamoDBTableName: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.tableName }}
-            awsRegion:  {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.awsRegion }}
-          {{- end }}
+            disabled: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.disabled }}
+          openIdConfigurationUrl: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.oidcUrl }}
           {{- if .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds }}
           allowedClientIds: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds }}
           {{- end }}
@@ -87,14 +89,16 @@ spec:
           {{- end }}
     {{- end }}
     {{- if .Values.gloo.authConfig.spec.configs.authExtensionPlugin.enabled }}
-    - pluginAuth:
-        name: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.name }}
-        pluginFileName: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.name }}.so
-        exportedSymbolName: Plugin
+    - passThroughAuth:
         config:
-          openIdConfigurationUrl: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.config.oidcUrl }}
+          cache:
+            disabled: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.config.cache.disabled }}
           enableAccessTokenForwarding: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.config.enableAccessTokenForwarding }}
+          enableQAccountMatching: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.config.enableQAccountMatching }}
           enableSubjectForwarding: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.config.enableSubjectForwarding }}
+          openIdConfigurationUrl: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.config.oidcUrl }}
+        grpc:
+          address: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.config.grpcAddress }}
     {{- end }}
     {{- if .Values.gloo.authConfig.spec.configs.additionalPlugins }}
     {{- toYaml .Values.gloo.authConfig.spec.configs.additionalPlugins | nindent 4 }}

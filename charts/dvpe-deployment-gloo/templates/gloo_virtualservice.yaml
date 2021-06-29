@@ -14,6 +14,8 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   sslConfig:
+    parameters:
+      minimumProtocolVersion: {{ .Values.gloo.virtualservice.spec.sslConfig.minimumProtocolVersion }}
     secretRef:
       {{- if eq .Values.gloo.ingress.scope "public" }}
       name: gloo-public-tls
@@ -24,10 +26,19 @@ spec:
     sniDomains: {{ $domain }}
   virtualHost:
     domains: {{ $domain }}
-    {{- if or .Values.gloo.virtualservice.spec.virtualHost.cors.allowOrigin .Values.gloo.virtualservice.spec.virtualHost.cors.allowSubdomain }}
     options:
+      {{- if .Values.gloo.virtualservice.spec.virtualHost.responseHeadersToAdd }}
+      headerManipulation:
+        responseHeadersToAdd:
+        {{- range $key, $val := .Values.gloo.virtualservice.spec.virtualHost.responseHeadersToAdd}}
+        - header:
+            key: {{ $val.name }}
+            value: {{ $val.value }}
+        {{- end}}
+      {{- end}}
+      {{- if or .Values.gloo.virtualservice.spec.virtualHost.cors.allowOrigin .Values.gloo.virtualservice.spec.virtualHost.cors.allowSubdomain }}
       cors:
-        allowCredentials: true
+        allowCredentials: {{ .Values.gloo.virtualservice.spec.virtualHost.cors.allowCredentials }}
         allowHeaders:
           {{- range .Values.gloo.virtualservice.spec.virtualHost.cors.allowHeaders }}
           - {{ . }}
@@ -49,8 +60,11 @@ spec:
           - {{ . }}
           {{- end }}
         maxAge: {{ .Values.gloo.virtualservice.spec.virtualHost.cors.maxAge }}
-    {{- end }}
+        {{- end }}
     routes:
+      {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.additionalRoutes }}
+        {{- toYaml .Values.gloo.virtualservice.spec.virtualHost.routes.additionalRoutes | nindent 6 }}
+      {{- end }}
       {{- if and .Values.gloo.virtualservice.spec.virtualHost.routes.swagger.enabled .Values.gloo.virtualservice.spec.virtualHost.routes.swagger.alternativePath }}
       - matchers:
           - prefix: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.swagger.alternativePath }}
@@ -80,6 +94,9 @@ spec:
               name: {{ $upstreamName }}
               namespace: {{ .Values.gloo.upstream.namespace }}
         options:
+          {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.appPathTimeout }}
+          timeout: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.appPathTimeout | quote }}
+          {{- end}}
           extauth:
             configRef:
               name: {{ $serviceName}}-{{ .Values.gloo.authConfig.name }}
@@ -94,9 +111,6 @@ spec:
               name: {{ $upstreamName }}
               namespace: {{ .Values.gloo.upstream.namespace }}
       {{- end}}
-      {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.additionalRoutes }}
-    {{- toYaml .Values.gloo.virtualservice.spec.virtualHost.routes.additionalRoutes | nindent 6 }}
-      {{- end }}
 
 {{- if or .Values.gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath .Values.gloo.virtualservice.spec.virtualHost.routes.swagger.enabled }}
 
