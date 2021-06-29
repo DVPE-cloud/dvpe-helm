@@ -1,6 +1,6 @@
 # dvpe-deployment-gloo
 
-![Version: 2.1.0](https://img.shields.io/badge/Version-2.1.0-informational?style=flat-square)
+![Version: 2.2.0](https://img.shields.io/badge/Version-2.2.0-informational?style=flat-square)
 
 Helm chart for installing microservices as gloo enabled VirtualService definitions.
 
@@ -221,11 +221,13 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.authConfig.name | string | `"auth-plugin"` | Prefix of the `Auth Config Plugin`. Final name will be <prefix>-<service-name> |
 | gloo.authConfig.namespace | string | `nil` | Namespace where the `Auth Config Plugin` is located. If empty, release namespace is used. |
 | gloo.authConfig.spec.configs.additionalPlugins | string | `nil` | List of plugins which should be added to the plugin chain. Expected format is a valid yaml with the `pluginAuth`. See [gloo Plugin Auth](https://docs.solo.io/gloo/latest/guides/security/auth/extauth/plugin_auth/#create-an-authconfig-resource) for details |
+| gloo.authConfig.spec.configs.authExtensionPlugin.config.cache.disabled | bool | `false` | If `disabled` set to true the gloo redis will be used as cache |
 | gloo.authConfig.spec.configs.authExtensionPlugin.config.enableAccessTokenForwarding | bool | `false` | `enableAccessTokenForwarding` is a flag which tells whether the access_token should be forwarded or not |
+| gloo.authConfig.spec.configs.authExtensionPlugin.config.enableQAccountMatching | bool | `false` | `enableQAccountMatching` is a flag which forwards the user id (q-number) to the upstream. Only relevant if the user is using a different user id (e.g. c-number) for logging |
 | gloo.authConfig.spec.configs.authExtensionPlugin.config.enableSubjectForwarding | bool | `false` | `enableSubjectForwarding` is a flag which tells whether the subject (q-number) should be forwarded or not |
+| gloo.authConfig.spec.configs.authExtensionPlugin.config.grpcAddress | string | `"auth-passthrough-extension.gloo-system.svc.cluster.local:9001"` | `grpcAddress`  - where the access token can be verified at the IDP |
 | gloo.authConfig.spec.configs.authExtensionPlugin.config.oidcUrl | string | `nil` | `oidcUrl`  - where the access token can be verified at the IDP |
 | gloo.authConfig.spec.configs.authExtensionPlugin.enabled | bool | `false` | If `enabled` set to true the auth code flow extension plugin will be used |
-| gloo.authConfig.spec.configs.authExtensionPlugin.name | string | `"AuthExtension"` | `Name` of the auth code flow extension plugin |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.config.allowedClientIds | list | `[]` | `allowedClientIds` **list (NOT string!)** of ids that are allowed by the plugin. If not given at all, all clients are allowed. If [], then no client is allowed. If [a, b], then a, b are allowed |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.awsRegion | string | `nil` | `awsRegion` where the cache is located |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.enabled | bool | `false` | if `enabled` is false, no cache is used |
@@ -237,22 +239,24 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.config.oidcUrl | string | `nil` | `oidcUrl`  - where the access token can be verified at the IDP |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.enabled | bool | `false` | If `enabled` set to true the machine to machine plugin will be used |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.name | string | `"AuthClientCredentials"` | `Name` of the auth client credentials plugin |
+| gloo.authConfig.spec.configs.oauth.cache.cookieName | string | `"auth0-session"` | `CookieName` of the session cookie. Need to be `auth0-session` otherwise the TokenValidation plugin will not validate the cookie |
+| gloo.authConfig.spec.configs.oauth.cache.enabled | bool | `true` | If `enabled` set to true the Gloo redis cache will be used |
+| gloo.authConfig.spec.configs.oauth.cache.host | string | `"redis.gloo-system.svc.cluster.local:6379"` | Redis `host`. |
 | gloo.authConfig.spec.configs.oauth.clientId | string | `nil` | Registered `ClientID` at the IDP |
 | gloo.authConfig.spec.configs.oauth.clientSecretRef.name | string | `"webeam-oidc"` | Name of the `Secret`. Gloo expects a k8s secret with the key `oauth` and base64 encoded value `clientSecret: secretValue` **This value is ignored if `externalSecrets.oidc.key` is present.** |
 | gloo.authConfig.spec.configs.oauth.clientSecretRef.namespace | string | `nil` | Namespace were the `Secret` is located. If empty, release namespace is used. **This value is ignored if `externalSecrets.oidc.key` is present.** |
-| gloo.authConfig.spec.configs.oauth.cookieDomain | string | `nil` | The domain to be used for `id_token` and `access_token` cookies set after successful authentication. This has to be some kind of wildcard to support cross origin requests. If unset, the cookies get no domain set. |
+| gloo.authConfig.spec.configs.oauth.cookieDomain | string | `nil` | The domain to be used for `id_token`, `access_token` or `auth0-session` cookies set after successful authentication. This has to be some kind of wildcard to support cross origin requests. If unset, the cookies get no domain set. |
 | gloo.authConfig.spec.configs.oauth.enabled | bool | `false` | If `enabled` set to true the oauth plugin from Gloo will be used |
 | gloo.authConfig.spec.configs.oauth.issuerUrl | string | `nil` | Issuer URL to the Identity Provider. Gloo adds `.well-known/openid-configuration` to the url automatically |
+| gloo.authConfig.spec.configs.oauth.maxAge | int | `0` | The `maxAge` of the session cookie. Gloo will use the `maxAge` as TTL in Redis as well .If set to `0` the cookie is valid for the existing browser session. |
 | gloo.authConfig.spec.configs.oauth.scopes | list | `[]` | List of OIDC scopes. `openid` is set per default by Gloo and must not be added here |
 | gloo.authConfig.spec.configs.oauth.strongAuthenticationLevel | string | `nil` | The strong authentication level. Possible values are: 4000, 7000. If not set, there is no strong authentication. |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds | string | `nil` | `allowedClientIds` **list (NOT string!)** of ids that are allowed by the plugin. If not given at all, all clients are allowed. If [], then no client is allowed. If [a, b], then a, b are allowed |
-| gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.awsRegion | string | `"eu-west-1"` | `awsRegion` where the cache is located |
-| gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.enabled | bool | `false` | if `enabled` is false, no cache is used |
-| gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.tableName | string | `"auth-cache-prod"` | `tableName` of the auth cache |
+| gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.disabled | bool | `false` |  |
+| gloo.authConfig.spec.configs.tokenValidationPlugin.config.grpcAddress | string | `"auth-passthrough-token-validation.gloo-system.svc.cluster.local:9001"` |  |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.config.oidcUrl | string | `nil` | `oidcUrl` where the access token can be verified at the IDP |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.config.strongAuthenticationLevel | string | `nil` | The strong authentication level. Possible values are: 4000, 7000. If not set, there is no strong authentication. |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.enabled | bool | `false` | If `enabled` set to true the backend plugin will be used |
-| gloo.authConfig.spec.configs.tokenValidationPlugin.name | string | `"AuthTokenValidation"` | `Name` of the auth token validation plugin |
 | gloo.enabled | bool | `true` | When set to true only the application's deployment resources will be installed with this chart. Can be used to explicitly avoid deploying a VirtualService resource. |
 | gloo.ingress.scope | string | `nil` | Signals Gloo which Gateway Proxy to use for deploying a Virtual Service into. Value must be one of `private`, `public` or `cluster-internal`. |
 | gloo.namespace | string | `"gloo-system"` | `Namespace` where all Gloo resources are deployed. |

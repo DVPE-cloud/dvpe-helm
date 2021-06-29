@@ -62,6 +62,9 @@ spec:
         maxAge: {{ .Values.gloo.virtualservice.spec.virtualHost.cors.maxAge }}
         {{- end }}
     routes:
+      {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.additionalRoutes }}
+        {{- toYaml .Values.gloo.virtualservice.spec.virtualHost.routes.additionalRoutes | nindent 6 }}
+      {{- end }}
       {{- if and .Values.gloo.virtualservice.spec.virtualHost.routes.swagger.enabled .Values.gloo.virtualservice.spec.virtualHost.routes.swagger.alternativePath }}
       - matchers:
           - prefix: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.swagger.alternativePath }}
@@ -108,9 +111,6 @@ spec:
               name: {{ $upstreamName }}
               namespace: {{ .Values.gloo.upstream.namespace }}
       {{- end}}
-      {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.additionalRoutes }}
-    {{- toYaml .Values.gloo.virtualservice.spec.virtualHost.routes.additionalRoutes | nindent 6 }}
-      {{- end }}
 
 {{- if or .Values.gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath .Values.gloo.virtualservice.spec.virtualHost.routes.swagger.enabled }}
 

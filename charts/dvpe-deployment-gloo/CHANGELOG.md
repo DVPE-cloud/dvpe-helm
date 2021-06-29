@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added 
+* Gloo Redis cache is enabled and cookie maxAge can be set
+* Changed TokenValidation and Extension plugin to passthrough mechanism
+
+### Fixed
+* Remove Istio SDS in Gloo upstream if Istio is not enabled
+* Removed Gloo label in secret for the ClientCredentials flow
+* Fixed VirutalService `additionalRoutes` order
+* Fixed typos
+
 ## [2.1.0]
 
 ### Added

@@ -5,7 +5,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ $serviceName }}-additional-parametes
+  name: {{ $serviceName }}-additional-parameters
 data:
   {{- range $key, $value := .Values.additionalparameters.config }}
     {{ $key }}: {{ $value | quote }}
