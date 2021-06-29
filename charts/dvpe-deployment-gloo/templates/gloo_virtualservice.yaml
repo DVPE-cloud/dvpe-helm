@@ -8,6 +8,8 @@
 apiVersion: gateway.solo.io/v1
 kind: VirtualService
 metadata:
+  labels:
+    gloo.wadtfy.bmwgroup.net/ingress-scope: {{ .Values.gloo.ingress.scope }}
   name: {{ $serviceName }}-virtualservice
   namespace: {{ .Release.Namespace }}
 spec:
@@ -15,11 +17,15 @@ spec:
     parameters:
       minimumProtocolVersion: {{ .Values.gloo.virtualservice.spec.sslConfig.minimumProtocolVersion }}
     secretRef:
+      {{- if eq .Values.gloo.ingress.scope "public" }}
+      name: gloo-public-tls
+      {{- else }}
       name: {{ .Values.gloo.virtualservice.spec.sslConfig.secretRef.name }}
+      {{- end }}
       namespace: {{default .Values.gloo.namespace .Values.gloo.virtualservice.spec.sslConfig.secretRef.namespace }}
     sniDomains: {{ $domain }}
   virtualHost:
-    domain: {{ $domain }}
+    domains: {{ $domain }}
     options:
       {{- if .Values.gloo.virtualservice.spec.virtualHost.responseHeadersToAdd }}
       headerManipulation:
@@ -116,8 +122,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   virtualHost:
-    domains:
-      - {{ .Values.gloo.virtualservice.spec.virtualHost.domains }}
+    domains: {{ $domain }}
     routes:
       - matchers:
         {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath }}
@@ -129,7 +134,6 @@ spec:
         {{- end }}
         {{- end }}
         redirectAction:
-          hostRedirect: {{ .Values.gloo.virtualservice.spec.virtualHost.domains }}
           httpsRedirect: true
 {{- end }}
 

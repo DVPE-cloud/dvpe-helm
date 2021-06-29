@@ -9,13 +9,17 @@ metadata:
 spec:
   type: {{ .Values.service.spec.type }}
   ports:
-    - name: http
-      protocol: TCP
+    {{- if .Values.service.spec.ports.http.port }}
+    - name: {{ .Values.service.spec.ports.http.name }}
+      protocol: {{ .Values.service.spec.ports.http.protocol }}
       port: {{ .Values.service.spec.ports.http.port }}
       targetPort: {{ .Values.service.spec.ports.http.targetPort }}
-    - name: https
-      protocol: TCP
+    {{- end }}
+    {{- if .Values.service.spec.ports.https.port }}
+    - name: {{ .Values.service.spec.ports.https.name }}
+      protocol: {{ .Values.service.spec.ports.https.protocol }}
       port: {{ .Values.service.spec.ports.https.port }}
       targetPort: {{ .Values.service.spec.ports.https.targetPort }}
+    {{- end }}
   selector:
     app: {{ $serviceName }}

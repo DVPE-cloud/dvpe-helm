@@ -5,16 +5,41 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [2.1.0]
 
-## [2.0.1]
+### Added
+* Introduced new field `gloo.ingress.scope` which tells the Gloo VirtualService which of the existing Gateway Proxies to reference (public, private, cluster-internal).
+* Added initial version of `values.schema.json` for parameter validation of `values.yaml` file.
+
+## [2.0.6]
+
+### Fixed
+* Updated CHANGELOG.md and version conflicts. No functional changes included.
+
+## [2.0.5]
+
+### Fixed
+* Fixed port mapping logic in service.yaml to only support either http or https mappings 
+
+## [2.0.4]
+
+### Fixed
+* Remove replicas in the deployment.yaml when the HPA is enabled. Fixes an issue with the ArgoCD auto sync and the HPA (https://argoproj.github.io/argo-cd/user-guide/best_practices/#leaving-room-for-imperativeness).  
+
+## [2.0.3]
+
+### Fixed
+* Typo in gloo virtual service domain attribute
+* Enable virtual service for http-https redirect with multiple domains
+
+## [2.0.2]
 
 ### Changed
 * Enable List and String for VirtualService Domain.
 * Helper Function to create authorizationCode.appUrl from the given Domain.
 
 ### Deprecated
-+ VirtualService Domain as String will not be supported in `3.0.0`
+* VirtualService Domain as String will not be supported in `3.0.0`
 
 ## [2.0.0] - 2021-04-07
 
@@ -128,5 +153,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.3.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-1.3.0/charts/dvpe-deployment-gloo
 [1.3.1]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-1.3.1/charts/dvpe-deployment-gloo
 [2.0.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.0.0/charts/dvpe-deployment-gloo
-[2.0.1]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.0.1/charts/dvpe-deployment-gloo
-
+[2.0.2]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.0.2/charts/dvpe-deployment-gloo
+[2.0.3]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.0.3/charts/dvpe-deployment-gloo
+[2.0.4]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.0.4/charts/dvpe-deployment-gloo
+[2.0.5]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.0.5/charts/dvpe-deployment-gloo
+[2.0.6]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.0.6/charts/dvpe-deployment-gloo
+[2.1.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.1.0/charts/dvpe-deployment-gloo

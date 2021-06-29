@@ -1,0 +1,15 @@
+# Values for default netfilter
+
+# -------------------------------#
+# values.yaml value section      #
+# -------------------------------#
+netfilter:
+  # netfilter.enabled -- Enable or disable the netfilter rule injections
+  enabled: true
+  blocked:
+    # netfilter.blocked.interfaces -- Which kubelet host interfaces should be used to apply the rules   
+    interfaces:
+      - eni+
+    # netfilter.blocked.ipv4 -- Which IPv4 addresses should be blocked from access by the netfilter.blocked.interfaces
+    ipv4:
+      - 169.254.169.254/32
