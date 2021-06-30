@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+
+## [2.2.0]
+
 ### Added 
 * Gloo Redis cache is enabled and cookie maxAge can be set
 * Changed TokenValidation and Extension plugin to passthrough mechanism
@@ -171,3 +174,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [2.0.5]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.0.5/charts/dvpe-deployment-gloo
 [2.0.6]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.0.6/charts/dvpe-deployment-gloo
 [2.1.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.1.0/charts/dvpe-deployment-gloo
+[2.2.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.2.0/charts/dvpe-deployment-gloo
