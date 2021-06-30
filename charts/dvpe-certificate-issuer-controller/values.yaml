@@ -21,5 +21,5 @@ issuercontroller:
       # issuercontroller.spec.image.pullPolicy -- The default rule for downloading images.
       pullPolicy: Always
   externalsecrets:
-    # issuercontroller.externalsecrets.name -- The name of external secret key (dataFroms)
+    # issuercontroller.externalsecrets.name -- The name of the external secret key containing the docker credentials for this deployment
     name: 

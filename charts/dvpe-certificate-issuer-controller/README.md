@@ -2,7 +2,7 @@
 
 ![Version: 0.0.1](https://img.shields.io/badge/Version-0.0.1-informational?style=flat-square)
 
-Helm chart for deploy certificate issuer controller
+Helm chart for deploying a custom certificate issuer controller. The certificate issuer controller is a [cert-manager](https://cert-manager.io/docs/) resource managing certificate requests in a private PKI.
 
 ## Installation
 Installs dvpe-helm certificate issuer controller on an existing Kubernetes cluster.
@@ -32,7 +32,7 @@ s
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| issuercontroller.externalsecrets.name | string | `nil` | The name of external secret key (dataFroms) |
+| issuercontroller.externalsecrets.name | string | `nil` | The name of the external secret key containing the docker credentials for this deployment |
 | issuercontroller.namespace | string | `nil` | Namespace for issuer-controller deployment |
 | issuercontroller.plane.name | string | `"issuer-controller"` | Name of the Controller Plane |
 | issuercontroller.spec.image | object | `{"name":null,"pullPolicy":"Always","repository":null,"tag":null}` | Name of issuer-controller deployment image |
