@@ -1,0 +1,25 @@
+# Values for issuer-controller
+
+# -------------------------------#
+# values.yaml value section      #
+# -------------------------------#
+issuercontroller:
+  # issuercontroller.namespace -- Namespace for issuer-controller deployment
+  namespace: 
+  plane:
+    # issuercontroller.plane.name -- Name of the Controller Plane
+    name: issuer-controller
+  spec:
+    # issuercontroller.spec.image -- Name of issuer-controller deployment image
+    image:
+      # issuercontroller.spec.image.repository -- The docker repository to pull the service image from.
+      repository: 
+      # issuercontroller.spec.image.name -- The image name to use.
+      name: 
+      # issuercontroller.spec.image.tag -- The image version to use.
+      tag: 
+      # issuercontroller.spec.image.pullPolicy -- The default rule for downloading images.
+      pullPolicy: Always
+  externalsecrets:
+    # issuercontroller.externalsecrets.name -- The name of the external secret key containing the docker credentials for this deployment
+    name: 
