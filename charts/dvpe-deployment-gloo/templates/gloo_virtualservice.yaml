@@ -95,7 +95,7 @@ spec:
               namespace: {{ .Values.gloo.upstream.namespace }}
         options:
           {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.appPathRewrite }}
-            prefixRewrite: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.appPathRewrite}}
+          prefixRewrite: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.appPathRewrite }}
           {{- end}}
           {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.appPathTimeout }}
           timeout: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.appPathTimeout | quote }}

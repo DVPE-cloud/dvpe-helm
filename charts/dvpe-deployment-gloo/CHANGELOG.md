@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.2.2]
+
+### Fixed
+* PrefixRewrite indentation
+
 ## [2.2.1]
 
 ### Added
@@ -181,3 +186,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [2.1.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.1.0/charts/dvpe-deployment-gloo
 [2.2.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.2.0/charts/dvpe-deployment-gloo
 [2.2.1]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.2.1/charts/dvpe-deployment-gloo
+[2.2.2]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.2.2/charts/dvpe-deployment-gloo
