@@ -94,6 +94,9 @@ spec:
               name: {{ $upstreamName }}
               namespace: {{ .Values.gloo.upstream.namespace }}
         options:
+          {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.appPathRewrite }}
+            prefixRewrite: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.appPathRewrite}}
+          {{- end}}
           {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.appPathTimeout }}
           timeout: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.appPathTimeout | quote }}
           {{- end}}
@@ -108,7 +111,7 @@ spec:
         routeAction:
           single:
             upstream:
-              name: {{ $upstreamName }}
+              name: {{ default $upstreamName .Values.gloo.virtualservice.spec.virtualHost.routes.rootPath.upstream }}
               namespace: {{ .Values.gloo.upstream.namespace }}
       {{- end}}
 
