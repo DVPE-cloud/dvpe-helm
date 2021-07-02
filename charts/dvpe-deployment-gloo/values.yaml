@@ -183,6 +183,9 @@ gloo:
           appPath: /api
           # gloo.virtualservice.spec.virtualHost.routes.timeout -- Custom timeout for requests to appPath. For example `60s`.
           appPathTimeout:
+          rootPath:
+            # gloo.virtualservice.spec.virtualHost.routes.rootPath.upstream -- Name of the `upstream` for the root path. This path will be only created if the appPath is not the rootPath.
+            upstream:
           # gloo.virtualservice.spec.virtualHost.routes.additionalRoutes -- List of route configurations for this `VirtualService`. See [gloo VirtualService Specification](https://docs.solo.io/gloo-edge/latest/introduction/architecture/concepts/#virtual-services) for details
           additionalRoutes: []
           swagger:

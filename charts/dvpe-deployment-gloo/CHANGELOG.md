@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.2.1]
+
+### Added
+* Parameter to add a custom upstream to the root path if root path is not the app path
 
 ## [2.2.0]
 

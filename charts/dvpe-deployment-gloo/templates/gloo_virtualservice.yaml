@@ -108,7 +108,7 @@ spec:
         routeAction:
           single:
             upstream:
-              name: {{ $upstreamName }}
+              name: {{ default $upstreamName .Values.gloo.virtualservice.spec.virtualHost.routes.rootPath.upstream }}
               namespace: {{ .Values.gloo.upstream.namespace }}
       {{- end}}
 
