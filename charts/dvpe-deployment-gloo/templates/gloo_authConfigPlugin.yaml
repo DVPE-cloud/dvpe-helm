@@ -52,8 +52,6 @@ spec:
         grpc:
           address: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.grpcAddress }}
         config:
-          cache:
-            disabled: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.disabled }}
           openIdConfigurationUrl: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.oidcUrl }}
           {{- if .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds }}
           allowedClientIds: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds }}
@@ -91,8 +89,6 @@ spec:
     {{- if .Values.gloo.authConfig.spec.configs.authExtensionPlugin.enabled }}
     - passThroughAuth:
         config:
-          cache:
-            disabled: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.config.cache.disabled }}
           enableAccessTokenForwarding: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.config.enableAccessTokenForwarding }}
           enableQAccountMatching: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.config.enableQAccountMatching }}
           enableSubjectForwarding: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.config.enableSubjectForwarding }}
