@@ -48,9 +48,8 @@ rules:
 - apiGroups:
   - cert-manager.io
   resourceNames: 
-  {{- range $key, $val := .Values.issuercontroller.rbac.clusterrole.resourceNames }}
-    - {{ $val }}
-  {{- end }}
+    - issuers.controller-manager.dvpe-cloud.github.io/*
+    - clusterissuers.controller-manager.dvpe-cloud.github.io/*
   resources:
   - signers
   verbs:
@@ -87,7 +86,7 @@ rules:
   - patch
   - update
 - apiGroups:
-  - {{ .Values.issuercontroller.rbac.group }}
+  - controller-manager.dvpe-cloud.github.io
   resources:
   - issuers
   verbs:
@@ -99,7 +98,7 @@ rules:
   - update
   - watch
 - apiGroups:
-  - {{ .Values.issuercontroller.rbac.group }}
+  - controller-manager.dvpe-cloud.github.io
   resources:
   - issuers/status
   verbs:

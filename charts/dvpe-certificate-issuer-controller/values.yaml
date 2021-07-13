@@ -11,12 +11,6 @@ issuercontroller:
   plane:
     # issuercontroller.plane.name -- Name of the Controller Plane
     name: issuer-controller
-  rbac:
-    # issuercontroller.rbac.group -- Set RBAC Permissions to specific API Group
-    group: issuer-group
-    clusterrole:
-      # issuercontroller.rbac.clusterrole.resourceNames -- List of resource names which gets approve permission by cert-manager api-group
-      resourceNames:
   spec:
     # issuercontroller.spec.image -- Name of issuer-controller deployment image
     image:
