@@ -19,8 +19,10 @@ spec:
     secretRef:
       {{- if eq .Values.gloo.ingress.scope "public" }}
       name: gloo-public-tls
-      {{- else }}
+      {{- else if  .Values.gloo.virtualservice.spec.sslConfig.secretRef }}
       name: {{ .Values.gloo.virtualservice.spec.sslConfig.secretRef.name }}
+      {{- else -}}
+      name: {{$serviceName}}-private-tls-by-issuer
       {{- end }}
       namespace: {{default .Values.gloo.namespace .Values.gloo.virtualservice.spec.sslConfig.secretRef.namespace }}
     sniDomains: {{ $domain }}
