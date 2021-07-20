@@ -20,10 +20,10 @@ spec:
       {{- if eq .Values.gloo.ingress.scope "public" }}
       name: gloo-public-tls
       namespace: {{ .Values.gloo.namespace -}}
-      {{ else if  .Values.gloo.virtualservice.spec.sslConfig.secretRef.name  }}
+      {{ else if  (ne (.Values.gloo.virtualservice.spec.sslConfig.secretRef | toString) "map[]")   }}
       name: {{ .Values.gloo.virtualservice.spec.sslConfig.secretRef.name }}
-      namespace: {{ .Values.gloo.virtualservice.spec.sslConfig.secretRef.namespace }}
-      {{ else -}}
+      namespace: {{ .Values.gloo.virtualservice.spec.sslConfig.secretRef.namespace -}}
+      {{ else }}
       name: {{$serviceName}}-private-tls-by-issuer
       namespace: {{ .Release.Namespace -}}
     {{ end }}
