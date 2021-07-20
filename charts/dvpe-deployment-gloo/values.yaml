@@ -337,3 +337,21 @@ istio:
         tls:
           # istio.destinationRule.spec.trafficPolicy.tls.mode -- trafficPolicy [ClientTLSSettings-TLSmode](https://istio.io/latest/docs/reference/config/networking/destination-rule/#ClientTLSSettings-TLSmode)
           mode: ISTIO_MUTUAL
+# -------------------------------------#
+# Certificate value section            #
+# -------------------------------------#
+certificate:
+      # certificate.organizations -- list of organization listed in created certificate details
+      organizations: []
+      # certificate.countries -- list of countries listed in created certificate details
+      countries: []
+       # certificate.localities -- list of localities listed in created certificate details
+      localities: []
+       # certificate.provinces -- list of provinces listed in created certificate details
+      provinces: []
+       # certificate.organizationalUnits -- list of organizationalUnits listed in created certificate details
+      organizationalUnits: []
+       # certificate.emailAddresses -- list of emailAddresses listed in created certificate details
+      emailAddresses: []
+       # certificate.dnsNames -- list of dnsNames listed in created certificate details
+      dnsNames: []
