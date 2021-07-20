@@ -19,14 +19,14 @@ spec:
     secretRef:
       {{- if eq .Values.gloo.ingress.scope "public" }}
       name: gloo-public-tls
-      namespace: {{ .Values.gloo.namespace }}
-      {{- else if  .Values.gloo.virtualservice.spec.sslConfig.secretRef.name }}
+      namespace: {{ .Values.gloo.namespace -}}
+      {{ else if  .Values.gloo.virtualservice.spec.sslConfig.secretRef.name  }}
       name: {{ .Values.gloo.virtualservice.spec.sslConfig.secretRef.name }}
       namespace: {{ .Values.gloo.virtualservice.spec.sslConfig.secretRef.namespace }}
-      {{- else -}}
+      {{ else -}}
       name: {{$serviceName}}-private-tls-by-issuer
-      namespace: {{ .Release.Namespace }}
-      {{- end }}
+      namespace: {{ .Release.Namespace -}}
+    {{ end }}
     sniDomains: {{ $domain }}
   virtualHost:
     domains: {{ $domain }}
