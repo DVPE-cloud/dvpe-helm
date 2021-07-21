@@ -1,6 +1,6 @@
 # dvpe-deployment-gloo
 
-![Version: 2.3.1](https://img.shields.io/badge/Version-2.3.1-informational?style=flat-square)
+![Version: 2.3.2](https://img.shields.io/badge/Version-2.3.2-informational?style=flat-square)
 
 Helm chart for installing microservices as gloo enabled VirtualService definitions.
 
@@ -198,6 +198,7 @@ The following table lists the configurable parameters of the chart and its defau
 | certificate.organizationalUnits | list | `[]` | list of organizationalUnits listed in created certificate details |
 | certificate.organizations | list | `[]` | list of organization listed in created certificate details |
 | certificate.provinces | list | `[]` | list of provinces listed in created certificate details |
+| certificate.useCustomIssuer | bool | `true` | If set to `true` the default issuer's configuration settings will be used. This requires a custom issuer to be installed. |
 | datadog.enabled | bool | `true` | When set to true Datadog is enabled and all logs, metrics and traces will be sent to Datadog. |
 | datadog.env | string | `"none"` | Label in Datadog for the target environment - e.g. test, int, prod or an abbreviated k8s cluster name. |
 | datadog.source | string | `nil` | Defines the source which creates log outputs. Source defines the log format and triggers Datadog parser pipelines |
