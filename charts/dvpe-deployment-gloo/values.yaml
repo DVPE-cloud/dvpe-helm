@@ -145,6 +145,8 @@ gloo:
           # gloo.virtualservice.spec.sslConfig.secretRef.namespace -- Namespace where the secret is located. If empty, gloo namespace is used.
           namespace:
       virtualHost:
+        # gloo.virtualservice.spec.virtualHost.enableCsrf -- Enable protection against CSRF (recommended for applications having front-end and back-end)
+        enableCsrf: false
         # gloo.virtualservice.spec.virtualHost.domains -- **String (Deprecated) or List** of `DNS domain names` this service will be published to. *Note:* This domain will also be used for the `callbackUrl`. If multiple domains are given, the first one will be used.
         domains: []
         cors:

@@ -1,6 +1,6 @@
 # dvpe-deployment-gloo
 
-![Version: 2.3.2](https://img.shields.io/badge/Version-2.3.2-informational?style=flat-square)
+![Version: 2.3.3](https://img.shields.io/badge/Version-2.3.3-informational?style=flat-square)
 
 Helm chart for installing microservices as gloo enabled VirtualService definitions.
 
@@ -279,6 +279,7 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.virtualservice.spec.virtualHost.cors.exposeHeaders | list | `["origin"]` | Specifies the content for the `access-control-expose-headers` header. In general this should not be changed. |
 | gloo.virtualservice.spec.virtualHost.cors.maxAge | string | `"1d"` | Specifies the content for the `access-control-max-age` header. In general this should not be changed. |
 | gloo.virtualservice.spec.virtualHost.domains | list | `[]` | **String (Deprecated) or List** of `DNS domain names` this service will be published to. *Note:* This domain will also be used for the `callbackUrl`. If multiple domains are given, the first one will be used. |
+| gloo.virtualservice.spec.virtualHost.enableCsrf | bool | `false` | Enable protection against CSRF (recommended for applications having front-end and back-end) |
 | gloo.virtualservice.spec.virtualHost.responseHeadersToAdd | list | `[{"name":"X-Content-Type-Options","value":"nosniff"},{"name":"Strict-Transport-Security","value":"max-age=31536000; includeSubDomains"},{"name":"Content-Security-Policy","value":"frame-ancestors 'self' *.bmwgroup.net *.bmw.com;"}]` | Map which specifies additional response headers which have to be added to every response of the VirtualHost. In general this map might be extended but the default values should not be removed as they are necessary for security reasons. |
 | gloo.virtualservice.spec.virtualHost.routes.additionalRoutes | list | `[]` | List of route configurations for this `VirtualService`. See [gloo VirtualService Specification](https://docs.solo.io/gloo-edge/latest/introduction/architecture/concepts/#virtual-services) for details |
 | gloo.virtualservice.spec.virtualHost.routes.appPath | string | `"/api"` | Path to `appUrl` where the service can be accessed. Pre-defined route in `VirtualService`. |
