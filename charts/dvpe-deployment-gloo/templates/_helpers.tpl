@@ -40,6 +40,29 @@
   {{- end }}
 {{- end -}}
 
+
+{{/*TODO: Check if domain may be string or list. remove if not needed*/}}
+{{/* If domains are defined as string it converts domains to single element list, if domians is a list this list is returned  */}}
+{{- define "gloo.virtualservice.spec.virtualHost.domains.as.list" -}}
+  {{- if kindIs "string" .Values.gloo.virtualservice.spec.virtualHost.domains -}}
+   - {{ .Values.gloo.virtualservice.spec.virtualHost.domains}}
+  {{- else -}}
+    {{- range .Values.gloo.virtualservice.spec.virtualHost.domains }}
+      - {{ . }}
+    {{- end }}
+  {{- end }}
+{{- end -}}
+
+{{/*TODO: Check if domain may be string or list. remove if not needed*/}}
+{{/* If domains are defined as string string value is returned, if domians is a list the first value from the list ist returned */}}
+{{- define "gloo.virtualservice.spec.virtualHost.domains.first" -}}
+  {{- if kindIs "string" .Values.gloo.virtualservice.spec.virtualHost.domains -}}
+   {{ .Values.gloo.virtualservice.spec.virtualHost.domains}}
+  {{- else -}}
+    {{index .Values.gloo.virtualservice.spec.virtualHost.domains 0}}
+  {{- end }}
+{{- end -}}
+
 {{/*TODO: Check functionality and simplify with next major version upgrade */}}
 {{/* Expand the oauth2.oidcAuthorizationCode.appUrl with the protocol and the domain */}}
 {{- define "oauth2.oidcAuthorizationCode.appUrl" -}}

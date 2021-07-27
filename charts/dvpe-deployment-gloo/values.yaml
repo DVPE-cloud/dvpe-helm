@@ -145,6 +145,8 @@ gloo:
           # gloo.virtualservice.spec.sslConfig.secretRef.namespace -- Namespace where the secret is located. If empty, gloo namespace is used.
           namespace:
       virtualHost:
+        # gloo.virtualservice.spec.virtualHost.enableCsrf -- Enable protection against CSRF (recommended for applications having front-end and back-end)
+        enableCsrf: false
         # gloo.virtualservice.spec.virtualHost.domains -- **String (Deprecated) or List** of `DNS domain names` this service will be published to. *Note:* This domain will also be used for the `callbackUrl`. If multiple domains are given, the first one will be used.
         domains: []
         cors:
@@ -181,8 +183,13 @@ gloo:
           callbackUrlPath:
           # gloo.virtualservice.spec.virtualHost.routes.appPath -- Path to `appUrl` where the service can be accessed. Pre-defined route in `VirtualService`.
           appPath: /api
+          # gloo.virtualservice.spec.virtualHost.routes.appPathRewrite -- `prefixRewrite` of the appPath. If empty no rewrite is set.
+          appPathRewrite:
           # gloo.virtualservice.spec.virtualHost.routes.timeout -- Custom timeout for requests to appPath. For example `60s`.
           appPathTimeout:
+          rootPath:
+            # gloo.virtualservice.spec.virtualHost.routes.rootPath.upstream -- Name of the `upstream` for the root path. This path will be only created if the appPath is not the rootPath.
+            upstream:
           # gloo.virtualservice.spec.virtualHost.routes.additionalRoutes -- List of route configurations for this `VirtualService`. See [gloo VirtualService Specification](https://docs.solo.io/gloo-edge/latest/introduction/architecture/concepts/#virtual-services) for details
           additionalRoutes: []
           swagger:
@@ -238,9 +245,6 @@ gloo:
           # gloo.authConfig.spec.configs.tokenValidationPlugin.name -- `Name` of the auth token validation plugin
           config:
             grpcAddress: 'auth-passthrough-token-validation.gloo-system.svc.cluster.local:9001'
-            cache:
-              # gloo.authConfig.spec.configs.tokenValidationPlugin.config.cache.enabled -- if `enabled` is false, no cache is used
-              disabled: false
             # gloo.authConfig.spec.configs.tokenValidationPlugin.config.oidcUrl -- `oidcUrl` where the access token can be verified at the IDP
             oidcUrl:
             # gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds -- `allowedClientIds` **list (NOT string!)** of ids that are allowed by the plugin. If not given at all, all clients are allowed. If [], then no client is allowed. If [a, b], then a, b are allowed
@@ -290,9 +294,6 @@ gloo:
             enableSubjectForwarding: false
             # gloo.authConfig.spec.configs.authExtensionPlugin.config.enableQAccountMatching -- `enableQAccountMatching` is a flag which forwards the user id (q-number) to the upstream. Only relevant if the user is using a different user id (e.g. c-number) for logging
             enableQAccountMatching: false
-            cache:
-              # gloo.authConfig.spec.configs.authExtensionPlugin.config.cache.disabled -- If `disabled` set to true the gloo redis will be used as cache
-              disabled: false
         # gloo.authConfig.spec.configs.additionalPlugins -- List of plugins which should be added to the plugin chain. Expected format is a valid yaml with the `pluginAuth`. See [gloo Plugin Auth](https://docs.solo.io/gloo/latest/guides/security/auth/extauth/plugin_auth/#create-an-authconfig-resource) for details
         additionalPlugins:
 
@@ -338,3 +339,23 @@ istio:
         tls:
           # istio.destinationRule.spec.trafficPolicy.tls.mode -- trafficPolicy [ClientTLSSettings-TLSmode](https://istio.io/latest/docs/reference/config/networking/destination-rule/#ClientTLSSettings-TLSmode)
           mode: ISTIO_MUTUAL
+# -------------------------------------#
+# Certificate value section            #
+# -------------------------------------#
+certificate:
+      # certificate.useCustomIssuer -- If set to `true` the default issuer's configuration settings will be used. This requires a custom issuer to be installed.
+      useCustomIssuer: true
+      # certificate.organizations -- list of organization listed in created certificate details
+      organizations: []
+      # certificate.countries -- list of countries listed in created certificate details
+      countries: []
+       # certificate.localities -- list of localities listed in created certificate details
+      localities: []
+       # certificate.provinces -- list of provinces listed in created certificate details
+      provinces: []
+       # certificate.organizationalUnits -- list of organizationalUnits listed in created certificate details
+      organizationalUnits: []
+       # certificate.emailAddresses -- list of emailAddresses listed in created certificate details
+      emailAddresses: []
+       # certificate.dnsNames -- list of dnsNames listed in created certificate details
+      dnsNames: []

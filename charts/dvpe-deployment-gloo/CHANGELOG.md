@@ -4,8 +4,29 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [Unreleased]
+
+## [2.3.3]
+### Added
+- Flag for enabling CSRF protection
+
+## [2.3.2]
+* Introduce new template with certificate details. Certificate will be created using internal certificate issuer.
 
 ## [Unreleased]
+
+## [2.2.2]
+
+### Fixed
+* PrefixRewrite indentation
+
+## [2.2.1]
+
+### Added
+* Parameter to add a custom upstream to the root path if root path is not the app path
+* PrefixRewrite for the appPath
+
+## [2.2.0]
 
 ### Added 
 * Gloo Redis cache is enabled and cookie maxAge can be set
@@ -171,3 +192,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [2.0.5]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.0.5/charts/dvpe-deployment-gloo
 [2.0.6]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.0.6/charts/dvpe-deployment-gloo
 [2.1.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.1.0/charts/dvpe-deployment-gloo
+[2.2.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.2.0/charts/dvpe-deployment-gloo
+[2.2.1]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.2.1/charts/dvpe-deployment-gloo
+[2.2.2]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.2.2/charts/dvpe-deployment-gloo
+[2.3.2]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.3.2/charts/dvpe-deployment-gloo
+[2.3.3]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.3.3/charts/dvpe-deployment-gloo
