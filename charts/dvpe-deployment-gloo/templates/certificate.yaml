@@ -2,6 +2,7 @@
 {{- $domains := include "gloo.virtualservice.spec.virtualHost.domains.as.list" . -}}
 {{- $firstDomain := include "gloo.virtualservice.spec.virtualHost.domains.first" . -}}
 ---
+{{- if .Values.certificate.useCustomIssuer }}
 
 apiVersion: cert-manager.io/v1
 kind: Certificate
@@ -44,3 +45,5 @@ spec:
     {{- range .Values.certificate.emailAddresses }}
       - {{ . }}
     {{- end }}
+
+{{- end}}
