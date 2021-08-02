@@ -1,9 +1,11 @@
+### only creates a certificate resource if custom issuer is `true` and a domain is provided
+{{- if and .Values.certificate.useCustomIssuer .Values.gloo.virtualservice.spec.virtualHost.domains }}
+
 {{- $serviceName := include "service.name" . -}}
 {{- $domains := include "gloo.virtualservice.spec.virtualHost.domains.as.list" . -}}
 {{- $firstDomain := include "gloo.virtualservice.spec.virtualHost.domains.first" . -}}
----
-{{- if .Values.certificate.useCustomIssuer }}
 
+---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
