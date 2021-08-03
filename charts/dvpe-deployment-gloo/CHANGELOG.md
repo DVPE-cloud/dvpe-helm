@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.3.3]
 ### Added
 - Flag for enabling CSRF protection
+- Condition for creating custom issuer resources
 
 ## [2.3.2]
 * Introduce new template with certificate details. Certificate will be created using internal certificate issuer.
