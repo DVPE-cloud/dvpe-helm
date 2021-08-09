@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Flag for enabling CSRF protection
 - Condition for creating custom issuer resources
+- Add roleArn parameter in external secrets for third-party accounts
 
 ## [2.3.2]
 * Introduce new template with certificate details. Certificate will be created using internal certificate issuer.
