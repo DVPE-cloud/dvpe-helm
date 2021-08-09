@@ -147,6 +147,8 @@ gloo:
           # gloo.virtualservice.spec.sslConfig.secretRef.namespace -- Namespace where the secret is located. If empty, gloo namespace is used.
           namespace:
       virtualHost:
+        # gloo.virtualservice.spec.virtualHost.enableCsrf -- Enable protection against CSRF (recommended for applications having front-end and back-end)
+        enableCsrf: false
         # gloo.virtualservice.spec.virtualHost.domains -- **String (Deprecated) or List** of `DNS domain names` this service will be published to. *Note:* This domain will also be used for the `callbackUrl`. If multiple domains are given, the first one will be used.
         domains: []
         cors:
@@ -339,3 +341,23 @@ istio:
         tls:
           # istio.destinationRule.spec.trafficPolicy.tls.mode -- trafficPolicy [ClientTLSSettings-TLSmode](https://istio.io/latest/docs/reference/config/networking/destination-rule/#ClientTLSSettings-TLSmode)
           mode: ISTIO_MUTUAL
+# -------------------------------------#
+# Certificate value section            #
+# -------------------------------------#
+certificate:
+      # certificate.useCustomIssuer -- If set to `true` the default issuer's configuration settings will be used. This requires a custom issuer to be installed.
+      useCustomIssuer: true
+      # certificate.organizations -- list of organization listed in created certificate details
+      organizations: []
+      # certificate.countries -- list of countries listed in created certificate details
+      countries: []
+       # certificate.localities -- list of localities listed in created certificate details
+      localities: []
+       # certificate.provinces -- list of provinces listed in created certificate details
+      provinces: []
+       # certificate.organizationalUnits -- list of organizationalUnits listed in created certificate details
+      organizationalUnits: []
+       # certificate.emailAddresses -- list of emailAddresses listed in created certificate details
+      emailAddresses: []
+       # certificate.dnsNames -- list of dnsNames listed in created certificate details
+      dnsNames: []

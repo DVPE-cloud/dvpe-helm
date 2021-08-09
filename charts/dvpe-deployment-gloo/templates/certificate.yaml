@@ -1,0 +1,51 @@
+### only creates a certificate resource if custom issuer is `true` and a domain is provided
+{{- if and .Values.certificate.useCustomIssuer .Values.gloo.virtualservice.spec.virtualHost.domains }}
+
+{{- $serviceName := include "service.name" . -}}
+{{- $domains := include "gloo.virtualservice.spec.virtualHost.domains.as.list" . -}}
+{{- $firstDomain := include "gloo.virtualservice.spec.virtualHost.domains.first" . -}}
+
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{$serviceName}}-certificate-by-issuer
+spec:
+  commonName: {{$firstDomain}}
+  secretName: {{$serviceName}}-private-tls-by-issuer
+  issuerRef:
+    name: wadtfy-certificate-issuer
+    group: controller-manager.dvpe-cloud.github.io
+    kind: Issuer
+  subject:
+    organizations:
+    {{- range .Values.certificate.organizations }}
+      - {{ . }}
+    {{- end }}
+    countries:
+    {{- range .Values.certificate.countries }}
+      - {{ . }}
+    {{- end }}
+    localities:
+    {{- range .Values.certificate.localities }}
+      - {{ . }}
+    {{- end }}
+    provinces:
+    {{- range .Values.certificate.provinces }}
+      - {{ . }}
+    {{- end }}
+    organizationalUnits:
+    {{- range .Values.certificate.organizationalUnits }}
+      - {{ . }}
+    {{- end }}
+  dnsNames:
+    {{-  $domains  -}}
+    {{- range .Values.certificate.dnsNames }}
+      - {{ . }}
+    {{- end }}
+  emailAddresses:
+    {{- range .Values.certificate.emailAddresses }}
+      - {{ . }}
+    {{- end }}
+
+{{- end}}

@@ -6,6 +6,8 @@
 issuercontroller:
   # issuercontroller.namespace -- Namespace for issuer-controller deployment
   namespace: 
+  # issuercontroller.name -- Name of issuer-controller deployment
+  name: 
   plane:
     # issuercontroller.plane.name -- Name of the Controller Plane
     name: issuer-controller

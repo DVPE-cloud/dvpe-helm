@@ -19,10 +19,17 @@ spec:
     secretRef:
       {{- if eq .Values.gloo.ingress.scope "public" }}
       name: gloo-public-tls
-      {{- else }}
+      namespace: {{ .Values.gloo.namespace -}}
+      {{ else if .Values.certificate.useCustomIssuer }}
+      name: {{$serviceName}}-private-tls-by-issuer
+      namespace: {{ .Release.Namespace -}}
+      {{ else if and .Values.gloo.virtualservice.spec.sslConfig.secretRef.name .Values.gloo.virtualservice.spec.sslConfig.secretRef.namespace }}
       name: {{ .Values.gloo.virtualservice.spec.sslConfig.secretRef.name }}
-      {{- end }}
-      namespace: {{default .Values.gloo.namespace .Values.gloo.virtualservice.spec.sslConfig.secretRef.namespace }}
+      namespace: {{ .Values.gloo.virtualservice.spec.sslConfig.secretRef.namespace -}}
+      {{ else }}
+      name: gloo-private-tls
+      namespace: {{ .Values.gloo.namespace -}}
+      {{ end }}
     sniDomains: {{ $domain }}
   virtualHost:
     domains: {{ $domain }}
@@ -35,6 +42,16 @@ spec:
             key: {{ $val.name }}
             value: {{ $val.value }}
         {{- end}}
+      {{- end}}
+      {{- if .Values.gloo.virtualservice.spec.virtualHost.enableCsrf }}
+      csrf:
+        additionalOrigins:
+          {{- range .Values.gloo.virtualservice.spec.virtualHost.cors.allowSubdomain }}
+          - suffix: {{ regexReplaceAll "^.*://" . "" }}
+          {{- end }}
+        filterEnabled:
+          defaultValue:
+            numerator: 100
       {{- end}}
       {{- if or .Values.gloo.virtualservice.spec.virtualHost.cors.allowOrigin .Values.gloo.virtualservice.spec.virtualHost.cors.allowSubdomain }}
       cors:

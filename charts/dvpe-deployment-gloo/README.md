@@ -1,6 +1,6 @@
 # dvpe-deployment-gloo
 
-![Version: 2.2.2](https://img.shields.io/badge/Version-2.2.2-informational?style=flat-square)
+![Version: 2.3.3](https://img.shields.io/badge/Version-2.3.3-informational?style=flat-square)
 
 Helm chart for installing microservices as gloo enabled VirtualService definitions.
 
@@ -191,6 +191,14 @@ The following table lists the configurable parameters of the chart and its defau
 | autoscaling.maxReplicas | int | `5` | Defines `maxReplicas` of Pods scaled automatically by Horizontal Pod Autoscaler (HPA). |
 | autoscaling.metrics.resource.cpu.targetAverageUtilization | int | `80` | Defines cpu utilization threshold in % for the HPA to scale up new pods. |
 | autoscaling.minReplicas | int | `1` | Defines `minReplicas` of Pods scaled automatically by Horizontal Pod Autoscaler (HPA). |
+| certificate.countries | list | `[]` | list of countries listed in created certificate details |
+| certificate.dnsNames | list | `[]` | list of dnsNames listed in created certificate details |
+| certificate.emailAddresses | list | `[]` | list of emailAddresses listed in created certificate details |
+| certificate.localities | list | `[]` | list of localities listed in created certificate details |
+| certificate.organizationalUnits | list | `[]` | list of organizationalUnits listed in created certificate details |
+| certificate.organizations | list | `[]` | list of organization listed in created certificate details |
+| certificate.provinces | list | `[]` | list of provinces listed in created certificate details |
+| certificate.useCustomIssuer | bool | `true` | If set to `true` the default issuer's configuration settings will be used. This requires a custom issuer to be installed. |
 | datadog.enabled | bool | `true` | When set to true Datadog is enabled and all logs, metrics and traces will be sent to Datadog. |
 | datadog.env | string | `"none"` | Label in Datadog for the target environment - e.g. test, int, prod or an abbreviated k8s cluster name. |
 | datadog.source | string | `nil` | Defines the source which creates log outputs. Source defines the log format and triggers Datadog parser pipelines |
@@ -272,6 +280,7 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.virtualservice.spec.virtualHost.cors.exposeHeaders | list | `["origin"]` | Specifies the content for the `access-control-expose-headers` header. In general this should not be changed. |
 | gloo.virtualservice.spec.virtualHost.cors.maxAge | string | `"1d"` | Specifies the content for the `access-control-max-age` header. In general this should not be changed. |
 | gloo.virtualservice.spec.virtualHost.domains | list | `[]` | **String (Deprecated) or List** of `DNS domain names` this service will be published to. *Note:* This domain will also be used for the `callbackUrl`. If multiple domains are given, the first one will be used. |
+| gloo.virtualservice.spec.virtualHost.enableCsrf | bool | `false` | Enable protection against CSRF (recommended for applications having front-end and back-end) |
 | gloo.virtualservice.spec.virtualHost.responseHeadersToAdd | list | `[{"name":"X-Content-Type-Options","value":"nosniff"},{"name":"Strict-Transport-Security","value":"max-age=31536000; includeSubDomains"},{"name":"Content-Security-Policy","value":"frame-ancestors 'self' *.bmwgroup.net *.bmw.com;"}]` | Map which specifies additional response headers which have to be added to every response of the VirtualHost. In general this map might be extended but the default values should not be removed as they are necessary for security reasons. |
 | gloo.virtualservice.spec.virtualHost.routes.additionalRoutes | list | `[]` | List of route configurations for this `VirtualService`. See [gloo VirtualService Specification](https://docs.solo.io/gloo-edge/latest/introduction/architecture/concepts/#virtual-services) for details |
 | gloo.virtualservice.spec.virtualHost.routes.appPath | string | `"/api"` | Path to `appUrl` where the service can be accessed. Pre-defined route in `VirtualService`. |
