@@ -7,6 +7,8 @@ externalSecrets:
   service:
     # externalSecrets.service.key -- `Key` to AWS Secret Manager object where all sensitive application data should be stored. Each key in the Secret Manager Object should be named like your needed environment variable
     key:
+    # externalSecrets.service.roleArn -- `roleArn` must be set if secret is pulled from a third party-account (aka DevOps-Teams Account). If left empty, no RoleArn is set in ExternalSecrets secrets.
+    roleArn:
   oauth2:
     # externalSecrets.oauth2.key -- `Key` to AWS Secret Manager object where the client secret for OAuth2 provider should be stored. The key in the Secret Manager Object has to be named as the given `gloo.authConfig.spec.configs.oauth2.clientId`. The value has to be formatted as `clientSecret: <secret>`.
     # **This definition is exclusive to `gloo.authConfig.spec.configs.oauth.clientSecretRef`. If defined, `gloo.authConfig.spec.configs.oauth.clientSecretRef` is ignored.**
@@ -145,6 +147,8 @@ gloo:
           # gloo.virtualservice.spec.sslConfig.secretRef.namespace -- Namespace where the secret is located. If empty, gloo namespace is used.
           namespace:
       virtualHost:
+        # gloo.virtualservice.spec.virtualHost.enableCsrf -- Enable protection against CSRF (recommended for applications having front-end and back-end)
+        enableCsrf: false
         # gloo.virtualservice.spec.virtualHost.domains -- **String (Deprecated) or List** of `DNS domain names` this service will be published to. *Note:* This domain will also be used for the `callbackUrl`. If multiple domains are given, the first one will be used.
         domains: []
         cors:

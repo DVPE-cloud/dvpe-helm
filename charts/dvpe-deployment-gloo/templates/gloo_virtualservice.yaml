@@ -43,6 +43,16 @@ spec:
             value: {{ $val.value }}
         {{- end}}
       {{- end}}
+      {{- if .Values.gloo.virtualservice.spec.virtualHost.enableCsrf }}
+      csrf:
+        additionalOrigins:
+          {{- range .Values.gloo.virtualservice.spec.virtualHost.cors.allowSubdomain }}
+          - suffix: {{ regexReplaceAll "^.*://" . "" }}
+          {{- end }}
+        filterEnabled:
+          defaultValue:
+            numerator: 100
+      {{- end}}
       {{- if or .Values.gloo.virtualservice.spec.virtualHost.cors.allowOrigin .Values.gloo.virtualservice.spec.virtualHost.cors.allowSubdomain }}
       cors:
         allowCredentials: {{ .Values.gloo.virtualservice.spec.virtualHost.cors.allowCredentials }}
