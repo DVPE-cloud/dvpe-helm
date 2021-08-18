@@ -236,6 +236,9 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.authConfig.spec.configs.authExtensionPlugin.config.grpcAddress | string | `"auth-passthrough-extension.gloo-system.svc.cluster.local:9001"` | `grpcAddress`  - where the access token can be verified at the IDP |
 | gloo.authConfig.spec.configs.authExtensionPlugin.config.oidcUrl | string | `nil` | `oidcUrl`  - where the access token can be verified at the IDP |
 | gloo.authConfig.spec.configs.authExtensionPlugin.enabled | bool | `false` | If `enabled` set to true the auth code flow extension plugin will be used |
+| gloo.authConfig.spec.configs.authInterceptorPlugin.config.grpcAddress | string | `"auth-passthrough-oauth-session-interceptor.gloo-system.svc.cluster.local:9001"` |  |
+| gloo.authConfig.spec.configs.authInterceptorPlugin.config.oidcUrl | string | `nil` | `oidcUrl` for exchanging / terminating already valid sessions |
+| gloo.authConfig.spec.configs.authInterceptorPlugin.enabled | bool | `false` | If `enabled` set to true the interceptor plugin will be used; Use this plugin to stop login sessions to force relogin (e.g. for 2FA) |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.config.allowedClientIds | list | `[]` | `allowedClientIds` **list (NOT string!)** of ids that are allowed by the plugin. If not given at all, all clients are allowed. If [], then no client is allowed. If [a, b], then a, b are allowed |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.awsRegion | string | `nil` | `awsRegion` where the cache is located |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.enabled | bool | `false` | if `enabled` is false, no cache is used |

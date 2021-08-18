@@ -212,6 +212,13 @@ gloo:
     namespace:
     spec:
       configs:
+        authInterceptorPlugin:
+          # gloo.authConfig.spec.configs.authInterceptorPlugin.enabled -- If `enabled` set to true the interceptor plugin will be used; Use this plugin to stop login sessions to force relogin (e.g. for 2FA)
+          enabled: false
+          config:
+            grpcAddress: 'auth-passthrough-oauth-session-interceptor.gloo-system.svc.cluster.local:9001'
+            # gloo.authConfig.spec.configs.authInterceptorPlugin.config.oidcUrl -- `oidcUrl` for exchanging / terminating already valid sessions
+            oidcUrl:
         oauth:
           # gloo.authConfig.spec.configs.oauth.enabled -- If `enabled` set to true the oauth plugin from Gloo will be used
           enabled: false
