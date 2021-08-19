@@ -11,6 +11,14 @@ metadata:
   namespace: {{default .Release.Namespace .Values.gloo.authConfig.namespace }}
 spec:
   configs:
+    {{- if .Values.gloo.authConfig.spec.configs.authInterceptorPlugin.enabled }}
+    - passThroughAuth:
+        config:
+          openIdConfigurationUrl: {{ .Values.gloo.authConfig.spec.configs.authInterceptorPlugin.config.oidcUrl }}
+          strongAuthenticationLevel: {{ .Values.gloo.authConfig.spec.configs.oauth.strongAuthenticationLevel }}
+        grpc:
+          address: {{ .Values.gloo.authConfig.spec.configs.authInterceptorPlugin.config.grpcAddress }}
+    {{- end }}
     {{- if .Values.gloo.authConfig.spec.configs.oauth.enabled }}
     - oauth2:
         oidcAuthorizationCode:
