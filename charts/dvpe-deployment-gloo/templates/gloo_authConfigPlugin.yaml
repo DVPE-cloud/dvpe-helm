@@ -39,8 +39,8 @@ spec:
             {{- end }}
           issuer_url: {{ .Values.gloo.authConfig.spec.configs.oauth.issuerUrl }}
           scopes:
-          {{- if .Values.gloo.authConfig.spec.configs.oauth.scopes }}
-          {{- toYaml .Values.gloo.authConfig.spec.configs.oauth.scopes | nindent 8 }}
+          {{- range .Values.gloo.authConfig.spec.configs.oauth.scopes }}
+            - {{ . }}
           {{- end }}
           session:
             cookieOptions:
