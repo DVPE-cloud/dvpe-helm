@@ -257,10 +257,10 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.authConfig.spec.configs.oauth.clientSecretRef.name | string | `"webeam-oidc"` | Name of the `Secret`. Gloo expects a k8s secret with the key `oauth` and base64 encoded value `clientSecret: secretValue` **This value is ignored if `externalSecrets.oidc.key` is present.** |
 | gloo.authConfig.spec.configs.oauth.clientSecretRef.namespace | string | `nil` | Namespace were the `Secret` is located. If empty, release namespace is used. **This value is ignored if `externalSecrets.oidc.key` is present.** |
 | gloo.authConfig.spec.configs.oauth.cookieDomain | string | `nil` | The domain to be used for `id_token`, `access_token` or `auth0-session` cookies set after successful authentication. This has to be some kind of wildcard to support cross origin requests. If unset, the cookies get no domain set. |
-| gloo.authConfig.spec.configs.oauth.enabled | bool | `true` | If `enabled` set to true the oauth plugin from Gloo will be used |
+| gloo.authConfig.spec.configs.oauth.enabled | bool | `false` | If `enabled` set to true the oauth plugin from Gloo will be used |
 | gloo.authConfig.spec.configs.oauth.issuerUrl | string | `nil` | Issuer URL to the Identity Provider. Gloo adds `.well-known/openid-configuration` to the url automatically |
 | gloo.authConfig.spec.configs.oauth.maxAge | int | `0` | The `maxAge` of the session cookie. Gloo will use the `maxAge` as TTL in Redis as well .If set to `0` the cookie is valid for the existing browser session. |
-| gloo.authConfig.spec.configs.oauth.scopes | list | `["abc","cde"]` | List of OIDC scopes. `openid` is set per default by Gloo and must not be added here |
+| gloo.authConfig.spec.configs.oauth.scopes | list | `[]` | List of OIDC scopes. `openid` is set per default by Gloo and must not be added here |
 | gloo.authConfig.spec.configs.oauth.strongAuthenticationLevel | string | `nil` | The strong authentication level. Possible values are: 4000, 7000. If not set, there is no strong authentication. |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds | string | `nil` | `allowedClientIds` **list (NOT string!)** of ids that are allowed by the plugin. If not given at all, all clients are allowed. If [], then no client is allowed. If [a, b], then a, b are allowed |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.config.grpcAddress | string | `"auth-passthrough-token-validation.gloo-system.svc.cluster.local:9001"` |  |
@@ -268,7 +268,7 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.authConfig.spec.configs.tokenValidationPlugin.config.strongAuthenticationLevel | string | `nil` | The strong authentication level. Possible values are: 4000, 7000. If not set, there is no strong authentication. |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.enabled | bool | `false` | If `enabled` set to true the backend plugin will be used |
 | gloo.enabled | bool | `true` | When set to true only the application's deployment resources will be installed with this chart. Can be used to explicitly avoid deploying a VirtualService resource. |
-| gloo.ingress.scope | string | `"public"` | Signals Gloo which Gateway Proxy to use for deploying a Virtual Service into. Value must be one of `private`, `public` or `cluster-internal`. |
+| gloo.ingress.scope | string | `nil` | Signals Gloo which Gateway Proxy to use for deploying a Virtual Service into. Value must be one of `private`, `public` or `cluster-internal`. |
 | gloo.namespace | string | `"gloo-system"` | `Namespace` where all Gloo resources are deployed. |
 | gloo.upstream.fds | bool | `false` | Whitelist this upstream for `FDS`. [Gloo Function Discovery Mode] (https://docs.solo.io/gloo-edge/latest/installation/advanced_configuration/fds_mode/) |
 | gloo.upstream.namespace | string | `"gloo-system"` | `Namespace` where gloo upstream is deployed. |
