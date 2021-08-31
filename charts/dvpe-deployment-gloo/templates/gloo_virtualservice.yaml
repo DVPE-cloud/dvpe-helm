@@ -130,7 +130,14 @@ spec:
             upstream:
               name: {{ default $upstreamName .Values.gloo.virtualservice.spec.virtualHost.routes.rootPath.upstream }}
               namespace: {{ .Values.gloo.upstream.namespace }}
-      {{- end}}
+        {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.rootPath.withAuthConfig }}
+        options:
+          extauth:
+            configRef:
+              name: {{ $serviceName}}-{{ .Values.gloo.authConfig.name }}
+              namespace: {{ .Values.gloo.authConfig.namespace }}
+        {{- end}}
+  {{- end}}
 
 {{- if or .Values.gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath .Values.gloo.virtualservice.spec.virtualHost.routes.swagger.enabled }}
 
