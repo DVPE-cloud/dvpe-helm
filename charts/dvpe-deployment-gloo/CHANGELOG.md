@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add a flag to the root path to secure the whole service with the default authConfig.
 ### Fixed
 - Fix issue with scopes in authConfig
+- Fix tls secret order in virtual service
 
 ## [2.3.4]
 ### Added
