@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.4]
+
+### Changes
+
+* Fix container name value bug 
+
 ## [0.0.3]
 
 ### Changes
@@ -35,3 +41,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [0.0.1]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-certificate-issuer-controller-0.0.1/charts/dvpe-certificate-issuer-controller
 [0.0.2]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-certificate-issuer-controller-0.0.2/charts/dvpe-certificate-issuer-controller
 [0.0.3]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-certificate-issuer-controller-0.0.3/charts/dvpe-certificate-issuer-controller
+[0.0.4]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-certificate-issuer-controller-0.0.4/charts/dvpe-certificate-issuer-controller
