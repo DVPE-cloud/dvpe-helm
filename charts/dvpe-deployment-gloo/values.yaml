@@ -58,9 +58,9 @@ deployment:
     resources:
       limits:
         # deployment.spec.resources.limits.cpu -- Total amount of CPU time that a container can use every 100 ms. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage.
-        cpu: 200m
+        cpu:
         # deployment.spec.resources.limits.memory -- The memory limit for a Pod. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage.
-        memory: 235M
+        memory:
       requests:
         # deployment.spec.resources.requests.cpu -- Fractional amount of CPU allowed for a Pod. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage.
         cpu: 150m
@@ -194,6 +194,8 @@ gloo:
             upstream:
             # gloo.virtualservice.spec.virtualHost.routes.rootPath.withAuthConfig -- If set to `true` the root path is secured with the default authConfig.
             withAuthConfig: false
+            # gloo.virtualservice.spec.virtualHost.routes.rootPath.authConfigName -- Name of the `auth config` for the secured root path. If not set, default auth config will be used.
+            authConfigName:
           # gloo.virtualservice.spec.virtualHost.routes.additionalRoutes -- List of route configurations for this `VirtualService`. See [gloo VirtualService Specification](https://docs.solo.io/gloo-edge/latest/introduction/architecture/concepts/#virtual-services) for details
           additionalRoutes: []
           swagger:
