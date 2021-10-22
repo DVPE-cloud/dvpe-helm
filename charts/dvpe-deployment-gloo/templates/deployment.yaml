@@ -104,8 +104,12 @@ spec:
             failureThreshold: {{ .Values.deployment.spec.containers.readinessProbe.failureThreshold }}
           resources:
             limits:
+              {{- if .Values.deployment.spec.resources.limits.cpu }}
               cpu: {{ .Values.deployment.spec.resources.limits.cpu }}
+              {{- end }}
+              {{- if .Values.deployment.spec.resources.limits.memory }}
               memory: {{ .Values.deployment.spec.resources.limits.memory }}
+              {{- end }}
             requests:
               cpu: {{ .Values.deployment.spec.resources.requests.cpu }}
               memory: {{ .Values.deployment.spec.resources.requests.memory }}

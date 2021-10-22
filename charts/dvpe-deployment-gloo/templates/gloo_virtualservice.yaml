@@ -134,8 +134,12 @@ spec:
         options:
           extauth:
             configRef:
-              name: {{ $serviceName}}-{{ .Values.gloo.authConfig.name }}
-              namespace: {{ .Values.gloo.authConfig.namespace }}
+              {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.rootPath.authConfigName }}
+              name: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.rootPath.authConfigName }}
+              {{- else }}
+              name: {{ $serviceName }}-{{ .Values.gloo.authConfig.name }}
+              {{- end }}
+              namespace: {{ default .Release.Namespace .Values.gloo.authConfig.namespace }}
         {{- end}}
   {{- end}}
 

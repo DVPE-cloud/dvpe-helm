@@ -1,6 +1,6 @@
 # dvpe-deployment-gloo
 
-![Version: 2.3.5](https://img.shields.io/badge/Version-2.3.5-informational?style=flat-square)
+![Version: 2.3.6](https://img.shields.io/badge/Version-2.3.6-informational?style=flat-square)
 
 Helm chart for installing microservices as gloo enabled VirtualService definitions.
 
@@ -219,8 +219,8 @@ The following table lists the configurable parameters of the chart and its defau
 | deployment.spec.image.tag | string | `"latest"` | The image version to use. |
 | deployment.spec.imagePullSecrets | string | `"docker-reg-secret"` | Image Pull Secret to access docker registry. |
 | deployment.spec.replicas | int | `1` | The number of service instances to deploy. Will be ignored when autoscaling.enabled is true |
-| deployment.spec.resources.limits.cpu | string | `"200m"` | Total amount of CPU time that a container can use every 100 ms. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage. |
-| deployment.spec.resources.limits.memory | string | `"235M"` | The memory limit for a Pod. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage. |
+| deployment.spec.resources.limits.cpu | string | `nil` | Total amount of CPU time that a container can use every 100 ms. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage. |
+| deployment.spec.resources.limits.memory | string | `nil` | The memory limit for a Pod. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage. |
 | deployment.spec.resources.requests.cpu | string | `"150m"` | Fractional amount of CPU allowed for a Pod. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage. |
 | deployment.spec.resources.requests.memory | string | `"200M"` | Amount of memory reserved for a Pod. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage. |
 | deployment.spec.serviceAccountName | string | `nil` | The ServiceAccount this service will be associated with. If empty, `serviceAccountName` will be `<namespace>-sa` |
@@ -290,6 +290,7 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.virtualservice.spec.virtualHost.routes.appPathRewrite | string | `nil` | `prefixRewrite` of the appPath. If empty no rewrite is set. |
 | gloo.virtualservice.spec.virtualHost.routes.appPathTimeout | string | `nil` |  |
 | gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath | string | `nil` | Path to `callbackUrl` which needs to be registered at the Identity Provider. Pre-defined route in `VirtualService`. |
+| gloo.virtualservice.spec.virtualHost.routes.rootPath.authConfigName | string | `nil` | Name of the `auth config` for the secured root path. If not set, default auth config will be used. |
 | gloo.virtualservice.spec.virtualHost.routes.rootPath.upstream | string | `nil` | Name of the `upstream` for the root path. This path will be only created if the appPath is not the rootPath. |
 | gloo.virtualservice.spec.virtualHost.routes.rootPath.withAuthConfig | bool | `false` | If set to `true` the root path is secured with the default authConfig. |
 | gloo.virtualservice.spec.virtualHost.routes.swagger.alternativePath | string | `"/docs"` | Alternative path to Swagger UI, this redirects to `...swagger.path`. |

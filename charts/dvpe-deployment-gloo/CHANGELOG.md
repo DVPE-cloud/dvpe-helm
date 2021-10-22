@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased]
 
+## [2.3.6]
+### Added
+* Custom `AuthConfig` for root path
+### Changed
+* Remove default value for resources limits
+
 ## [2.3.5]
 ### Added
 - Add a flag to the root path to secure the whole service with the default authConfig.
@@ -211,3 +217,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [2.3.3]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.3.3/charts/dvpe-deployment-gloo
 [2.3.4]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.3.4/charts/dvpe-deployment-gloo
 [2.3.5]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.3.5/charts/dvpe-deployment-gloo
+[2.3.6]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.3.6/charts/dvpe-deployment-gloo
