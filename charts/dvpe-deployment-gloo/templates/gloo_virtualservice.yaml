@@ -130,8 +130,12 @@ spec:
             upstream:
               name: {{ default $upstreamName .Values.gloo.virtualservice.spec.virtualHost.routes.rootPath.upstream }}
               namespace: {{ .Values.gloo.upstream.namespace }}
-        {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.rootPath.withAuthConfig }}
+        {{- if or .Values.gloo.virtualservice.spec.virtualHost.routes.rootPath.withAuthConfig .Values.gloo.virtualservice.spec.virtualHost.routes.rootPath.timeout }}
         options:
+          {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.rootPath.timeout }}
+          timeout: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.rootPath.timeout | quote }}
+          {{- end}}
+          {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.rootPath.withAuthConfig }}
           extauth:
             configRef:
               {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.rootPath.authConfigName }}
@@ -140,7 +144,8 @@ spec:
               name: {{ $serviceName }}-{{ .Values.gloo.authConfig.name }}
               {{- end }}
               namespace: {{ default .Release.Namespace .Values.gloo.authConfig.namespace }}
-        {{- end}}
+          {{- end }}
+      {{- end}}
   {{- end}}
 
 {{- if or .Values.gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath .Values.gloo.virtualservice.spec.virtualHost.routes.swagger.enabled }}
