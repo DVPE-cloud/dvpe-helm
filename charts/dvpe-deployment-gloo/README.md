@@ -1,6 +1,6 @@
 # dvpe-deployment-gloo
 
-![Version: 2.3.6](https://img.shields.io/badge/Version-2.3.6-informational?style=flat-square)
+![Version: 2.3.7](https://img.shields.io/badge/Version-2.3.7-informational?style=flat-square)
 
 Helm chart for installing microservices as gloo enabled VirtualService definitions.
 
@@ -291,6 +291,7 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.virtualservice.spec.virtualHost.routes.appPathTimeout | string | `nil` |  |
 | gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath | string | `nil` | Path to `callbackUrl` which needs to be registered at the Identity Provider. Pre-defined route in `VirtualService`. |
 | gloo.virtualservice.spec.virtualHost.routes.rootPath.authConfigName | string | `nil` | Name of the `auth config` for the secured root path. If not set, default auth config will be used. |
+| gloo.virtualservice.spec.virtualHost.routes.rootPath.timeout | string | `nil` | Custom timeout for requests to rootPath. For example `60s`, [Valid units](https://pkg.go.dev/time#Duration). |
 | gloo.virtualservice.spec.virtualHost.routes.rootPath.upstream | string | `nil` | Name of the `upstream` for the root path. This path will be only created if the appPath is not the rootPath. |
 | gloo.virtualservice.spec.virtualHost.routes.rootPath.withAuthConfig | bool | `false` | If set to `true` the root path is secured with the default authConfig. |
 | gloo.virtualservice.spec.virtualHost.routes.swagger.alternativePath | string | `"/docs"` | Alternative path to Swagger UI, this redirects to `...swagger.path`. |

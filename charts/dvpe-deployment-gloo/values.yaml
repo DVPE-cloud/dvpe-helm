@@ -196,6 +196,8 @@ gloo:
             withAuthConfig: false
             # gloo.virtualservice.spec.virtualHost.routes.rootPath.authConfigName -- Name of the `auth config` for the secured root path. If not set, default auth config will be used.
             authConfigName:
+            # gloo.virtualservice.spec.virtualHost.routes.rootPath.timeout -- Custom timeout for requests to rootPath. For example `60s`, [Valid units](https://pkg.go.dev/time#Duration).
+            timeout:
           # gloo.virtualservice.spec.virtualHost.routes.additionalRoutes -- List of route configurations for this `VirtualService`. See [gloo VirtualService Specification](https://docs.solo.io/gloo-edge/latest/introduction/architecture/concepts/#virtual-services) for details
           additionalRoutes: []
           swagger:

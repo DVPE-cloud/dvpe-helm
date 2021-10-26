@@ -132,6 +132,9 @@ spec:
               namespace: {{ .Values.gloo.upstream.namespace }}
         {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.rootPath.withAuthConfig }}
         options:
+          {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.rootPath.timeout }}
+          timeout: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.rootPath.timeout | quote }}
+          {{- end}}
           extauth:
             configRef:
               {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.rootPath.authConfigName }}
