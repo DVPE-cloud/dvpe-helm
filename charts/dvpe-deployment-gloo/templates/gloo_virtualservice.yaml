@@ -124,7 +124,7 @@ spec:
       {{- end}}
       {{- if ne .Values.gloo.virtualservice.spec.virtualHost.routes.appPath "/" }}
       - matchers:
-          - prefix: /
+          - regex: '^/([^/\s]|$).*'
         routeAction:
           single:
             upstream:
