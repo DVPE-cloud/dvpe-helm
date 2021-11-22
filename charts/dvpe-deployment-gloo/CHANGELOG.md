@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased]
 
+## [3.0.0]
+### Changed
+* `templates/gloo_authConfigPlugin.yaml` has been adjusted according to requirements of new Gloo version 1.9.1.  
+***Note: This is a breaking change. Only use this chart version if you migrated your projects using Gloo 1.9.1+***
+
+## [2.3.8]
+### Changed
+* Support regexp path matcher in VirtualService
+
 ## [2.3.7]
 ### Added
 * Add virutal service root path timeout 
@@ -223,3 +232,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [2.3.5]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.3.5/charts/dvpe-deployment-gloo
 [2.3.6]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.3.6/charts/dvpe-deployment-gloo
 [2.3.7]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.3.7/charts/dvpe-deployment-gloo
+[2.3.8]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.3.8/charts/dvpe-deployment-gloo
+[3.0.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-3.0.0/charts/dvpe-deployment-gloo
