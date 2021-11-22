@@ -26,10 +26,10 @@ spec:
           authEndpointQueryParams:
             acr_values: {{ eq (int .Values.gloo.authConfig.spec.configs.oauth.strongAuthenticationLevel) 4000 | ternary "strongAuth4000Service" "strongAuth7000Service" }}
           {{- end }}
-          app_url: {{ $appUrl }}
-          callback_path: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath }}
-          client_id: {{ .Values.gloo.authConfig.spec.configs.oauth.clientId }}
-          client_secret_ref:
+          appUrl: {{ $appUrl }}
+          callbackPath: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath }}
+          clientId: {{ .Values.gloo.authConfig.spec.configs.oauth.clientId }}
+          clientSecretRef:
             {{- if .Values.externalSecrets.oauth2.key }}
             name: {{ $serviceName }}-oidc-secrets
             namespace: {{ .Release.Namespace }}
@@ -37,7 +37,7 @@ spec:
             name: {{ .Values.gloo.authConfig.spec.configs.oauth.clientSecretRef.name }}
             namespace: {{default .Release.Namespace .Values.gloo.authConfig.spec.configs.oauth.clientSecretRef.namespace }}
             {{- end }}
-          issuer_url: {{ .Values.gloo.authConfig.spec.configs.oauth.issuerUrl }}
+          issuerUrl: {{ .Values.gloo.authConfig.spec.configs.oauth.issuerUrl }}
           scopes:
           {{- range .Values.gloo.authConfig.spec.configs.oauth.scopes }}
             - {{ . }}
