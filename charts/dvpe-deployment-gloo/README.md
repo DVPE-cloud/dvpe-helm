@@ -1,6 +1,6 @@
 # dvpe-deployment-gloo
 
-![Version: 3.0.0](https://img.shields.io/badge/Version-3.0.0-informational?style=flat-square)
+![Version: 3.0.1](https://img.shields.io/badge/Version-3.0.1-informational?style=flat-square)
 
 Helm chart for installing microservices as gloo enabled VirtualService definitions.
 
@@ -240,12 +240,11 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.authConfig.spec.configs.authInterceptorPlugin.config.oidcUrl | string | `nil` | `oidcUrl` for exchanging / terminating already valid sessions |
 | gloo.authConfig.spec.configs.authInterceptorPlugin.enabled | bool | `false` | If `enabled` set to true the interceptor plugin will be used; Use this plugin to stop login sessions to force relogin (e.g. for 2FA) |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.config.allowedClientIds | list | `[]` | `allowedClientIds` **list (NOT string!)** of ids that are allowed by the plugin. If not given at all, all clients are allowed. If [], then no client is allowed. If [a, b], then a, b are allowed |
-| gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.awsRegion | string | `nil` | `awsRegion` where the cache is located |
-| gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.enabled | bool | `false` | if `enabled` is false, no cache is used |
-| gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.tableName | string | `nil` | `tableName` of the auth cache |
+| gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.enabled | bool | `true` | if `enabled` is false, no cache is used |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientId | string | `nil` | `clientId` of the machine2machine client registered at the IDP |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientSecretRef.name | string | `"webeam-oidc"` | Name of the `Secret`. Gloo expects a k8s secret with the key `oauth` and base64 encoded value `clientSecret: secretValue` **This value is ignored if `externalSecrets.oidc.key` is present.** |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientSecretRef.namespace | string | `nil` | Namespace were the `Secret` is located. If empty, release namespace is used. **This value is ignored if `externalSecrets.oidc.key` is present.** |
+| gloo.authConfig.spec.configs.clientCredentialsPlugin.config.grpcAddress | string | `"auth-passthrough-client-credentials.gloo-system.svc.cluster.local:9001"` |  |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.config.mode | string | `nil` | The AuthClientCredentials plugin can work in two modes: `GatherCredentials` and `VerifyAccessToken` |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.config.oidcUrl | string | `nil` | `oidcUrl`  - where the access token can be verified at the IDP |
 | gloo.authConfig.spec.configs.clientCredentialsPlugin.enabled | bool | `false` | If `enabled` set to true the machine to machine plugin will be used |
