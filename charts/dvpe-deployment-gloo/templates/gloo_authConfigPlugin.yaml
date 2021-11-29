@@ -69,16 +69,12 @@ spec:
           {{- end }}
     {{- end }}
     {{- if .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.enabled }}
-    - pluginAuth:
-        name: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.name }}
-        pluginFileName: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.name }}.so
-        exportedSymbolName: Plugin
+    - passThroughAuth:
+        grpc:
+          address: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.grpcAddress }}
         config:
-          {{- if .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.enabled }}
           cache:
-            dynamoDBTableName: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.tableName }}
-            awsRegion:  {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.awsRegion }}
-          {{- end }}
+            disabled: {{ not .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.enabled}}
           clientId: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientId }}
           clientSecretRef:
             {{- if .Values.externalSecrets.oauth2.key }}

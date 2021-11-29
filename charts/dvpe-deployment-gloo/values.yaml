@@ -272,13 +272,10 @@ gloo:
           # gloo.authConfig.spec.configs.clientCredentialsPlugin.name -- `Name` of the auth client credentials plugin
           name: AuthClientCredentials
           config:
+            grpcAddress: 'auth-passthrough-client-credentials.gloo-system.svc.cluster.local:9001'
             cache:
               # gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.enabled -- if `enabled` is false, no cache is used
-              enabled: false
-              # gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.tableName -- `tableName` of the auth cache
-              tableName:
-              # gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.awsRegion -- `awsRegion` where the cache is located
-              awsRegion:
+              enabled: true
             # gloo.authConfig.spec.configs.clientCredentialsPlugin.config.oidcUrl -- `oidcUrl`  - where the access token can be verified at the IDP
             oidcUrl:
             # gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientId -- `clientId` of the machine2machine client registered at the IDP

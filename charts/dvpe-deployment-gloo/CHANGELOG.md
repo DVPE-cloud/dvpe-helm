@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased]
 
+## [3.0.1]
+### Fixed
+* Update Client Credentials plugin to Gloo passthrough mechanism
+
 ## [3.0.0]
 ### Changed
 * `templates/gloo_authConfigPlugin.yaml` has been adjusted according to requirements of new Gloo version 1.9.1.  
@@ -44,8 +48,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.3.2]
 * Introduce new template with certificate details. Certificate will be created using internal certificate issuer.
-
-## [Unreleased]
 
 ## [2.2.2]
 ### Fixed
@@ -214,6 +216,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [0.0.2]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-0.0.2/charts/dvpe-deployment-gloo
 [1.0.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-1.0.0/charts/dvpe-deployment-gloo
 [1.1.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-1.1.0/charts/dvpe-deployment-gloo
+[1.2.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-1.2.0/charts/dvpe-deployment-gloo
+[1.2.1]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-1.2.1/charts/dvpe-deployment-gloo
+[1.2.2]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-1.2.2/charts/dvpe-deployment-gloo
+
 [1.3.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-1.3.0/charts/dvpe-deployment-gloo
 [1.3.1]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-1.3.1/charts/dvpe-deployment-gloo
 [2.0.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.0.0/charts/dvpe-deployment-gloo
@@ -234,3 +240,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [2.3.7]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.3.7/charts/dvpe-deployment-gloo
 [2.3.8]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-2.3.8/charts/dvpe-deployment-gloo
 [3.0.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-3.0.0/charts/dvpe-deployment-gloo
+[3.0.1]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-3.0.1/charts/dvpe-deployment-gloo
