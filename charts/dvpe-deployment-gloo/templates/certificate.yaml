@@ -12,6 +12,9 @@ metadata:
   name: {{$serviceName}}-certificate-by-issuer
 spec:
   commonName: {{$firstDomain}}
+  secretTemplate:
+    labels:
+      argocd.argoproj.io/instance: {{$serviceName}}
   secretName: {{$serviceName}}-private-tls-by-issuer
   issuerRef:
     name: wadtfy-certificate-issuer
