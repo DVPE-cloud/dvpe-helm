@@ -117,10 +117,12 @@ spec:
           {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.appPathTimeout }}
           timeout: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.appPathTimeout | quote }}
           {{- end}}
+          {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.rootPath.withAuthConfig }}
           extauth:
             configRef:
               name: {{ $serviceName}}-{{ .Values.gloo.authConfig.name }}
               namespace: {{default .Release.Namespace .Values.gloo.authConfig.namespace }}
+          {{- end }}
       {{- end}}
       {{- if ne .Values.gloo.virtualservice.spec.virtualHost.routes.appPath "/" }}
       - matchers:
