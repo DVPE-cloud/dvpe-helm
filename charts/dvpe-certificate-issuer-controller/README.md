@@ -32,6 +32,7 @@ s
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| issuercontroller | object | `{"externalsecrets":{"name":null},"name":null,"namespace":null,"plane":{"name":"issuer-controller"},"spec":{"image":{"name":null,"pullPolicy":"Always","repository":null,"tag":null}}}` | -----------------------------# |
 | issuercontroller.externalsecrets.name | string | `nil` | The name of the external secret key containing the docker credentials for this deployment |
 | issuercontroller.name | string | `nil` | Name of issuer-controller deployment |
 | issuercontroller.namespace | string | `nil` | Namespace for issuer-controller deployment |

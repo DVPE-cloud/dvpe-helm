@@ -33,6 +33,7 @@ The following table lists the configurable parameters of the chart and its defau
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| netfilter | object | `{"blocked":{"interfaces":["eni+"],"ipv4":["169.254.169.254/32"]},"enabled":true}` | -----------------------------# |
 | netfilter.blocked.interfaces | list | `["eni+"]` | Which kubelet host interfaces should be used to apply the rules    |
 | netfilter.blocked.ipv4 | list | `["169.254.169.254/32"]` | Which IPv4 addresses should be blocked from access by the netfilter.blocked.interfaces |
 | netfilter.enabled | bool | `true` | Enable or disable the netfilter rule injections |
