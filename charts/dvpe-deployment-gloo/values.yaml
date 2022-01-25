@@ -185,7 +185,7 @@ gloo:
           callbackUrlPath:
           # gloo.virtualservice.spec.virtualHost.routes.appPath -- Path to `appUrl` where the service can be accessed. Pre-defined route in `VirtualService`.
           appPath: /api
-          # gloo.virtualservice.spec.virtualHost.routes.rootPath.withAuthConfig -- If set to `true` the root path is secured with the default authConfig.
+          # gloo.virtualservice.spec.virtualHost.routes.appPathWithAuthConfig -- If set to `true` the app path is secured with the default authConfig.
           appPathWithAuthConfig: true
           # gloo.virtualservice.spec.virtualHost.routes.appPathRewrite -- `prefixRewrite` of the appPath. If empty no rewrite is set.
           appPathRewrite:
