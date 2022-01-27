@@ -117,7 +117,7 @@ spec:
           {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.appPathTimeout }}
           timeout: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.appPathTimeout | quote }}
           {{- end}}
-          {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.rootPath.withAuthConfig }}
+          {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.appPathWithAuthConfig }}
           extauth:
             configRef:
               name: {{ $serviceName}}-{{ .Values.gloo.authConfig.name }}
