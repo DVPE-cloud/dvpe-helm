@@ -96,6 +96,7 @@ spec:
           enableAccessTokenForwarding: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.config.enableAccessTokenForwarding }}
           enableQAccountMatching: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.config.enableQAccountMatching }}
           enableSubjectForwarding: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.config.enableSubjectForwarding }}
+          enableUserRolesForwarding: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.config.enableUserRolesForwarding }}
           openIdConfigurationUrl: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.config.oidcUrl }}
         grpc:
           address: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.config.grpcAddress }}
