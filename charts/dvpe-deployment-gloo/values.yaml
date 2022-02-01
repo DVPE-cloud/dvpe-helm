@@ -130,7 +130,7 @@ gloo:
   # gloo.namespace -- `Namespace` where all Gloo resources are deployed.
   namespace: gloo-system
   ingress:
-    # gloo.ingress.scope -- Signals Gloo which Gateway Proxy to use for deploying a Virtual Service into. Value must be one of `private`, `public` or `cluster-internal`.
+    # gloo.ingress.scope -- Signals Gloo which Gateway Proxy to use for deploying a Virtual Service into. Value must be one of `private` for intranet- or `public` for internet-deployment.
     scope:
 
   # -------------------------------------#

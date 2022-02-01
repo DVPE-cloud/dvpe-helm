@@ -156,6 +156,8 @@ spec:
 apiVersion: gateway.solo.io/v1
 kind: VirtualService
 metadata:
+  labels:
+    gloo.wadtfy.bmwgroup.net/ingress-scope: {{ .Values.gloo.ingress.scope }}
   name: {{ $serviceName }}-http-to-https
   namespace: {{ .Release.Namespace }}
 spec:
