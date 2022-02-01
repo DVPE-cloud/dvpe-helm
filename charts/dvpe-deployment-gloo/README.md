@@ -1,6 +1,6 @@
 # dvpe-deployment-gloo
 
-![Version: 3.0.4](https://img.shields.io/badge/Version-3.0.4-informational?style=flat-square)
+![Version: 3.0.5](https://img.shields.io/badge/Version-3.0.5-informational?style=flat-square)
 
 Helm chart for installing microservices as gloo enabled VirtualService definitions.
 
@@ -272,7 +272,7 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.authConfig.spec.configs.tokenValidationPlugin.config.strongAuthenticationLevel | string | `nil` | The strong authentication level. Possible values are: 4000, 7000. If not set, there is no strong authentication. |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.enabled | bool | `false` | If `enabled` set to true the backend plugin will be used |
 | gloo.enabled | bool | `true` | When set to true only the application's deployment resources will be installed with this chart. Can be used to explicitly avoid deploying a VirtualService resource. |
-| gloo.ingress.scope | string | `nil` | Signals Gloo which Gateway Proxy to use for deploying a Virtual Service into. Value must be one of `private`, `public` or `cluster-internal`. |
+| gloo.ingress.scope | string | `nil` | Signals Gloo which Gateway Proxy to use for deploying a Virtual Service into. Value must be one of `private` for intranet- or `public` for internet-deployment. |
 | gloo.namespace | string | `"gloo-system"` | `Namespace` where all Gloo resources are deployed. |
 | gloo.upstream | object | `{"fds":false,"namespace":"gloo-system"}` | -----------------------------------# |
 | gloo.upstream.fds | bool | `false` | Whitelist this upstream for `FDS`. [Gloo Function Discovery Mode] (https://docs.solo.io/gloo-edge/latest/installation/advanced_configuration/fds_mode/) |
