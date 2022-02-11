@@ -90,6 +90,17 @@ spec:
               secretKeyRef: {{ $value.secretKeyRef }}
           {{- end}}
           {{- end}}
+            {{- if .Values.infrastructure.injectInfo }}
+            {{- range $type, $resourceGroup := .Values.infrastructure.resources }}
+            {{- range $_, $resource := $resourceGroup }}
+          - name: {{ $resource.infoToInject.envNameInPod }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ $.Values.infrastructure.environment}}-{{ $.Release.Name }}-{{ $type }}-{{ $resource.dataToCreate.name }}-secret-pbcp
+                key: {{ $resource.infoToInject.keyInSecret }}
+          {{- end}}
+          {{- end}}
+          {{- end}}
           readinessProbe:
             httpGet:
               path: {{ .Values.deployment.spec.containers.readinessProbe.httpGet.path }}
