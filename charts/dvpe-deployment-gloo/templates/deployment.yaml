@@ -87,9 +87,7 @@ spec:
           {{- range $key, $value := .Values.additionalparameters.secrets }}
           - name: "{{$key}}"
             valueFrom:
-              secretKeyRef:
-                name:  {{ $serviceName }}-additional-secrets
-                key: {{$key}}
+              secretKeyRef: {{ $value.secretKeyRef }}
           {{- end}}
           {{- end}}
           readinessProbe:
