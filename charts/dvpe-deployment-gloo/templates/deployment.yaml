@@ -90,7 +90,8 @@ spec:
               secretKeyRef: {{ $value.secretKeyRef }}
           {{- end}}
           {{- end}}
-            {{- if .Values.infrastructure.injectInfo }}
+            {{- if .Values.infrastructure }}
+            {{- if .Values.infrastructure.resources }}
             {{- range $type, $resourceGroup := .Values.infrastructure.resources }}
             {{- range $_, $resource := $resourceGroup }}
           - name: {{ $resource.infoToInject.envNameInPod }}
@@ -98,6 +99,7 @@ spec:
               secretKeyRef:
                 name: {{ $.Values.infrastructure.environment}}-{{ $.Release.Name }}-{{ $type }}-{{ $resource.dataToCreate.name }}-secret-pbcp
                 key: {{ $resource.infoToInject.keyInSecret }}
+          {{- end}}
           {{- end}}
           {{- end}}
           {{- end}}
