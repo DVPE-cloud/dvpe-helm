@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased]
 
+## [3.1.0]
+### Changed
+* added support for crossplane resources
+
+
 ## [3.0.5]
 ### Changed
 * added label for IngressScope to http-https-VirtualServices to proper assign all VirtualServices to the corresponding IngressGateways.
