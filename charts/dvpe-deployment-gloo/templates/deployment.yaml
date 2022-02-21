@@ -97,7 +97,7 @@ spec:
           - name: {{ $resource.infoToInject.envNameInPod }}
             valueFrom:
               secretKeyRef:
-                name: {{ $.Values.infrastructure.environment}}-{{ $.Release.Name }}-{{ $type }}-{{ $resource.dataToCreate.name }}-secret-pbcp
+                name: {{ $.Values.infrastructure.environment}}-{{ $.Release.Name }}-{{ $type }}-{{ $resource.dataToCreate.name }}-secret
                 key: {{ $resource.infoToInject.keyInSecret }}
           {{- end}}
           {{- end}}
