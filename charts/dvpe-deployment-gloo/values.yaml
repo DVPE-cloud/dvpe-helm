@@ -308,6 +308,10 @@ gloo:
             enableSubjectForwarding: false
             # gloo.authConfig.spec.configs.authExtensionPlugin.config.enableQAccountMatching -- `enableQAccountMatching` is a flag which forwards the user id (q-number) to the upstream. Only relevant if the user is using a different user id (e.g. c-number) for logging
             enableQAccountMatching: false
+            # gloo.authConfig.spec.configs.authExtensionPlugin.config.enableUserInfoForwarding -- `enableUserInfoForwarding` is a flag which tells whether the user roles should be forwarded or not
+            enableUserInfoForwarding: false
+            # gloo.authConfig.spec.configs.authExtensionPlugin.config.enableJwtContentForwarding -- `enableJwtContentForwarding` is a flag which tells whether the user roles should be forwarded or not
+            enableJwtContentForwarding: false
         # gloo.authConfig.spec.configs.additionalPlugins -- List of plugins which should be added to the plugin chain. Expected format is a valid yaml with the `pluginAuth`. See [gloo Plugin Auth](https://docs.solo.io/gloo/latest/guides/security/auth/extauth/plugin_auth/#create-an-authconfig-resource) for details
         additionalPlugins:
 

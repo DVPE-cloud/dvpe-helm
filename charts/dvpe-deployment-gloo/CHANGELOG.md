@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 * added support for crossplane resources
 
+## [3.0.6]
+### Changed
+* Flag for user info forwarding
+* Flag for JWT content forwarding
 
 ## [3.0.5]
 ### Changed
@@ -266,3 +270,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [3.0.3]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-3.0.3/charts/dvpe-deployment-gloo
 [3.0.4]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-3.0.4/charts/dvpe-deployment-gloo
 [3.0.5]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-3.0.5/charts/dvpe-deployment-gloo
+[3.0.6]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-3.0.6/charts/dvpe-deployment-gloo
