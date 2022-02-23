@@ -377,3 +377,23 @@ certificate:
       emailAddresses: []
        # certificate.dnsNames -- list of dnsNames listed in created certificate details
       dnsNames: []
+
+# -------------------------------------#
+# Infrastructure value section            #
+# -------------------------------------#
+infrastructure:
+  # infrastructure.environment -- Environment of the resources. Used for naming. Probably "int" or "prod"
+  environment:
+  resources:
+    # infrastructure.resources.<resourcegroup> -- list of objects where each object describes a resource of the type of group, i.e. dynamodbtables
+    <resourcegroup>:
+      # infrastructure.resources.<resourcegroup>[0].dataToCreate.name -- Identifier of the resource, used to find the secret corresponding to the resource
+      - dataToCreate:
+          # infrastructure.resources.<resourcegroup>[0].dataToCreate.name -- Identifier of the resource, used to find the secret corresponding to the resource
+          name:
+        # infrastructure.resources.<resourcegroup>[0].infoToInject -- Necessary info to get the information about the resource into the pod
+        infoToInject:
+          # infrastructure.resources.<resourcegroup>[0].infoToInject.envNameInPod -- What should be the name of the environment variable in the pod the information gets written in
+          envNameInPod:
+          # infrastructure.resources.<resourcegroup>[0].infoToInject.keyInSecret -- Which information about the resource should be taken from the secret crossplane creates
+          keyInSecret:
