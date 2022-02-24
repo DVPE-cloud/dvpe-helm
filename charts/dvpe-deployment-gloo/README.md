@@ -308,7 +308,8 @@ The following table lists the configurable parameters of the chart and its defau
 | infrastructure | object | `{"environment":null,"resources":{"<resourcegroup>":[{"dataToCreate":{"name":null},"infoToInject":{"envNameInPod":null,"keyInSecret":null}}]}}` | -----------------------------------# |
 | infrastructure.environment | string | `nil` | Environment of the resources. Used for naming. Probably "int" or "prod" |
 | infrastructure.resources.<resourcegroup> | list | `[{"dataToCreate":{"name":null},"infoToInject":{"envNameInPod":null,"keyInSecret":null}}]` | list of objects where each object describes a resource of the type of group, i.e. dynamodbtables |
-| infrastructure.resources.<resourcegroup>[0].dataToCreate.name | string | `nil` | Identifier of the resource, used to find the secret corresponding to the resource |
+| infrastructure.resources.<resourcegroup>[0].dataToCreate | object | `{"name":null}` | Necessary info to create the resource |
+| infrastructure.resources.<resourcegroup>[0].dataToCreate.name | string | `nil` | Identifier of the resource, used here to find the secret corresponding to the resource |
 | infrastructure.resources.<resourcegroup>[0].infoToInject | object | `{"envNameInPod":null,"keyInSecret":null}` | Necessary info to get the information about the resource into the pod |
 | infrastructure.resources.<resourcegroup>[0].infoToInject.envNameInPod | string | `nil` | What should be the name of the environment variable in the pod the information gets written in |
 | infrastructure.resources.<resourcegroup>[0].infoToInject.keyInSecret | string | `nil` | Which information about the resource should be taken from the secret crossplane creates |

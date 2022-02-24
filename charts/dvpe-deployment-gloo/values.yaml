@@ -387,9 +387,9 @@ infrastructure:
   resources:
     # infrastructure.resources.<resourcegroup> -- list of objects where each object describes a resource of the type of group, i.e. dynamodbtables
     <resourcegroup>:
-      # infrastructure.resources.<resourcegroup>[0].dataToCreate.name -- Identifier of the resource, used to find the secret corresponding to the resource
+      # infrastructure.resources.<resourcegroup>[0].dataToCreate -- Necessary info to create the resource
       - dataToCreate:
-          # infrastructure.resources.<resourcegroup>[0].dataToCreate.name -- Identifier of the resource, used to find the secret corresponding to the resource
+          # infrastructure.resources.<resourcegroup>[0].dataToCreate.name -- Identifier of the resource, used here to find the secret corresponding to the resource
           name:
         # infrastructure.resources.<resourcegroup>[0].infoToInject -- Necessary info to get the information about the resource into the pod
         infoToInject:
