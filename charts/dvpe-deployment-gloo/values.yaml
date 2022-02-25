@@ -118,6 +118,8 @@ additionalparameters:
   configMapApplied: false
   # additionalparameters.yamlConfigFileApplied -- Set to `true` if you want to add a custom yaml configuration for your deployment.
   yamlConfigFileApplied: false
+  # additionalparameters.secrets -- Objects in the format { <environmentVariable>: secretKeyRef: { name: "", key: "" }} to reference existing secrets and inject them as environment variables
+  secrets: {}
 
 # -------------------------------------#
 # Gloo general value section     #
