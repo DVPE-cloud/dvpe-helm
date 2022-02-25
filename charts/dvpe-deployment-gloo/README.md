@@ -184,9 +184,8 @@ The following table lists the configurable parameters of the chart and its defau
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| additionalparameters | object | `{"configMapApplied":false,"secretsApplied":false,"yamlConfigFileApplied":false}` | -----------------------------------# |
+| additionalparameters | object | `{"configMapApplied":false,"yamlConfigFileApplied":false}` | -----------------------------------# |
 | additionalparameters.configMapApplied | bool | `false` | Set to `true` if you want to add a custom `ConfigMap` for your deployment. |
-| additionalparameters.secretsApplied | bool | `false` | Set to `true` if you want to add a custom `Secret` for your deployment. |
 | additionalparameters.yamlConfigFileApplied | bool | `false` | Set to `true` if you want to add a custom yaml configuration for your deployment. |
 | autoscaling | object | `{"enabled":true,"maxReplicas":5,"metrics":{"resource":{"cpu":{"targetAverageUtilization":80}}},"minReplicas":1}` | ------------------------------# |
 | autoscaling.enabled | bool | `true` | Enables `Horizontal Pod Autoscaler (HPA)` to control the replicas. If it is enabled, the replicas will be removed from the deployment. |
@@ -305,14 +304,6 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.virtualservice.spec.virtualHost.routes.swagger.alternativePath | string | `"/docs"` | Alternative path to Swagger UI, this redirects to `...swagger.path`. |
 | gloo.virtualservice.spec.virtualHost.routes.swagger.enabled | bool | `false` | If set to `true` routing for `...swagger.path` and `...swagger.alternativePath` gets enabled. |
 | gloo.virtualservice.spec.virtualHost.routes.swagger.path | string | `"/swagger-ui.html"` | Path to `swagger-ui.html` page. |
-| infrastructure | object | `{"environment":null,"resources":{"<resourcegroup>":[{"dataToCreate":{"name":null},"infoToInject":{"envNameInPod":null,"keyInSecret":null}}]}}` | -----------------------------------# |
-| infrastructure.environment | string | `nil` | Environment of the resources. Used for naming. Probably "int" or "prod" |
-| infrastructure.resources.<resourcegroup> | list | `[{"dataToCreate":{"name":null},"infoToInject":{"envNameInPod":null,"keyInSecret":null}}]` | list of objects where each object describes a resource of the type of group, i.e. dynamodbtables |
-| infrastructure.resources.<resourcegroup>[0].dataToCreate | object | `{"name":null}` | Necessary info to create the resource |
-| infrastructure.resources.<resourcegroup>[0].dataToCreate.name | string | `nil` | Identifier of the resource, used here to find the secret corresponding to the resource |
-| infrastructure.resources.<resourcegroup>[0].infoToInject | object | `{"envNameInPod":null,"keyInSecret":null}` | Necessary info to get the information about the resource into the pod |
-| infrastructure.resources.<resourcegroup>[0].infoToInject.envNameInPod | string | `nil` | What should be the name of the environment variable in the pod the information gets written in |
-| infrastructure.resources.<resourcegroup>[0].infoToInject.keyInSecret | string | `nil` | Which information about the resource should be taken from the secret crossplane creates |
 | istio | object | `{"destinationRule":{"spec":{"trafficPolicy":{"tls":{"mode":"ISTIO_MUTUAL"}}}},"enabled":true,"peerAuthentication":{"spec":{"mtls":{"mode":"STRICT"}}}}` | -----------------------------------# |
 | istio.destinationRule.spec.trafficPolicy.tls.mode | string | `"ISTIO_MUTUAL"` | trafficPolicy [ClientTLSSettings-TLSmode](https://istio.io/latest/docs/reference/config/networking/destination-rule/#ClientTLSSettings-TLSmode) |
 | istio.enabled | bool | `true` | Enables mtls per workload (pod) |
