@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [3.1.0]
 ### Changed
-* added support for crossplane resources
+* add support of injecting existing secrets
+* remove support of creating new secrets
 
 ## [3.0.6]
 ### Changed

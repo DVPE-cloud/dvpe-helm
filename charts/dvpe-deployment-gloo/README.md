@@ -186,7 +186,7 @@ The following table lists the configurable parameters of the chart and its defau
 |-----|------|---------|-------------|
 | additionalparameters | object | `{"configMapApplied":false,"secrets":{},"yamlConfigFileApplied":false}` | -----------------------------------# |
 | additionalparameters.configMapApplied | bool | `false` | Set to `true` if you want to add a custom `ConfigMap` for your deployment. |
-| additionalparameters.secrets | object | `{}` | Objects in the format { <environmentVariable>: secretKeyRef: { name: "", key: "" }} to reference existing secrets and inject them as environment variables |
+| additionalparameters.secrets | object | `{}` | Object in the format { <environmentVariable>: secretKeyRef: { name: "", key: "" }, <environmentVariable>: ...} to reference existing secrets and inject them as environment variables |
 | additionalparameters.yamlConfigFileApplied | bool | `false` | Set to `true` if you want to add a custom yaml configuration for your deployment. |
 | autoscaling | object | `{"enabled":true,"maxReplicas":5,"metrics":{"resource":{"cpu":{"targetAverageUtilization":80}}},"minReplicas":1}` | ------------------------------# |
 | autoscaling.enabled | bool | `true` | Enables `Horizontal Pod Autoscaler (HPA)` to control the replicas. If it is enabled, the replicas will be removed from the deployment. |
