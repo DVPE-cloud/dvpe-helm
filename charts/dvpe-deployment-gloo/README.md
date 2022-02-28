@@ -1,6 +1,6 @@
 # dvpe-deployment-gloo
 
-![Version: 3.0.6](https://img.shields.io/badge/Version-3.0.6-informational?style=flat-square)
+![Version: 3.1.0](https://img.shields.io/badge/Version-3.1.0-informational?style=flat-square)
 
 Helm chart for installing microservices as gloo enabled VirtualService definitions.
 
@@ -184,9 +184,9 @@ The following table lists the configurable parameters of the chart and its defau
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| additionalparameters | object | `{"configMapApplied":false,"secretsApplied":false,"yamlConfigFileApplied":false}` | -----------------------------------# |
+| additionalparameters | object | `{"configMapApplied":false,"secrets":{},"yamlConfigFileApplied":false}` | -----------------------------------# |
 | additionalparameters.configMapApplied | bool | `false` | Set to `true` if you want to add a custom `ConfigMap` for your deployment. |
-| additionalparameters.secretsApplied | bool | `false` | Set to `true` if you want to add a custom `Secret` for your deployment. |
+| additionalparameters.secrets | object | `{}` | Object in the format { <environmentVariable>: secretKeyRef: { name: "", key: "" }, <environmentVariable>: ...} to reference existing secrets and inject them as environment variables |
 | additionalparameters.yamlConfigFileApplied | bool | `false` | Set to `true` if you want to add a custom yaml configuration for your deployment. |
 | autoscaling | object | `{"enabled":true,"maxReplicas":5,"metrics":{"resource":{"cpu":{"targetAverageUtilization":80}}},"minReplicas":1}` | ------------------------------# |
 | autoscaling.enabled | bool | `true` | Enables `Horizontal Pod Autoscaler (HPA)` to control the replicas. If it is enabled, the replicas will be removed from the deployment. |

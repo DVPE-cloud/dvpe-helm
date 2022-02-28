@@ -83,14 +83,12 @@ spec:
                 key: {{$key}}
           {{- end}}
           {{- end}}
-          {{- if .Values.additionalparameters.secretsApplied }}
           {{- range $key, $value := .Values.additionalparameters.secrets }}
-          - name: "{{$key}}"
+          - name: {{ $key | quote }}
             valueFrom:
               secretKeyRef:
-                name:  {{ $serviceName }}-additional-secrets
-                key: {{$key}}
-          {{- end}}
+                name: {{ $.Release.Name }}-{{ $value.secretKeyRef.name }}
+                key: {{ $value.secretKeyRef.key }}
           {{- end}}
           readinessProbe:
             httpGet:
