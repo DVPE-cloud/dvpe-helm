@@ -2,7 +2,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: wadtfy-issuer-leader-election-role
-  namespace: {{ .Values.issuercontroller.namespace }}
+  namespace: {{ .Release.Namespace }}
 rules:
 - apiGroups:
   - ""
@@ -47,7 +47,7 @@ metadata:
 rules:
 - apiGroups:
   - cert-manager.io
-  resourceNames: 
+  resourceNames:
     - issuers.controller-manager.dvpe-cloud.github.io/*
     - clusterissuers.controller-manager.dvpe-cloud.github.io/*
   resources:
@@ -138,51 +138,51 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: wadtfy-issuer-leader-election-rolebinding
-  namespace: {{ .Values.issuercontroller.namespace }}
+  namespace: {{ .Release.Namespace }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
   name: wadtfy-issuer-leader-election-role
 subjects:
 - kind: ServiceAccount
-  name: default
-  namespace: {{ .Values.issuercontroller.namespace }}
+  name: {{ .Release.Namespace }}-sa
+  namespace: {{ .Release.Namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: wadtfy-issuer-cert-manager-controller-approve
+  name: {{.Release.Name }}-controller-approve
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: wadtfy-issuer-cert-manager-controller-approve
 subjects:
 - kind: ServiceAccount
-  name: cert-manager
-  namespace: {{ .Values.issuercontroller.namespace }}
+  name: {{.Release.Namespace}}-sa
+  namespace: {{ .Release.Namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: wadtfy-issuer-manager-rolebinding
+  name: {{.Release.Name }}-rolebinding
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: wadtfy-issuer-manager-role
 subjects:
 - kind: ServiceAccount
-  name: default
-  namespace: {{ .Values.issuercontroller.namespace }}
+  name: {{ .Release.Namespace }}-sa
+  namespace: {{ .Release.Namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: wadtfy-issuer-proxy-rolebinding
+  name: {{.Release.Name }}-proxy-rolebinding
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: wadtfy-issuer-proxy-role
 subjects:
 - kind: ServiceAccount
-  name: default
-  namespace: {{ .Values.issuercontroller.namespace }}
+  name: {{ .Release.Namespace }}-sa
+  namespace: {{ .Release.Namespace }}

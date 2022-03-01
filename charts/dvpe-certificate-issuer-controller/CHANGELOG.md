@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.0]
+### Changed
+* Update Deployment resources
+* Use namespace service account 
+* Fix some naming issues
+
 ## [0.0.4]
 
 ### Changes

@@ -4,11 +4,11 @@ metadata:
   labels:
     control-plane:  {{ .Values.issuercontroller.plane.name }}
   name: wadtfy-issuer-controller-manager-metrics-service
-  namespace: {{ .Values.issuercontroller.namespace }}
+  namespace: {{ .Release.Namespace }}
 spec:
   ports:
   - name: https
     port: 8443
-    targetPort: https
+    targetPort: 8443
   selector:
     control-plane: {{ .Values.issuercontroller.plane.name }}
