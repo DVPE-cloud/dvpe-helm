@@ -1,6 +1,6 @@
 # dvpe-certificate-issuer-controller
 
-![Version: 0.0.4](https://img.shields.io/badge/Version-0.0.4-informational?style=flat-square)
+![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square)
 
 Helm chart for deploying a custom certificate issuer controller. The certificate issuer controller is a [cert-manager](https://cert-manager.io/docs/) resource managing certificate requests in a private PKI.
 
@@ -32,13 +32,11 @@ s
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| issuercontroller | object | `{"externalsecrets":{"name":null},"name":null,"namespace":null,"plane":{"name":"issuer-controller"},"spec":{"image":{"name":null,"pullPolicy":"Always","repository":null,"tag":null}}}` | -----------------------------# |
+| issuercontroller | object | `{"externalsecrets":{"name":null},"plane":{"name":"wadtfy-cert-issuer-controller-system"},"spec":{"image":{"name":"wadtfy-issuer","pullPolicy":"IfNotPresent","repository":null,"tag":"1.1.1"}}}` | -----------------------------# |
 | issuercontroller.externalsecrets.name | string | `nil` | The name of the external secret key containing the docker credentials for this deployment |
-| issuercontroller.name | string | `nil` | Name of issuer-controller deployment |
-| issuercontroller.namespace | string | `nil` | Namespace for issuer-controller deployment |
-| issuercontroller.plane.name | string | `"issuer-controller"` | Name of the Controller Plane |
-| issuercontroller.spec.image | object | `{"name":null,"pullPolicy":"Always","repository":null,"tag":null}` | Name of issuer-controller deployment image |
-| issuercontroller.spec.image.name | string | `nil` | The image name to use. |
-| issuercontroller.spec.image.pullPolicy | string | `"Always"` | The default rule for downloading images. |
+| issuercontroller.plane.name | string | `"wadtfy-cert-issuer-controller-system"` | Name of the Controller Plane |
+| issuercontroller.spec.image | object | `{"name":"wadtfy-issuer","pullPolicy":"IfNotPresent","repository":null,"tag":"1.1.1"}` | Name of issuer-controller deployment image |
+| issuercontroller.spec.image.name | string | `"wadtfy-issuer"` | The image name to use. |
+| issuercontroller.spec.image.pullPolicy | string | `"IfNotPresent"` | The default rule for downloading images. |
 | issuercontroller.spec.image.repository | string | `nil` | The docker repository to pull the service image from. |
-| issuercontroller.spec.image.tag | string | `nil` | The image version to use. |
+| issuercontroller.spec.image.tag | string | `"1.1.1"` | The image version to use. |

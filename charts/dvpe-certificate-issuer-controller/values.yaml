@@ -4,24 +4,20 @@
 # values.yaml value section      #
 # -------------------------------#
 issuercontroller:
-  # issuercontroller.namespace -- Namespace for issuer-controller deployment
-  namespace: 
-  # issuercontroller.name -- Name of issuer-controller deployment
-  name: 
   plane:
     # issuercontroller.plane.name -- Name of the Controller Plane
-    name: issuer-controller
+    name: wadtfy-cert-issuer-controller-system
   spec:
     # issuercontroller.spec.image -- Name of issuer-controller deployment image
     image:
       # issuercontroller.spec.image.repository -- The docker repository to pull the service image from.
-      repository: 
+      repository:
       # issuercontroller.spec.image.name -- The image name to use.
-      name: 
+      name: wadtfy-issuer
       # issuercontroller.spec.image.tag -- The image version to use.
-      tag: 
+      tag: 1.1.1
       # issuercontroller.spec.image.pullPolicy -- The default rule for downloading images.
-      pullPolicy: Always
+      pullPolicy: IfNotPresent
   externalsecrets:
     # issuercontroller.externalsecrets.name -- The name of the external secret key containing the docker credentials for this deployment
-    name: 
+    name:
