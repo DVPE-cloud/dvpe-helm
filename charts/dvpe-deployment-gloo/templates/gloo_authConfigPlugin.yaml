@@ -62,7 +62,10 @@ spec:
         config:
           openIdConfigurationUrl: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.oidcUrl }}
           {{- if .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds }}
-          allowedClientIds: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds }}
+          allowedClientIds:
+          {{- range .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds }}
+            - {{ . }}
+          {{- end }}
           {{- end }}
           {{- if .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.strongAuthenticationLevel }}
           strongAuthenticationLevel: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.strongAuthenticationLevel }}
@@ -87,7 +90,10 @@ spec:
           mode: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.mode }}
           openIdConfigurationUrl: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.oidcUrl }}
           {{- if .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.allowedClientIds }}
-          allowedClientIds: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.allowedClientIds }}
+          allowedClientIds:
+          {{- range .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.allowedClientIds }}
+            - {{ . }}
+          {{- end }}
           {{- end }}
     {{- end }}
     {{- if .Values.gloo.authConfig.spec.configs.authExtensionPlugin.enabled }}
