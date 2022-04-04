@@ -1,0 +1,64 @@
+# Crossplane Composite Resource Definition (XRD) describing
+# the type and schema of the corresponding Composite Resource.
+# See https://negz.github.io/crossplane.github.io/docs/v1.4/reference/composition.html#compositeresourcedefinitions for details
+
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: iamrolesforserviceaccounts.{{ .Values.xrd.apiGroup }}
+spec:
+  group: {{ .Values.xrd.apiGroup }}
+  names:
+    kind: IamRoleForServiceAccount
+    plural: iamrolesforserviceaccounts
+  claimNames:
+    kind: IamRoleForServiceAccountClaim
+    plural: iamrolesforserviceaccountclaims
+  versions:
+    - name: {{ .Values.xrd.version }}
+      served: true
+      referenceable: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                roleFor:
+                  type: object
+                  properties:
+                    namespace:
+                      type: string
+                      description: "The namespace for which this resource should create resources for."
+                  required:
+                    - namespace
+                deletionPolicy:
+                  type: string
+                  description: "The deletion policy to use for IRSA resources."
+                  enum: ["Delete", "Orphan"]
+{{- if eq .Values.xrd.type "remote" }}
+                remoteRoleArn:
+                  type: string
+                  description: "The remote AWS account ARN for role assume."
+{{- else }}
+                policy:
+                  type: string
+                  description: "The policy that should be applied to the IRSA Role for granting access to AWS services."
+{{- end }}
+              required:
+                - roleFor
+{{- if eq .Values.xrd.type "remote" }}
+                - remoteRoleArn
+{{- else }}
+                - policy
+{{- end }}
+            status:
+              type: object
+              properties:
+                policyArn:
+                  description: The ARN of the created IAM IRSA Policy.
+                  type: string
+                roleArn:
+                  description: The ARN of the created IAM IRSA Role.
+                  type: string

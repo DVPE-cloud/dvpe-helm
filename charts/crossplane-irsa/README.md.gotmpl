@@ -5,7 +5,29 @@
 
 ## Installation
 
-TBD
+Pre-Requirements:
+
+- Installed [Crossplane](https://crossplane.io)
+- Installed [Crossplane AWS Provider Package](https://github.com/crossplane/provider-aws)
+- Installed and Configured [Crossplane Kubernetes Provider Package](https://github.com/crossplane-contrib/provider-kubernetes)
+- Configured [AWS Role with IAM permissions to setup IAM Roles/Policies in the AWS account for Crossplane](https://crossplane.io/docs/v1.7/cloud-providers/aws/aws-provider.html)
+
+Deploy the crossplane-irsa Chart by filling the the values.yaml.
+Use helm or other helm based deployment tooling (like argocd) to deploy this Chart.
+
+## For IRSA within same account
+
+Required:
+- The `xrd.type` must be set to `local` in values.yaml
+
+## For IRSA with role assume to an other account
+
+Required:
+- The `xrd.type` must be set to `remote` in values.yaml
+
+Based on the [AWS Cross account IAM Roles for kubernetes service accounts](https://aws.amazon.com/blogs/containers/cross-account-iam-roles-for-kubernetes-service-accounts/) 
+the OIDC Provider connectivity between both AWS Accounts must be setup as additional step.
+An example Cloudformation Template in samples/oidc-provider-cloudformation.tpl can be used to setup the OIDC Config.
 
 ## Configuration
 

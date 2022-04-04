@@ -1,0 +1,214 @@
+# Crossplane Composition linking the XRD with the concrete managed IRSA resource.
+# See https://negz.github.io/crossplane.github.io/docs/v1.4/reference/composition.html#compositions for details
+
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: {{ .Values.composition.name }}
+  labels:
+    crossplane.io/xrd: iamrolesforserviceaccounts.{{ .Values.xrd.apiGroup }}
+spec:
+  writeConnectionSecretsToNamespace: crossplane-system
+  compositeTypeRef:
+    apiVersion: {{ .Values.xrd.apiGroup }}/{{ .Values.xrd.version }}
+    kind: IamRoleForServiceAccount
+  resources:
+    - name: policy
+      base:
+        apiVersion: iam.aws.crossplane.io/v1beta1
+        kind: Policy
+        metadata:
+          name:
+        spec:
+          forProvider:
+            name:
+            document:
+            tags:
+            - key: created_by
+              value: crossplane
+            - key: crossplane-kind
+              value: policy.iam.aws.crossplane.io
+            - key: xrd-kind
+              value: iamrolesforserviceaccounts.{{ .Values.xrd.apiGroup }}
+            - key: xrd-helm_chart_version
+              value: {{ .Chart.Version }}
+            - key: crossplane-providerconfig
+              value: {{ .Values.provider.awsConfigName }}
+          providerConfigRef:
+            name: {{ .Values.provider.awsConfigName }}
+      patches:
+        - fromFieldPath: "spec.roleFor.namespace"
+          toFieldPath: "metadata.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-irsa-policy"
+        - fromFieldPath: "spec.roleFor.namespace"
+          toFieldPath: "spec.forProvider.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-irsa-policy"
+{{- if eq .Values.xrd.type "remote" }}
+        - fromFieldPath: "spec.remoteRoleArn"
+          toFieldPath: "spec.forProvider.document"
+          transforms:
+            - type: string
+              string:
+                fmt: |
+                  {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                      {
+                        "Sid": "",
+                        "Effect": "Allow",
+                        "Action": "sts:AssumeRole",
+                        "Resource": "%s"
+                      }
+                    ]
+                  }
+{{- else }}
+        - fromFieldPath: "spec.policy"
+          toFieldPath: "spec.forProvider.document"
+{{- end }}
+        - type: ToCompositeFieldPath
+          fromFieldPath: "status.atProvider.arn"
+          toFieldPath: "status.policyArn"
+    - name: role
+      base:
+        apiVersion: iam.aws.crossplane.io/v1beta1
+        kind: Role
+        metadata:
+          name:
+        spec:
+          deletionPolicy: Delete
+          forProvider:
+            description:
+            path:
+            assumeRolePolicyDocument:
+            tags:
+              - key: created_by
+                value: crossplane
+              - key: xrd-kind
+                value: iamrolesforserviceaccounts.{{ .Values.xrd.apiGroup }}
+              - key: xrd-helm_chart_version
+                value: {{ .Chart.Version }}
+              - key: crossplane-providerconfig
+                value: {{ .Values.provider.awsConfigName }}
+          providerConfigRef:
+            name: {{ .Values.provider.awsConfigName }}
+      patches:
+        - fromFieldPath: "spec.roleFor.namespace"
+          toFieldPath: "metadata.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "k8s-%s-sa-role"
+        - type: CombineFromComposite
+          combine:
+            variables:
+              - fromFieldPath: "spec.roleFor.namespace"
+              - fromFieldPath: "spec.roleFor.namespace"
+            strategy: string
+            string:
+              fmt: "IAM Role for Service Account %s-sa in K8S namespace %s"
+          toFieldPath: spec.forProvider.description
+        - fromFieldPath: "spec.roleFor.namespace"
+          toFieldPath: "spec.forProvider.path"
+          transforms:
+            - type: string
+              string:
+                fmt: "/%s/"
+        - type: CombineFromComposite
+          combine:
+            variables:
+              - fromFieldPath: "spec.roleFor.namespace"
+              - fromFieldPath: "spec.roleFor.namespace"
+            strategy: string
+            string:
+              fmt: |
+                {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Action": "sts:AssumeRoleWithWebIdentity",
+                      "Principal": {
+                        "Federated": "arn:aws:iam::{{ .Values.aws.accountId }}:oidc-provider/oidc.eks.eu-west-1.amazonaws.com/id/{{ .Values.aws.oidcProviderId }}"
+                      },
+                      "Condition": {
+                        "StringEquals": {
+                          "oidc.eks.eu-west-1.amazonaws.com/id/{{ .Values.aws.oidcProviderId }}:sub": "system:serviceaccount:%s:%s-sa",
+                          "oidc.eks.eu-west-1.amazonaws.com/id/{{ .Values.aws.oidcProviderId }}:aud": "sts.amazonaws.com"
+                        }
+                      },
+                      "Effect": "Allow",
+                      "Sid": ""
+                    }
+                  ]
+                }
+          toFieldPath: spec.forProvider.assumeRolePolicyDocument
+        - type: ToCompositeFieldPath
+          fromFieldPath: "status.atProvider.arn"
+          toFieldPath: "status.roleArn"
+        - fromFieldPath: "spec.deletionPolicy"
+          toFieldPath: "spec.deletionPolicy"
+    - name: rolepolicyattachment
+      base:
+        apiVersion: iam.aws.crossplane.io/v1beta1
+        kind: RolePolicyAttachment
+        metadata:
+          name:
+        spec:
+          forProvider:
+            policyArn:
+            roleName:
+          providerConfigRef:
+            name: {{ .Values.provider.awsConfigName }}
+      patches:
+        - fromFieldPath: "spec.roleFor.namespace"
+          toFieldPath: "metadata.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-irsa-role-policy-attachment"
+        - fromFieldPath: "status.policyArn"
+          toFieldPath: "spec.forProvider.policyArn"
+        - fromFieldPath: "spec.roleFor.namespace"
+          toFieldPath: "spec.forProvider.roleName"
+          transforms:
+            - type: string
+              string:
+                fmt: "k8s-%s-sa-role"
+    - name: serviceAccount
+      base:
+        apiVersion: kubernetes.crossplane.io/v1alpha1
+        kind: Object
+        spec:
+          forProvider:
+            manifest:
+              apiVersion: v1
+              kind: ServiceAccount
+              metadata:
+                annotations:
+                  eks.amazonaws.com/role-arn:
+                labels:
+                  created_by: crossplane
+                  crossplane-kind: object.kubernetes.crossplane.io
+                  xrd-kind: iamrolesforserviceaccounts.{{ .Values.xrd.apiGroup }}
+                  xrd-helm_chart_version: {{ .Chart.Version }}
+                  crossplane-providerconfig: {{ .Values.provider.k8sConfigName }}
+                name:
+                namespace:
+          providerConfigRef:
+            name: {{ .Values.provider.k8sConfigName }}
+      patches:
+        - fromFieldPath: "spec.roleFor.namespace"
+          toFieldPath: "spec.forProvider.manifest.metadata.namespace"
+        - fromFieldPath: "spec.roleFor.namespace"
+          toFieldPath: "spec.forProvider.manifest.metadata.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-sa"
+        - fromFieldPath: "status.roleArn"
+          toFieldPath: "spec.forProvider.manifest.metadata.annotations[eks.amazonaws.com/role-arn]"

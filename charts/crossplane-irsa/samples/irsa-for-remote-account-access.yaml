@@ -1,0 +1,40 @@
+# A sample Custom Crossplane Resource for creating an AWS IAM Role for Service Accounts. This component uses the Crossplane AWS- and Kubernetes
+# Providers and creates the following resources:
+#
+# - An IAM Role having the ServiceAccount for the namespace speficied in `spec.roleFor.namespace` contained in its trust relationship
+# - An IAM Policy containing the content provided in `spec.policy`
+# - A RolePolicyAttachment connecting the IAM Role with the IAM Policy
+# - A K8S ServiceAccount resource in the namespace specified in `spec.roleFor.namespace`. This namespace references the IAM Role which allows explicit access to
+#   the AWS resources described in the attached policy.
+#
+# Further Reading:
+# - AWS Iam Roles for ServiceAccounts: https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html
+# - Crossplane AWS Provider: https://github.com/crossplane/provider-aws
+# - Crossplane K8S Provider: https://github.com/crossplane-contrib/provider-kubernetes
+
+apiVersion: irsa.company.tld/v1alpha1
+kind: IamRoleForServiceAccountClaim
+# The IamRoleForServiceAccountClaim will be created for a specific namespace.
+# The metadata.namespace attribute is mandatory when creating an IamRoleForServiceAccountClaim.
+metadata:
+  name: irsa-sample
+  namespace: default
+spec:
+  roleFor:
+    # Provide the namespace where the K8S Service Account should later be created in.
+    namespace: default
+
+  # The remote AWS account role to assume
+  remoteArn: arn:aws:iam::123456789012:role/remoteTenantRole
+
+  # With deletionPolicy set to `Delete` the corresponding IRSA Role will be deleted when this claim is
+  # being deleted. You can set this policy to `Orphan` when you do not want the IRSA role to be deleted instead.
+  # This might come in handy in situations where you need to migrate from other tools or to other clusters.
+  # You can omit this property completely, then `Delete` will be used as the default deletion policy.
+  deletionPolicy: Delete
+
+  # The compositionRef contains a reference to the crossplane composite that
+  # describes the concrete resources that are being created with this claim.
+  # Leave that as it is since there is currently only one composition available.
+  compositionRef:
+    name: crossplane-irsa
