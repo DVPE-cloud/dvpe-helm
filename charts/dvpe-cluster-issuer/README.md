@@ -1,6 +1,6 @@
 # dvpe-cluster-issuer
 
-![Version: 0.0.3](https://img.shields.io/badge/Version-0.0.3-informational?style=flat-square)
+![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square)
 
 Helm chart for installing cert-manager's ClusterIssuer resource, to be used in Kubernetes automation scripts.
 
@@ -42,13 +42,15 @@ The following table lists the configurable parameters of the chart and its defau
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| issuer.metadata.name | string | `"default"` | The name of the ClusterIssuer |
-| issuer.metadata.namespace | string | `nil` | The name of the namespace the ClusterIssuer should be installed to |
-| issuer.spec.acme.email | string | `nil` | Email for cert update notifications |
-| issuer.spec.acme.server.prod | string | `"https://acme-v02.api.letsencrypt.org/directory"` | URL to ACME prod environment |
-| issuer.spec.acme.server.staging | string | `"https://acme-staging-v02.api.letsencrypt.org/directory"` | URL to ACME staging environment |
-| issuer.spec.acme.server.useProd | bool | `false` | Set to true if the prod URL of the default ACME server (Letsencrypt) should be used for issuing certificates. If set to false the staging environment will be used. |
-| issuer.spec.acme.solvers.dns01.route53.hostedZoneID | string | `nil` | AWS IAM role containing permissions to create record sets in Route53 |
-| issuer.spec.acme.solvers.dns01.route53.region | string | `nil` | AWS Region to use |
-| issuer.spec.acme.solvers.dns01.route53.role | string | `nil` | AWS Route53 hosted zone id to use for DNS challenges |
-| issuer.spec.acme.solvers.selector.dnsZones | string | `nil` | List of DNS zones that can be used by this solver |
+| clcm.healthCheckTimeoutInSeconds | int | `60` | CLCM health check interval in seconds |
+| clcm.host | string | `nil` | CLCM host |
+| clcm.port | string | `nil` | CLCM port |
+| clusterIssuers | list | `[{"caInstance":null,"certificateDateCAType":null,"ciClient":null,"ciContactEmail":null,"ciID":null,"ciRequester":null,"ciType":null,"name":null}]` | list of cluster issuers to be created for the given CLCM configuration |
+| clusterIssuers[0].caInstance | string | `nil` | CA instance |
+| clusterIssuers[0].certificateDateCAType | string | `nil` | CA type |
+| clusterIssuers[0].ciClient | string | `nil` | CI client |
+| clusterIssuers[0].ciContactEmail | string | `nil` | CI contact e-mail |
+| clusterIssuers[0].ciID | string | `nil` | CI id |
+| clusterIssuers[0].ciRequester | string | `nil` | CI requester |
+| clusterIssuers[0].ciType | string | `nil` | CI type |
+| clusterIssuers[0].name | string | `nil` | name for the cluster issuer |

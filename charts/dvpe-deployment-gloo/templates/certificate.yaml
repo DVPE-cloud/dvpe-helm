@@ -14,9 +14,11 @@ spec:
   commonName: {{$firstDomain}}
   secretName: {{$serviceName}}-private-tls-by-issuer
   issuerRef:
-    name: wadtfy-certificate-issuer
+    {{- with .Values.certificate.customIssuerSel }}
+    name: {{ .name }}
     group: controller-manager.dvpe-cloud.github.io
-    kind: Issuer
+    kind: {{ .kind }}
+    {{- end }}
   subject:
     organizations:
     {{- range .Values.certificate.organizations }}

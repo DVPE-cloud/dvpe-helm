@@ -1,6 +1,6 @@
 # dvpe-deployment-gloo
 
-![Version: 3.1.1](https://img.shields.io/badge/Version-3.1.1-informational?style=flat-square)
+![Version: 3.2.0](https://img.shields.io/badge/Version-3.2.0-informational?style=flat-square)
 
 Helm chart for installing microservices as gloo enabled VirtualService definitions.
 
@@ -193,8 +193,11 @@ The following table lists the configurable parameters of the chart and its defau
 | autoscaling.maxReplicas | int | `5` | Defines `maxReplicas` of Pods scaled automatically by Horizontal Pod Autoscaler (HPA). |
 | autoscaling.metrics.resource.cpu.targetAverageUtilization | int | `80` | Defines cpu utilization threshold in % for the HPA to scale up new pods. |
 | autoscaling.minReplicas | int | `1` | Defines `minReplicas` of Pods scaled automatically by Horizontal Pod Autoscaler (HPA). |
-| certificate | object | `{"countries":[],"dnsNames":[],"emailAddresses":[],"localities":[],"organizationalUnits":[],"organizations":[],"provinces":[],"useCustomIssuer":true}` | -----------------------------------# |
+| certificate | object | `{"countries":[],"customIssuerSel":{"kind":"Issuer","name":"wadtfy-certificate-issuer"},"dnsNames":[],"emailAddresses":[],"localities":[],"organizationalUnits":[],"organizations":[],"provinces":[],"useCustomIssuer":true}` | -----------------------------------# |
 | certificate.countries | list | `[]` | list of countries listed in created certificate details |
+| certificate.customIssuerSel | object | `{"kind":"Issuer","name":"wadtfy-certificate-issuer"}` | custom issuer selector |
+| certificate.customIssuerSel.kind | string | `"Issuer"` | kind of the custom issuer to be used |
+| certificate.customIssuerSel.name | string | `"wadtfy-certificate-issuer"` | name of the custom issuer to be used |
 | certificate.dnsNames | list | `[]` | list of dnsNames listed in created certificate details |
 | certificate.emailAddresses | list | `[]` | list of emailAddresses listed in created certificate details |
 | certificate.localities | list | `[]` | list of localities listed in created certificate details |

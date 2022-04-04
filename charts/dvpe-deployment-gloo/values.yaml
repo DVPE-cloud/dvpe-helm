@@ -363,6 +363,12 @@ istio:
 certificate:
       # certificate.useCustomIssuer -- If set to `true` the default issuer's configuration settings will be used. This requires a custom issuer to be installed.
       useCustomIssuer: true
+      # certificate.customIssuerSel -- custom issuer selector
+      customIssuerSel:
+        # certificate.customIssuerSel.name -- name of the custom issuer to be used
+        name: wadtfy-certificate-issuer
+        # certificate.customIssuerSel.kind -- kind of the custom issuer to be used
+        kind: Issuer
       # certificate.organizations -- list of organization listed in created certificate details
       organizations: []
       # certificate.countries -- list of countries listed in created certificate details

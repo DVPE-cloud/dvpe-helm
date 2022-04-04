@@ -89,6 +89,7 @@ rules:
   - controller-manager.dvpe-cloud.github.io
   resources:
   - issuers
+  - clusterissuers
   verbs:
   - create
   - delete
@@ -101,6 +102,7 @@ rules:
   - controller-manager.dvpe-cloud.github.io
   resources:
   - issuers/status
+  - clusterissuers/status
   verbs:
   - get
   - patch
