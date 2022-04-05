@@ -25,7 +25,7 @@ spec:
     namespace: default
 
   # The remote AWS account role to assume
-  remoteRoleArn: arn:aws:iam::123456789012:role/remoteTenantRole
+  remoteRoleArn: arn:aws:iam::<AWS ACCOUNT ID>:role/<REMOTE TENANT ROLE NAME>
 
   # With deletionPolicy set to `Delete` the corresponding IRSA Role will be deleted when this claim is
   # being deleted. You can set this policy to `Orphan` when you do not want the IRSA role to be deleted instead.
