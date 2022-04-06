@@ -7,8 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ## [3.2.0]
-### Changed
-* custom certificate issuer selector
+### Added
+* `certificate.customIssuer` property for custom issuer selection with following options:
+  * `internet` - cluster internet issuer
+  * `intranet` - cluster intranet issuer
+  * `other` - namespace issuer specified with `certificate.customIssuerSelector`
+  * `none` - no issuer (equivalent of `useCustomIssuer: false`)
+### Deprecated
+* `certificate.useCustomIssuer`:
+  * `true` - can be removed
+  * `false` - use `customIssuer: none` instead
 
 ## [3.1.1]
 ### Fixed

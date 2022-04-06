@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "clcm": {
+      "$ref": "#/definitions/Clcm"
+    },
+    "intranet": {
+      "$ref": "#/definitions/Cert"
+    },
+    "internet": {
+      "$ref": "#/definitions/Cert"
+    }
+  },
+  "required": [
+    "clcm",
+    "internet",
+    "intranet"
+  ],
+  "definitions": {
+    "Clcm": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "credentialsSecret": {
+          "type": "string"
+        },
+        "host": {
+          "type": "string",
+          "format": "uri"
+        },
+        "port": {
+          "type": "integer"
+        },
+        "healthCheckTimeoutInSeconds": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "credentialsSecret",
+        "healthCheckTimeoutInSeconds",
+        "host",
+        "port"
+      ]
+    },
+    "Cert": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "caInstance": {
+          "type": "string"
+        },
+        "certificateDateCAType": {
+          "type": "string"
+        },
+        "ciID": {
+          "type": "string"
+        },
+        "ciType": {
+          "type": "string"
+        },
+        "ciClient": {
+          "type": "string"
+        },
+        "ciContactEmail": {
+          "type": "string"
+        },
+        "ciRequester": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "caInstance",
+        "certificateDateCAType",
+        "ciClient",
+        "ciContactEmail",
+        "ciID",
+        "ciRequester",
+        "ciType"
+      ]
+    }
+  }
+}

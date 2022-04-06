@@ -45,12 +45,19 @@ The following table lists the configurable parameters of the chart and its defau
 | clcm.healthCheckTimeoutInSeconds | int | `60` | CLCM health check interval in seconds |
 | clcm.host | string | `nil` | CLCM host |
 | clcm.port | string | `nil` | CLCM port |
-| clusterIssuers | list | `[{"caInstance":null,"certificateDateCAType":null,"ciClient":null,"ciContactEmail":null,"ciID":null,"ciRequester":null,"ciType":null,"name":null}]` | list of cluster issuers to be created for the given CLCM configuration |
-| clusterIssuers[0].caInstance | string | `nil` | CA instance |
-| clusterIssuers[0].certificateDateCAType | string | `nil` | CA type |
-| clusterIssuers[0].ciClient | string | `nil` | CI client |
-| clusterIssuers[0].ciContactEmail | string | `nil` | CI contact e-mail |
-| clusterIssuers[0].ciID | string | `nil` | CI id |
-| clusterIssuers[0].ciRequester | string | `nil` | CI requester |
-| clusterIssuers[0].ciType | string | `nil` | CI type |
-| clusterIssuers[0].name | string | `nil` | name for the cluster issuer |
+| internet | object | `{"caInstance":null,"certificateDateCAType":null,"ciClient":null,"ciContactEmail":null,"ciID":null,"ciRequester":null,"ciType":null}` | configuration for the internet cluster issuer |
+| internet.caInstance | string | `nil` | CA instance |
+| internet.certificateDateCAType | string | `nil` | CA type |
+| internet.ciClient | string | `nil` | CI client |
+| internet.ciContactEmail | string | `nil` | CI contact e-mail |
+| internet.ciID | string | `nil` | CI id |
+| internet.ciRequester | string | `nil` | CI requester |
+| internet.ciType | string | `nil` | CI type |
+| intranet | object | `{"caInstance":null,"certificateDateCAType":null,"ciClient":null,"ciContactEmail":null,"ciID":null,"ciRequester":null,"ciType":null}` | configuration for the intranet cluster issuer |
+| intranet.caInstance | string | `nil` | CA instance |
+| intranet.certificateDateCAType | string | `nil` | CA type |
+| intranet.ciClient | string | `nil` | CI client |
+| intranet.ciContactEmail | string | `nil` | CI contact e-mail |
+| intranet.ciID | string | `nil` | CI id |
+| intranet.ciRequester | string | `nil` | CI requester |
+| intranet.ciType | string | `nil` | CI type |
