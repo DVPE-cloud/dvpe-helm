@@ -36,5 +36,5 @@ spec:
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
       imagePullSecrets:
-      - name: {{ .Values.issuercontroller.externalsecrets.name }}
+      - name: {{ default .Values.issuercontroller.externalsecrets.name  .Values.issuercontroller.externalsecrets.dockerCredentials }}
       restartPolicy: Always
