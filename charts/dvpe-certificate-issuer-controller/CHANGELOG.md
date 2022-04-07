@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.2]
+### Fixed
+* Cluster issuer secret source parameterized (`issuercontroller.externalsecrets.clusterIssuer`)
+
+### Deprecated
+* `issuercontroller.externalsecrets.name` - rename to `issuercontroller.externalsecrets.dockerCredentials`
+
 ## [0.2.1]
 ### Fixed
 * Tag of the issuer

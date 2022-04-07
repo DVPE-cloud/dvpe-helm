@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "issuercontroller": {
+      "type": "object",
+      "properties": {
+        "externalsecrets": {
+          "anyOf": [
+            {
+              "properties": {
+                "dockerCredentials": {
+                  "type": "string"
+                },
+                "clusterIssuer": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "dockerCredentials",
+                "clusterIssuer"
+              ]
+            },
+            {
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "clusterIssuer": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "clusterIssuer"
+              ]
+            }
+          ]
+        }
+      },
+      "required": [
+        "externalsecrets"
+      ]
+    }
+  },
+  "required": [
+    "issuercontroller"
+  ]
+}
