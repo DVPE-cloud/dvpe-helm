@@ -17,8 +17,7 @@ Use helm or other helm based deployment tooling (like argocd) to deploy this Cha
 
 ## For IRSA within same account
 
-Fill the `values.yaml` with your settings 
-Set the `xrd.type` to `local` in values.yaml
+Fill the `values.yaml` with your settings und set the `xrd.type` to `local`.
 
 ### Deploy the helm chart:
 
@@ -44,8 +43,7 @@ spec:
 
 ## For IRSA with role assume to an other account
 
-Fill the `values.yaml` with your settings 
-Set the `xrd.type` to `remote` in values.yaml
+Fill the `values.yaml` with your settings und set the `xrd.type` to `remote`.
 
 ### Deploy the helm chart:
 
@@ -54,8 +52,6 @@ helm install crossplane-irsa . -f values.yaml
 ```
 
 ### Setup remote AWS Account 
-
-To allow the EKS Cluster
 
 Based on the [AWS Cross account IAM Roles for kubernetes service accounts](https://aws.amazon.com/blogs/containers/cross-account-iam-roles-for-kubernetes-service-accounts/) 
 the OIDC Provider connectivity between both AWS Accounts must be setup as additional step.
@@ -66,15 +62,15 @@ You should edit the `PolicyDocument` section from `LocalRole` resource before us
 
 ### Use the sample cloudformation template
 
-Open the AWS WebConsole from the remote AWS account.
-
 1. Get the following EKS OIDC Provider informations from the `local`/`source` AWS Account (the EKS Cluster based AWS Account)
+
 - OIDC Provider URL
 - OIDC Provider Thumbprint
 
 2. Create a cloudformation stack on the `remote`/`target` AWS Account
 
-Open the Cloudformation and select create Stack.
+Open the AWS WebConsole from the remote AWS account.
+Go to Cloudformation and select create Stack.
 Upload the sample template and fill the required informations.
 
 
