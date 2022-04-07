@@ -1,30 +1,28 @@
-apiVersion: cert-manager.io/v1
+{{- $clcm := .Values.clcm }}
+{{- include "cluster-issuer" (list $clcm "wadtfy-internet-cluster-issuer" .Values.internet) }}
+{{- include "cluster-issuer" (list $clcm "wadtfy-intranet-cluster-issuer" .Values.intranet) }}
+
+{{- define "cluster-issuer" }}
+{{- $clcm := index . 0 }}
+{{- $name := index . 1 }}
+{{- $cert := index . 2 }}
+---
+apiVersion: controller-manager.dvpe-cloud.github.io/v1alpha1
 kind: ClusterIssuer
 metadata:
-  name: {{ .Values.issuer.metadata.name }}
-  namespace: {{ .Values.issuer.metadata.namespace }}
+  name: {{ $name }}
 spec:
-  acme:
-    {{- if .Values.issuer.spec.acme.server.useProd }}
-    server: {{ .Values.issuer.spec.acme.server.prod }}
-    {{- else }}
-    server: {{ .Values.issuer.spec.acme.server.staging }}
-    {{- end}}
-    email: {{ .Values.issuer.spec.acme.email }}
-    privateKeySecretRef:
-      {{- if .Values.issuer.spec.acme.server.useProd }}
-      name: issuer-prod-secret
-      {{- else }}
-      name: issuer-staging-secret
-      {{- end}}
-    solvers:
-        - selector:
-            dnsZones:
-              {{- range .Values.issuer.spec.acme.solvers.selector.dnsZones }}
-              - {{ . | quote }}
-              {{- end }}
-          dns01:
-            route53:
-              region: {{ .Values.issuer.spec.acme.solvers.dns01.route53.region }}
-              hostedZoneID: {{ .Values.issuer.spec.acme.solvers.dns01.route53.hostedZoneID }}
-              role: {{ .Values.issuer.spec.acme.solvers.dns01.route53.role }}
+  certificateDetails:
+    caInstance: {{ $cert.caInstance }}
+    ciID: {{ $cert.ciID }}
+    ciType: {{ $cert.ciType }}
+    certificateDataCAType: {{ $cert.certificateDateCAType }}
+    client: {{ $cert.ciClient }}
+    contactEmail: {{ $cert.ciContactEmail }}
+    requester: {{ $cert.ciRequester }}
+  clcm:
+    credentialsSecret: wadtfy-cluster-issuer-secret
+    clcmHost: {{ $clcm.host }}
+    clcmPort: {{ $clcm.port }}
+    healthCheckTimeoutInSeconds: {{ $clcm.healthCheckTimeoutInSeconds }}
+{{- end }}

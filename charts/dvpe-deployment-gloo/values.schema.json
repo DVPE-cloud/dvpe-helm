@@ -27,6 +27,63 @@
           }
         }
       }
+    },
+    "certificate": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "customIssuer": {
+              "enum": [
+                "internet",
+                "intranet",
+                "other",
+                "none"
+              ]
+            }
+          },
+          "required": [
+            "customIssuer"
+          ],
+          "if": {
+            "properties": {
+              "customIssuer": {
+                "const": "other"
+              }
+            },
+            "required": [
+              "customIssuer"
+            ]
+          },
+          "then": {
+            "properties": {
+              "customIssuerSelector": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              }
+            },
+            "required": [
+              "customIssuerSelector"
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "properties": {
+            "useCustomIssuer": {
+              "enum": [false]
+            }
+          },
+          "required": ["useCustomIssuer"]
+        }
+      ]
     }
   }
 }

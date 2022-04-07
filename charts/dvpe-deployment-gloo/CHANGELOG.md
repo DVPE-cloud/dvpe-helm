@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased]
 
+## [3.2.0]
+### Added
+* `certificate.customIssuer` property for custom issuer selection with following options:
+  * `internet` - cluster internet issuer
+  * `intranet` - cluster intranet issuer
+  * `other` - namespace issuer specified with `certificate.customIssuerSelector`
+  * `none` - no issuer (equivalent of `useCustomIssuer: false`)
+### Deprecated
+* `certificate.useCustomIssuer`:
+  * `true` - can be removed
+  * `false` - use `customIssuer: none` instead
+
 ## [3.1.1]
 ### Fixed
 * Allowed client ids are now created as list
@@ -276,3 +288,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [3.0.4]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-3.0.4/charts/dvpe-deployment-gloo
 [3.0.5]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-3.0.5/charts/dvpe-deployment-gloo
 [3.0.6]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-3.0.6/charts/dvpe-deployment-gloo
+[3.1.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-3.1.0/charts/dvpe-deployment-gloo
+[3.1.1]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-3.1.1/charts/dvpe-deployment-gloo
+[3.2.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-3.2.0/charts/dvpe-deployment-gloo

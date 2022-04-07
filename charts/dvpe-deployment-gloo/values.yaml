@@ -361,8 +361,14 @@ istio:
 # Certificate value section            #
 # -------------------------------------#
 certificate:
-      # certificate.useCustomIssuer -- If set to `true` the default issuer's configuration settings will be used. This requires a custom issuer to be installed.
+      # certificate.useCustomIssuer -- DEPRECATED; use `customIssuer: none` instead of `useCustomIssuer: false`
       useCustomIssuer: true
+      # certificate.customIssuer -- custom issuer; allowed values: internet, intranet, other (requires `customIssuerSelector`), none
+      customIssuer: intranet
+      # certificate.customIssuerSelector -- other custom issuer selector; ignored if `customIssuer` different from "other"
+      customIssuerSelector:
+        # certificate.customIssuerSelector.name -- name of the custom issuer to be used
+        name:
       # certificate.organizations -- list of organization listed in created certificate details
       organizations: []
       # certificate.countries -- list of countries listed in created certificate details

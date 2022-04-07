@@ -1,11 +1,12 @@
-### only creates a certificate resource if custom issuer is `true` and a domain is provided
-{{- if and .Values.certificate.useCustomIssuer .Values.gloo.virtualservice.spec.virtualHost.domains }}
+### only creates a certificate resource if custom issuer is different from "none" and a domain is provided
+{{- if and .Values.certificate.useCustomIssuer (ne .Values.certificate.customIssuer "none") .Values.gloo.virtualservice.spec.virtualHost.domains }}
 
 {{- $serviceName := include "service.name" . -}}
 {{- $domains := include "gloo.virtualservice.spec.virtualHost.domains.as.list" . -}}
 {{- $firstDomain := include "gloo.virtualservice.spec.virtualHost.domains.first" . -}}
 
 ---
+{{- with .Values.certificate }}
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
@@ -14,38 +15,47 @@ spec:
   commonName: {{$firstDomain}}
   secretName: {{$serviceName}}-private-tls-by-issuer
   issuerRef:
-    name: wadtfy-certificate-issuer
     group: controller-manager.dvpe-cloud.github.io
+    {{- if eq .customIssuer "intranet" }}
+    name: wadtfy-intranet-cluster-issuer
+    kind: ClusterIssuer
+    {{- else if eq .customIssuer "internet" }}
+    name: wadtfy-internet-cluster-issuer
+    kind: ClusterIssuer
+    {{- else if eq .customIssuer "other" }}
+    name: {{ .customIssuerSelector.name }}
     kind: Issuer
+    {{- end }}
   subject:
     organizations:
-    {{- range .Values.certificate.organizations }}
+    {{- range .organizations }}
       - {{ . }}
     {{- end }}
     countries:
-    {{- range .Values.certificate.countries }}
+    {{- range .countries }}
       - {{ . }}
     {{- end }}
     localities:
-    {{- range .Values.certificate.localities }}
+    {{- range .localities }}
       - {{ . }}
     {{- end }}
     provinces:
-    {{- range .Values.certificate.provinces }}
+    {{- range .provinces }}
       - {{ . }}
     {{- end }}
     organizationalUnits:
-    {{- range .Values.certificate.organizationalUnits }}
+    {{- range .organizationalUnits }}
       - {{ . }}
     {{- end }}
   dnsNames:
     {{-  $domains  -}}
-    {{- range .Values.certificate.dnsNames }}
+    {{- range .dnsNames }}
       - {{ . }}
     {{- end }}
   emailAddresses:
-    {{- range .Values.certificate.emailAddresses }}
+    {{- range .emailAddresses }}
       - {{ . }}
     {{- end }}
 
-{{- end}}
+{{- end }}
+{{- end }}
