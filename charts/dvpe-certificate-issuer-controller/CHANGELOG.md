@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1]
+### Fixed
+* Tag of the issuer
+
 ## [0.2.0]
 ### Added
 * ClusterIssuer resource and RBAC adjustments
@@ -55,3 +59,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [0.0.4]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-certificate-issuer-controller-0.0.4/charts/dvpe-certificate-issuer-controller
 [0.1.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-certificate-issuer-controller-0.1.0/charts/dvpe-certificate-issuer-controller
 [0.2.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-certificate-issuer-controller-0.2.0/charts/dvpe-certificate-issuer-controller
+[0.2.1]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-certificate-issuer-controller-0.2.1/charts/dvpe-certificate-issuer-controller
