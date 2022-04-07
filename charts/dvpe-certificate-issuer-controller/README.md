@@ -1,6 +1,6 @@
 # dvpe-certificate-issuer-controller
 
-![Version: 0.2.1](https://img.shields.io/badge/Version-0.2.1-informational?style=flat-square)
+![Version: 0.2.2](https://img.shields.io/badge/Version-0.2.2-informational?style=flat-square)
 
 Helm chart for deploying a custom certificate issuer controller. The certificate issuer controller is a [cert-manager](https://cert-manager.io/docs/) resource managing certificate requests in a private PKI.
 
@@ -32,8 +32,10 @@ s
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| issuercontroller | object | `{"externalsecrets":{"name":null},"plane":{"name":"wadtfy-cert-issuer-controller-system"},"spec":{"image":{"name":"wadtfy-issuer","pullPolicy":"IfNotPresent","repository":null,"tag":"v1.2.0"}}}` | -----------------------------# |
-| issuercontroller.externalsecrets.name | string | `nil` | The name of the external secret key containing the docker credentials for this deployment |
+| issuercontroller | object | `{"externalsecrets":{"clusterIssuer":null,"dockerCredentials":null,"name":null},"plane":{"name":"wadtfy-cert-issuer-controller-system"},"spec":{"image":{"name":"wadtfy-issuer","pullPolicy":"IfNotPresent","repository":null,"tag":"v1.2.0"}}}` | -----------------------------# |
+| issuercontroller.externalsecrets.clusterIssuer | string | `nil` | The name of the external secret for the cluster certificate issuer |
+| issuercontroller.externalsecrets.dockerCredentials | string | `nil` | The name of the external secret key containing the docker credentials for this deployment (earlier: `issuercontroller.externalsecrets.name`) |
+| issuercontroller.externalsecrets.name | string | `nil` | DEPRECATED; rename to `issuercontroller.externalsecrets.dockerCredentials` |
 | issuercontroller.plane.name | string | `"wadtfy-cert-issuer-controller-system"` | Name of the Controller Plane |
 | issuercontroller.spec.image | object | `{"name":"wadtfy-issuer","pullPolicy":"IfNotPresent","repository":null,"tag":"v1.2.0"}` | Name of issuer-controller deployment image |
 | issuercontroller.spec.image.name | string | `"wadtfy-issuer"` | The image name to use. |
