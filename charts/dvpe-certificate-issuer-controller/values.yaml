@@ -15,7 +15,7 @@ issuercontroller:
       # issuercontroller.spec.image.name -- The image name to use.
       name: wadtfy-issuer
       # issuercontroller.spec.image.tag -- The image version to use.
-      tag: 1.2.0
+      tag: v1.2.0
       # issuercontroller.spec.image.pullPolicy -- The default rule for downloading images.
       pullPolicy: IfNotPresent
   externalsecrets:
