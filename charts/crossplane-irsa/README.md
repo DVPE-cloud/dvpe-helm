@@ -18,17 +18,79 @@ Use helm or other helm based deployment tooling (like argocd) to deploy this Cha
 
 ## For IRSA within same account
 
-Required:
-- The `xrd.type` must be set to `local` in values.yaml
+Fill the `values.yaml` with your settings
+Set the `xrd.type` to `local` in values.yaml
+
+### Deploy the helm chart:
+
+```sh
+helm install crossplane-irsa . -f values.yaml
+```
+
+### Deploy your service and use the newly generated service account from the crossplane-irsa
+
+Example Pod:
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp
+  labels:
+    name: myapp
+spec:
+  serviceAccountName: namespace-sa
+  containers:
+    :
+```
 
 ## For IRSA with role assume to an other account
 
-Required:
-- The `xrd.type` must be set to `remote` in values.yaml
+Fill the `values.yaml` with your settings
+Set the `xrd.type` to `remote` in values.yaml
+
+### Deploy the helm chart:
+
+```sh
+helm install crossplane-irsa . -f values.yaml
+```
+
+### Setup remote AWS Account
+
+To allow the EKS Cluster
 
 Based on the [AWS Cross account IAM Roles for kubernetes service accounts](https://aws.amazon.com/blogs/containers/cross-account-iam-roles-for-kubernetes-service-accounts/)
 the OIDC Provider connectivity between both AWS Accounts must be setup as additional step.
-An example Cloudformation Template in samples/oidc-provider-cloudformation.tpl can be used to setup the OIDC Config.
+
+An example Cloudformation Template in `samples/oidc-provider-cloudformation.tpl.yaml` can be used to setup the OIDC Config.
+
+### Use the sample cloudformation template
+
+Open the AWS WebConsole from the remote AWS account.
+
+1. Get the following EKS OIDC Provider informations from the `local`/`source` AWS Account (the EKS Cluster based AWS Account)
+- OIDC Provider URL
+- OIDC Provider Thumbprint
+
+2. Create a cloudformation stack on the `remote`/`target` AWS Account
+
+Open the Cloudformation and select create Stack.
+Upload the sample template and fill the required informations.
+
+### Deploy your service and use the newly generated service account from the crossplane-irsa
+
+Example Pod:
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp
+  labels:
+    name: myapp
+spec:
+  serviceAccountName: namespace-sa
+  containers:
+    :
+```
 
 ## Configuration
 

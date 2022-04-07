@@ -1,0 +1,92 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: "Cloudformation template to create OIDC Provider for cross IRSA account connections"
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: "RoleName"
+        Parameters:
+          - RoleName
+      - Label:
+          default: "Remote OIDC Connection URL"
+        Parameters:
+          - RemoteAccountOidcProviderUrl
+      - Label:
+          default: "OIDCProvider Thumbprint"
+        Parameters:
+          - RemoteAccountOidcProviderThumbprint
+
+Parameters:
+  RoleName:
+    Description: The local AWS Account RoleName
+    Type: String
+    Default: k8s-assumeRoleTenant
+  RemoteAccountOidcProviderUrl:
+    Description: The remote AWS Account OIDC Provider URL (type WebIdentity)
+    Type: String
+    Default: oidc.eks.<region>.amazonaws.com/id/<ID>
+  RemoteAccountOidcProviderThumbprint:
+    Description: The remote AWS Account OIDC Provider Thumbprint
+    Type: String
+
+Resources:
+  IAMOidcProvider:
+    Type: AWS::IAM::OIDCProvider
+    Properties:
+      ClientIdList: [ "sts.amazonaws.com" ]
+      ThumbprintList: [ !Ref RemoteAccountOidcProviderThumbprint ]
+      Url: !Sub https://${RemoteAccountOidcProviderUrl}
+
+  LocalRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub "${RoleName}"
+      AssumeRolePolicyDocument: !Sub |
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Federated": "arn:aws:iam::${AWS::AccountId}:oidc-provider/${RemoteAccountOidcProviderUrl}"
+              },
+              "Action": "sts:AssumeRoleWithWebIdentity",
+              "Condition": {
+                "StringEquals": {
+                  "${RemoteAccountOidcProviderUrl}:aud": "sts.amazonaws.com"
+                }
+              }
+            }
+          ]
+        }
+      Policies:
+      - PolicyName: !Sub k8s-${RoleName}-policy
+        PolicyDocument: |
+          {
+              "Version": "2012-10-17",
+              "Statement": [
+                  {
+                      "Action": [
+                          "s3:ListAllMyBuckets"
+                      ],
+                      "Effect": "Allow",
+                      "Resource": "*"
+                  },
+                  {
+                      "Action": [
+                          "s3:ListBucket",
+                          "s3:GetBucketLocation"
+                      ],
+                      "Effect": "Allow",
+                      "Resource": "arn:aws:s3:::mybucket"
+                  },
+                  {
+                      "Effect": "Allow",
+                      "Action": [
+                          "s3:GetObject",
+                          "s3:PutObject"
+                      ],
+                      "Resource": "arn:aws:s3:::mybucket/*"
+                  }
+              ]
+          }        
