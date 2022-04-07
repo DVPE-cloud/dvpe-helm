@@ -62,6 +62,8 @@ Based on the [AWS Cross account IAM Roles for kubernetes service accounts](https
 the OIDC Provider connectivity between both AWS Accounts must be setup as additional step.
 
 An example Cloudformation Template in `samples/oidc-provider-cloudformation.tpl.yaml` can be used to setup the OIDC Config.
+The example template will create a basic policy to get access to S3 Buckets.
+You should edit the `PolicyDocument` section from `LocalRole` resource before use (do not change the `AssumeRolePolicyDocument`) !
 
 ### Use the sample cloudformation template
 
