@@ -16,7 +16,26 @@ Pre-Requirements:
 Deploy the crossplane-irsa Chart by filling the the values.yaml.
 Use helm or other helm based deployment tooling (like argocd) to deploy this Chart.
 
-## For IRSA within same account
+## Naming Conventions
+
+This Crossplane component will generate an IAM Role, IAM Policy and a K8S Service Account. All of those resources will be connected to each other so that they apply to the rules
+defined in [IAM Roles For Service Accounts](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html).
+
+The following naming conventions need to be considered when creating a new `IamRoleForServiceAccountClaim`.
+
+### AWS IAM Role
+
+`k8s-<spec.roleFor.namespace>-sa-role`
+
+### AWS IAM Policy
+
+`<spec.roleFor.namespace>-irsa-policy`
+
+### K8S Service Account
+
+`<spec.roleFor.namespace>-sa`
+
+## Example for IRSA within local AWS account
 
 Fill the `values.yaml` with your settings und set the `xrd.type` to `local`.
 
@@ -26,7 +45,44 @@ Fill the `values.yaml` with your settings und set the `xrd.type` to `local`.
 helm install crossplane-irsa . -f values.yaml
 ```
 
-### Deploy your service and use the newly generated service account from the crossplane-irsa
+### Create a local IRSA role
+
+The sample below will result in the creation of the following components:
+* A K8S Service Account with name `default-sa`.
+* An AWS IAM Role with name `k8s-default-sa-role` and an including trust relationship pointing to the Service Account `default-sa`.
+* An AWS IAM Policy with name `default-irsa-policy` containing the IAM Policy Document provided with the `policy` parameter.
+
+Example IRSA:
+```yaml
+apiVersion: irsa.company.tld/v1alpha1
+kind: IamRoleForServiceAccountClaim
+metadata:
+  name: irsa-sample
+  namespace: default
+spec:
+  roleFor:
+    namespace: default
+  policy: |
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Action": [
+            "s3:Get*",
+            "s3:List*",
+            "s3-object-lambda:Get*",
+            "s3-object-lambda:List*"
+          ],
+          "Resource": "*"
+        }
+      ]
+    }
+  compositionRef:
+    name: crossplane-irsa
+```
+
+### Deploy your service and use the newly generated Service Account from the IRSA role created before
 
 Example Pod:
 ```yaml
@@ -37,12 +93,12 @@ metadata:
   labels:
     name: myapp
 spec:
-  serviceAccountName: namespace-sa
+  serviceAccountName: default-sa
   containers:
     :
 ```
 
-## For IRSA with role assume to an other account
+## Example for IRSA with role assume to a different AWS account
 
 Fill the `values.yaml` with your settings und set the `xrd.type` to `remote`.
 
@@ -73,6 +129,32 @@ You should edit the `PolicyDocument` section from `LocalRole` resource before us
 Open the AWS WebConsole from the remote AWS account.
 Go to Cloudformation and select create Stack.
 Upload the sample template and fill the required informations.
+
+### Create a remote IRSA role
+
+The sample below will result in the creation of the following components:
+* A K8S Service Account with name `default-sa`.
+* An AWS IAM Role with name `k8s-default-sa-role` and an including trust relationship pointing to the Service Account `default-sa`.
+* An AWS IAM Policy with name `default-irsa-policy` containing an IAM Policy Document which allows to perform an `sts:assumeRole` Action for the AWS IAM Role provided with the `remoteRoleArn` property.
+
+Example IRSA:
+```yaml
+apiVersion: irsa.company.tld/v1alpha1
+kind: IamRoleForServiceAccountClaim
+metadata:
+  name: irsa-sample
+  namespace: default
+spec:
+  roleFor:
+    namespace: default
+
+  remoteRoleArn: arn:aws:iam::<AWS ACCOUNT ID>:role/<REMOTE TENANT ROLE NAME>
+
+  deletionPolicy: Delete
+
+  compositionRef:
+    name: crossplane-irsa
+```
 
 ### Deploy your service and use the newly generated service account from the crossplane-irsa
 
