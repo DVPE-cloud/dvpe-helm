@@ -1,0 +1,55 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "properties": {
+        "aws": {
+            "type": "object",
+            "properties": {
+                "accountId": {
+                    "type": "string"
+                },
+                "oidcProviderId": {
+                    "type": "string"
+                }
+            },
+            "required": ["accountId", "oidcProviderId"]
+        },
+        "composition": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                }
+            },
+            "required": ["name"]
+        },
+        "provider": {
+            "type": "object",
+            "properties": {
+                "awsConfigName": {
+                    "type": "string"
+                },
+                "k8sConfigName": {
+                    "type": "string"
+                }
+            }
+        },
+        "xrd": {
+            "type": "object",
+            "properties": {
+                "apiGroup": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string",
+                    "enum": ["local", "remote"]
+                },
+                "version": {
+                    "type": "string"
+                }
+            },
+            "required": ["apiGroup", "type", "version"]
+        }
+    },
+    "required": ["aws", "composition", "provider", "xrd"]
+}
