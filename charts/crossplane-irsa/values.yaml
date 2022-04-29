@@ -12,10 +12,6 @@ xrd:
   # xrd.type -- Set the IAM Policy access mode (`local` or `remote`). Local means IRSA policy for same AWS account. Remote will create a assume role for remote account ARN
   type:
 
-composition:
-  # composition.name -- The name of the crossplane composition (MUST not be overridden from outside).
-  name:
-
 provider:
   # provider.awsConfigName -- The name of the AWS Crossplane Provider used to provision this component.
   awsConfigName:

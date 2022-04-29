@@ -182,7 +182,6 @@ The following table lists the configurable parameters of the chart and its defau
 |-----|------|---------|-------------|
 | aws.accountId | string | `nil` | ID of the AWS Account this component should be provisioned to. |
 | aws.oidcProviderId | string | `nil` | ID of the EKS Identity Provider that grants access to IAM roles for speaking with the EKS cluster. |
-| composition.name | string | `"crossplane-irsa"` | The name of the crossplane composition (MUST not be overridden from outside). |
 | provider.awsConfigName | string | `nil` | The name of the AWS Crossplane Provider used to provision this component. |
 | provider.k8sConfigName | string | `nil` | The name of the K8S Crossplane Provider used to provision this component. |
 | xrd.apiGroup | string | `nil` | The name of the API Group this resource should be exposed to. |

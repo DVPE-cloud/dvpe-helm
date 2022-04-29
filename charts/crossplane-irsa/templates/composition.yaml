@@ -4,7 +4,11 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: Composition
 metadata:
-  name: {{ .Values.composition.name }}
+{{- if eq .Values.xrd.type "remote" }}
+  name: crossplane-remote-irsa
+{{- else }}
+  name: crossplane-irsa
+{{- end }}
   labels:
 {{- if eq .Values.xrd.type "remote" }}
     crossplane.io/xrd: remoteiamrolesforserviceaccounts.{{ .Values.xrd.apiGroup }}
