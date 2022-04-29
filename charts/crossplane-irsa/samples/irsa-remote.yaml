@@ -13,11 +13,11 @@
 # - Crossplane K8S Provider: https://github.com/crossplane-contrib/provider-kubernetes
 
 apiVersion: irsa.company.tld/v1alpha1
-kind: IamRoleForServiceAccountClaim
+kind: RemoteIamRoleForServiceAccountClaim
 # The IamRoleForServiceAccountClaim will be created for a specific namespace.
 # The metadata.namespace attribute is mandatory when creating an IamRoleForServiceAccountClaim.
 metadata:
-  name: irsa-sample
+  name: remote-irsa-sample
   namespace: default
 spec:
   roleFor:

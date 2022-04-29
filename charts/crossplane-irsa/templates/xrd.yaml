@@ -5,15 +5,29 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: CompositeResourceDefinition
 metadata:
+{{- if eq .Values.xrd.type "remote" }}
+  name: remoteiamrolesforserviceaccounts.{{ .Values.xrd.apiGroup }}
+{{- else }}
   name: iamrolesforserviceaccounts.{{ .Values.xrd.apiGroup }}
+{{- end }}
 spec:
   group: {{ .Values.xrd.apiGroup }}
   names:
+{{- if eq .Values.xrd.type "remote" }}
+    kind: RemoteIamRoleForServiceAccount
+    plural: remoteiamrolesforserviceaccounts
+{{- else }}
     kind: IamRoleForServiceAccount
     plural: iamrolesforserviceaccounts
+{{- end }}
   claimNames:
+{{- if eq .Values.xrd.type "remote" }}
+    kind: RemoteIamRoleForServiceAccountClaim
+    plural: remoteiamrolesforserviceaccountclaims
+{{- else }}
     kind: IamRoleForServiceAccountClaim
     plural: iamrolesforserviceaccountclaims
+{{- end }}
   versions:
     - name: {{ .Values.xrd.version }}
       served: true
