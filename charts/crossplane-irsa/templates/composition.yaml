@@ -6,12 +6,20 @@ kind: Composition
 metadata:
   name: {{ .Values.composition.name }}
   labels:
+{{- if eq .Values.xrd.type "remote" }}
+    crossplane.io/xrd: remoteiamrolesforserviceaccounts.{{ .Values.xrd.apiGroup }}
+{{- else }}
     crossplane.io/xrd: iamrolesforserviceaccounts.{{ .Values.xrd.apiGroup }}
+{{- end }}
 spec:
   writeConnectionSecretsToNamespace: crossplane-system
   compositeTypeRef:
     apiVersion: {{ .Values.xrd.apiGroup }}/{{ .Values.xrd.version }}
+{{- if eq .Values.xrd.type "remote" }}
+    kind: RemoteIamRoleForServiceAccount
+{{- else }}
     kind: IamRoleForServiceAccount
+{{- end }}
   resources:
     - name: policy
       base:
@@ -24,16 +32,16 @@ spec:
             name:
             document:
             tags:
-            - key: created_by
-              value: crossplane
-            - key: crossplane-kind
-              value: policy.iam.aws.crossplane.io
-            - key: xrd-kind
-              value: iamrolesforserviceaccounts.{{ .Values.xrd.apiGroup }}
-            - key: xrd-helm_chart_version
-              value: {{ .Chart.Version }}
-            - key: crossplane-providerconfig
-              value: {{ .Values.provider.awsConfigName }}
+              - key: created_by
+                value: crossplane
+              - key: crossplane-kind
+                value: policy.iam.aws.crossplane.io
+              - key: xrd-kind
+                value: iamrolesforserviceaccounts.{{ .Values.xrd.apiGroup }}
+              - key: xrd-helm_chart_version
+                value: {{ .Chart.Version }}
+              - key: crossplane-providerconfig
+                value: {{ .Values.provider.awsConfigName }}
           providerConfigRef:
             name: {{ .Values.provider.awsConfigName }}
       patches:
@@ -42,7 +50,11 @@ spec:
           transforms:
             - type: string
               string:
+{{- if eq .Values.xrd.type "remote" }}
+                fmt: "%s-irsa-remote-policy"
+{{- else }}
                 fmt: "%s-irsa-policy"
+{{- end }}
         - fromFieldPath: "spec.roleFor.namespace"
           toFieldPath: "spec.forProvider.name"
           transforms:
@@ -103,7 +115,11 @@ spec:
           transforms:
             - type: string
               string:
+{{- if eq .Values.xrd.type "remote" }}
+                fmt: "k8s-%s-sa-remote-role"
+{{- else }}
                 fmt: "k8s-%s-sa-role"
+{{- end }}
         - type: CombineFromComposite
           combine:
             variables:
@@ -111,7 +127,11 @@ spec:
               - fromFieldPath: "spec.roleFor.namespace"
             strategy: string
             string:
+{{- if eq .Values.xrd.type "remote" }}
+              fmt: "IAM Role for Service Account %s-remote-sa in K8S namespace %s"
+{{- else }}
               fmt: "IAM Role for Service Account %s-sa in K8S namespace %s"
+{{- end }}
           toFieldPath: spec.forProvider.description
         - fromFieldPath: "spec.roleFor.namespace"
           toFieldPath: "spec.forProvider.path"
@@ -137,7 +157,11 @@ spec:
                       },
                       "Condition": {
                         "StringEquals": {
+{{- if eq .Values.xrd.type "remote" }}
+                          "oidc.eks.eu-west-1.amazonaws.com/id/{{ .Values.aws.oidcProviderId }}:sub": "system:serviceaccount:%s:%s-remote-sa",
+{{- else }}
                           "oidc.eks.eu-west-1.amazonaws.com/id/{{ .Values.aws.oidcProviderId }}:sub": "system:serviceaccount:%s:%s-sa",
+{{- end }}
                           "oidc.eks.eu-west-1.amazonaws.com/id/{{ .Values.aws.oidcProviderId }}:aud": "sts.amazonaws.com"
                         }
                       },
@@ -170,7 +194,11 @@ spec:
           transforms:
             - type: string
               string:
+{{- if eq .Values.xrd.type "remote" }}
+                fmt: "%s-irsa-remote-role-policy-attachment"
+{{- else }}
                 fmt: "%s-irsa-role-policy-attachment"
+{{- end }}
         - fromFieldPath: "status.policyArn"
           toFieldPath: "spec.forProvider.policyArn"
         - fromFieldPath: "spec.roleFor.namespace"
@@ -178,7 +206,11 @@ spec:
           transforms:
             - type: string
               string:
+{{- if eq .Values.xrd.type "remote" }}
+                fmt: "k8s-%s-sa-remote-role"
+{{- else }}
                 fmt: "k8s-%s-sa-role"
+{{- end }}
     - name: serviceAccount
       base:
         apiVersion: kubernetes.crossplane.io/v1alpha1
@@ -209,6 +241,10 @@ spec:
           transforms:
             - type: string
               string:
+{{- if eq .Values.xrd.type "remote" }}
+                fmt: "%s-remote-sa"
+{{- else }}
                 fmt: "%s-sa"
+{{- end }}
         - fromFieldPath: "status.roleArn"
           toFieldPath: "spec.forProvider.manifest.metadata.annotations[eks.amazonaws.com/role-arn]"

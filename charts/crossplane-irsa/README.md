@@ -1,6 +1,6 @@
 # crossplane-irsa
 
-![Version: 0.0.1](https://img.shields.io/badge/Version-0.0.1-informational?style=flat-square)
+![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square)
 
 Helm chart for installing a custom crossplane xrd for creating AWS IRSA roles.
 
@@ -133,14 +133,14 @@ Upload the sample template and fill the required informations.
 ### Create a remote IRSA role
 
 The sample below will result in the creation of the following components:
-* A K8S Service Account with name `default-sa`.
-* An AWS IAM Role with name `k8s-default-sa-role` and an including trust relationship pointing to the Service Account `default-sa`.
-* An AWS IAM Policy with name `default-irsa-policy` containing an IAM Policy Document which allows to perform an `sts:assumeRole` Action for the AWS IAM Role provided with the `remoteRoleArn` property.
+* A K8S Service Account with name `default-remote-sa`.
+* An AWS IAM Role with name `k8s-default-sa-remote-role` and an including trust relationship pointing to the Service Account `default-sa`.
+* An AWS IAM Policy with name `default-irsa-remote-policy` containing an IAM Policy Document which allows to perform an `sts:assumeRole` Action for the AWS IAM Role provided with the `remoteRoleArn` property.
 
 Example IRSA:
 ```yaml
 apiVersion: irsa.company.tld/v1alpha1
-kind: IamRoleForServiceAccountClaim
+kind: RemoteIamRoleForServiceAccountClaim
 metadata:
   name: irsa-sample
   namespace: default
