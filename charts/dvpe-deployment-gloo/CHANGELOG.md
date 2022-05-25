@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased]
 
+## [3.2.1]
+### Added
+* Extension for projects with Crossplane generated AWS resources.
+  CI/CD deployments of such projects (till now) always have per-branch generated resources - which ordinarily is OK, but not always.
+  This extension has nothing to do with Crossplane itself, but it introduces referencing of absolute named secrets to
+  read additional parameters from.
+  In prior a given secret name was always prefixed with the release name. A CI/CD deployment was never able to 
+  reference the secret (containing the resource name) created by Crossplane for the origin (none branch) deployment.
+  But exactly this would be required to share Crossplane generated resources among multiple branch deployments.
+* To achieve the sharing `dvpe-deployment-gloo.additionalparameters.secrets.<ENV_VARIABLE_NAME>.secretKeyRef.nameRef` was added.
+  It has precedence over `dvpe-deployment-gloo.additionalparameters.secrets.<ENV_VARIABLE_NAME>.secretKeyRef.name` and
+  uses the given name of the secret as is instead of prefixing it with the release name.
+
 ## [3.2.0]
 ### Added
 * `certificate.customIssuer` property for custom issuer selection with following options:
@@ -291,3 +304,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [3.1.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-3.1.0/charts/dvpe-deployment-gloo
 [3.1.1]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-3.1.1/charts/dvpe-deployment-gloo
 [3.2.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-3.2.0/charts/dvpe-deployment-gloo
+[3.2.1]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-3.2.1/charts/dvpe-deployment-gloo
