@@ -118,7 +118,7 @@ additionalparameters:
   configMapApplied: false
   # additionalparameters.yamlConfigFileApplied -- Set to `true` if you want to add a custom yaml configuration for your deployment.
   yamlConfigFileApplied: false
-  # additionalparameters.secrets -- Object in the format { <environmentVariable>: secretKeyRef: { name: "", key: "" }, <environmentVariable>: ...} to reference existing secrets and inject them as environment variables
+  # additionalparameters.secrets -- Object in the format { <environmentVariable>: secretKeyRef: { name: "", key: "" }, <environmentVariable>: secretKeyRef: { nameRef: "", key: "" }, ...} to reference existing secrets and inject them as environment variables. The first secret name (given with "name") gets prefixed by "$Release.Name". The second secret name (given with "nameRef") will be used as is.
   secrets: {}
 
 # -------------------------------------#

@@ -87,7 +87,11 @@ spec:
           - name: {{ $key | quote }}
             valueFrom:
               secretKeyRef:
+                {{- if $value.secretKeyRef.nameRef }}
+                name: {{ $value.secretKeyRef.nameRef }}
+                {{- else}}
                 name: {{ $.Release.Name }}-{{ $value.secretKeyRef.name }}
+                {{- end}}
                 key: {{ $value.secretKeyRef.key }}
           {{- end}}
           readinessProbe:
