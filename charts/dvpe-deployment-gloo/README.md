@@ -184,7 +184,7 @@ The following table lists the configurable parameters of the chart and its defau
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| additionalparameters | object | `{"configMapApplied":false,"secrets":{},"yamlConfigFileApplied":false}` | -----------------------------------# |
+| additionalparameters | object | `{"configMapApplied":false,"customConfigMapReference":null,"secrets":{},"yamlConfigFileApplied":false}` | -----------------------------------# |
 | additionalparameters.configMapApplied | bool | `false` | Set to `true` if you want to add a custom `ConfigMap` for your deployment. |
 | additionalparameters.secrets | object | `{}` | Object in the format { <environmentVariable>: secretKeyRef: { name: "", key: "" }, <environmentVariable>: secretKeyRef: { nameRef: "", key: "" }, ...} to reference existing secrets and inject them as environment variables. The first secret name (given with "name") gets prefixed by "$Release.Name". The second secret name (given with "nameRef") will be used as is. |
 | additionalparameters.yamlConfigFileApplied | bool | `false` | Set to `true` if you want to add a custom yaml configuration for your deployment. |
