@@ -116,6 +116,8 @@ autoscaling:
 additionalparameters:
   # additionalparameters.configMapApplied -- Set to `true` if you want to add a custom `ConfigMap` for your deployment.
   configMapApplied: false
+  # additionalparameter.customConfigMapReference -- Set name of a custom config-map from which additional values are injected as env-variables into container / deployments. If empty, nothin will be applied.
+  customConfigMapReference:
   # additionalparameters.yamlConfigFileApplied -- Set to `true` if you want to add a custom yaml configuration for your deployment.
   yamlConfigFileApplied: false
   # additionalparameters.secrets -- Object in the format { <environmentVariable>: secretKeyRef: { name: "", key: "" }, <environmentVariable>: secretKeyRef: { nameRef: "", key: "" }, ...} to reference existing secrets and inject them as environment variables. The first secret name (given with "name") gets prefixed by "$Release.Name". The second secret name (given with "nameRef") will be used as is.
