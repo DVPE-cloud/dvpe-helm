@@ -37,4 +37,4 @@ spec:
   # describes the concrete resources that are being created with this claim.
   # Leave that as it is since there is currently only one composition available.
   compositionRef:
-    name: crossplane-irsa
+    name: crossplane-remote-irsa
