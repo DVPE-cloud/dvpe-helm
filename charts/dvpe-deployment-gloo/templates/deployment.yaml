@@ -85,9 +85,9 @@ spec:
           {{- end}}
           {{- if .Values.additionalparameters.customConfigMapReference }}
           envFrom:
-            - configMapRef:
-                name: {{ .Values.additionalparameters.customConfigMapReference }}
-          {{ - end }}
+          - configMapRef:
+              name: {{ .Values.additionalparameters.customConfigMapReference }}
+          {{- end}}
           {{- range $key, $value := .Values.additionalparameters.secrets }}
           - name: {{ $key | quote }}
             valueFrom:
