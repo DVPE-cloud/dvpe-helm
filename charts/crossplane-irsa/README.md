@@ -183,4 +183,4 @@ The following table lists the configurable parameters of the chart and its defau
 | provider.k8sConfigName | string | `nil` | The name of the K8S Crossplane Provider used to provision this component. |
 | xrd.apiGroup | string | `nil` | The name of the API Group this resource should be exposed to. |
 | xrd.type | string | `nil` | Set the IAM Policy access mode (`local` or `remote`). Local means IRSA policy for same AWS account. Remote will create a assume role for remote account ARN |
-| xrd.version | string | `"v1alpha1"` | The version of this component (MUST not be overridden from outside). |
+| xrd.version | string | `nil` | The version of this component (MUST not be overridden from outside). |
