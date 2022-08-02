@@ -1,0 +1,202 @@
+# Crossplane Composition linking the XRD with the concrete managed EFS Network resource.
+# See https://negz.github.io/crossplane.github.io/docs/v1.4/reference/composition.html#compositions for details
+
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: {{ .Values.composition.efs.name }}
+  labels:
+    crossplane.io/xrd: elasticfilesystems.{{ .Values.xrd.apiGroup }}
+spec:
+  writeConnectionSecretsToNamespace: crossplane-system
+  compositeTypeRef:
+    apiVersion: {{ .Values.xrd.apiGroup }}/{{ .Values.xrd.version }}
+    kind: ElasticFilesystem
+  resources:
+    - name: key
+      base:
+        apiVersion: kms.aws.crossplane.io/v1alpha1
+        kind: Key
+        spec:
+          forProvider:
+            region:
+            policy:
+            tags:
+              - tagKey: "crossplane-efs/project-id"
+                tagValue:
+              - tagKey: "crossplane-efs/created-by"
+                tagValue: crossplane
+              - tagKey: "crossplane-efs/kind"
+                tagValue: kms.aws.crossplane.io
+              - tagKey: "crossplane-efs/xrd-kind"
+                tagValue: elasticfilesystems.{{ .Values.xrd.apiGroup }}
+              - tagKey: "crossplane-efs/xrd-helm_chart_version"
+                tagValue: {{ .Chart.Version }}
+              - tagKey: "crossplane-efs/providerconfig"
+                tagValue: {{ .Values.provider.awsConfigName }}
+          providerConfigRef:
+            name: {{ .Values.provider.awsConfigName }}
+      patches:
+        - fromFieldPath: "spec.id"
+          toFieldPath: "spec.forProvider.tags[0].tagValue"
+        - fromFieldPath: "spec.parameters.region"
+          toFieldPath: "spec.forProvider.region"
+        - fromFieldPath: "spec.parameters.kmsPermissionRoleArn"
+          toFieldPath: "spec.forProvider.policy"
+          transforms:
+            - type: string
+              string:
+                fmt: |
+                  {
+                    "Version": "2012-10-17",
+                    "Id": "key-policy",
+                    "Statement": [
+                      {
+                        "Sid": "Enable IAM User Permissions",
+                        "Effect": "Allow",
+                        "Principal": {
+                          "AWS": "arn:aws:iam::{{ .Values.aws.accountId }}:root"
+                        },
+                        "Action": "kms:*",
+                        "Resource": "*"
+                      },
+                      {
+                        "Sid": "Allow access for Key Administrators",
+                        "Effect": "Allow",
+                        "Principal": {
+                          "AWS": "%s"
+                        },
+                        "Action": [
+                          "kms:Create*",
+                          "kms:Describe*",
+                          "kms:Enable*",
+                          "kms:List*",
+                          "kms:Put*",
+                          "kms:Update*",
+                          "kms:Revoke*",
+                          "kms:Disable*",
+                          "kms:Get*",
+                          "kms:Delete*",
+                          "kms:TagResource",
+                          "kms:UntagResource",
+                          "kms:ScheduleKeyDeletion",
+                          "kms:CancelKeyDeletion",
+                          "kms:Encrypt",
+                          "kms:Decrypt",
+                          "kms:ReEncrypt*",
+                          "kms:GenerateDataKey*"
+                        ],
+                        "Resource": "*"
+                      }
+                    ]
+                  }
+        - type: ToCompositeFieldPath
+          fromFieldPath: "metadata.name"
+          toFieldPath: "status.kmsKeyName"
+    - name: filesystem
+      base:
+        apiVersion: efs.aws.crossplane.io/v1alpha1
+        kind: FileSystem
+        spec:
+          forProvider:
+            encrypted: true
+            kmsKeyIdRef:
+              name:
+            performanceMode:
+            throughputMode:
+            provisionedThroughputInMibps:
+            region:
+            tags:
+              - key: "crossplane-efs/project-id"
+                value:
+              - key: "crossplane-efs/created-by"
+                value: crossplane
+              - key: "crossplane-efs/kind"
+                value: efs.aws.crossplane.io
+              - key: "crossplane-efs/xrd-kind"
+                value: elasticfilesystems.{{ .Values.xrd.apiGroup }}
+              - key: "crossplane-efs/xrd-helm_chart_version"
+                value: {{ .Chart.Version }}
+              - key: "crossplane-efs/providerconfig"
+                value: {{ .Values.provider.awsConfigName }}
+          providerConfigRef:
+            name: {{ .Values.provider.awsConfigName }}
+      patches:
+        - fromFieldPath: "spec.id"
+          toFieldPath: "spec.forProvider.tags[0].value"
+        - fromFieldPath: "spec.parameters.region"
+          toFieldPath: "spec.forProvider.region"
+        - fromFieldPath: "spec.parameters.performanceMode"
+          toFieldPath: "spec.forProvider.performanceMode"
+        - fromFieldPath: "spec.parameters.throughputMode"
+          toFieldPath: "spec.forProvider.throughputMode"
+        - fromFieldPath: "spec.parameters.provisionedThroughputInMibps"
+          toFieldPath: "spec.forProvider.provisionedThroughputInMibps"
+        - fromFieldPath: "status.kmsKeyName"
+          toFieldPath: "spec.forProvider.kmsKeyIdRef[name]"
+        - type: ToCompositeFieldPath
+          fromFieldPath: "status.atProvider.fileSystemID"
+          toFieldPath: "status.fileSystemID"
+    - name: efsnetwork
+      base:
+        apiVersion: {{ .Values.xrd.apiGroup }}/v1alpha1
+        kind: EFSNetwork
+      patches:
+        - fromFieldPath: "spec.id"
+          toFieldPath: "spec.id"
+        - fromFieldPath: "spec.parameters.region"
+          toFieldPath: "spec.parameters.region"
+        - fromFieldPath: "status.fileSystemID"
+          toFieldPath: "spec.parameters.fileSystemID"
+    - name: storageclass
+      base:
+        apiVersion: kubernetes.crossplane.io/v1alpha1
+        kind: Object
+        spec:
+          forProvider:
+            manifest:
+              apiVersion: storage.k8s.io/v1
+              kind: StorageClass
+              metadata:
+                annotations:
+                  restrictedNamespaces: ""
+                labels:
+                  "crossplane-efs/created-by": crossplane
+                  "crossplane-efs/project-id":
+                  "crossplane-efs/kind": object.kubernetes.crossplane.io
+                  "crossplane-efs/xrd-kind": elasticfilesystems.{{ .Values.xrd.apiGroup }}
+                  "crossplane-efs/xrd-helm_chart_version": {{ .Chart.Version }}
+                  "crossplane-efs/providerconfig": {{ .Values.provider.k8sConfigName }}
+              provisioner: efs.csi.aws.com
+              mountOptions:
+                - iam
+              parameters:
+                provisioningMode: efs-ap
+                fileSystemId:
+                directoryPerms: "700"
+                uid:
+                gid:
+                gidRangeStart:
+                gidRangeEnd:
+                basePath: "/dynamic_provisioning"
+          providerConfigRef:
+            name: {{ .Values.provider.k8sConfigName }}
+      patches:
+        - fromFieldPath: "metadata.labels[crossplane.io/claim-namespace]"
+          toFieldPath: "spec.forProvider.manifest.metadata.annotations[restrictedNamespaces]"
+        - fromFieldPath: "spec.id"
+          toFieldPath: "spec.forProvider.manifest.metadata.labels[crossplane-efs/project-id]"
+        - fromFieldPath: "status.fileSystemID"
+          toFieldPath: "spec.forProvider.manifest.parameters.fileSystemId"
+        - fromFieldPath: "spec.parameters.storageClass.directoryPerms"
+          toFieldPath: "spec.forProvider.manifest.parameters.directoryPerms"
+        - fromFieldPath: "spec.parameters.storageClass.uid"
+          toFieldPath: "spec.forProvider.manifest.parameters.uid"
+        - fromFieldPath: "spec.parameters.storageClass.gid"
+          toFieldPath: "spec.forProvider.manifest.parameters.gid"
+        - fromFieldPath: "spec.parameters.storageClass.gidRangeStart"
+          toFieldPath: "spec.forProvider.manifest.parameters.gidRangeStart"
+        - fromFieldPath: "spec.parameters.storageClass.gidRangeEnd"
+          toFieldPath: "spec.forProvider.manifest.parameters.gidRangeEnd"
+        - fromFieldPath: "spec.parameters.storageClass.basePath"
+          toFieldPath: "spec.forProvider.manifest.parameters.basePath"

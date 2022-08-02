@@ -1,16 +1,32 @@
 aws:
   # aws.accountId -- ID of the AWS Account this component should be provisioned to.
   accountId:
-  # aws.oidcProviderId -- ID of the EKS Identity Provider that grants access to IAM roles for speaking with the EKS cluster.
-  oidcProviderId:
 
 xrd:
   # xrd.apiGroup -- The name of the API Group this resource should be exposed to.
   apiGroup:
   # xrd.version -- The version of this component (MUST not be overridden from outside).
   version:
-  # xrd.type -- Set the IAM Policy access mode (`local` or `remote`). Local means IRSA policy for same AWS account. Remote will create a assume role for remote account ARN
-  type:
+
+composition:
+  # composition.name -- The name of the crossplane composition (MUST not be overridden from outside).
+  efs:
+    name: crossplane-efs
+    network:
+      name: crossplane-efs-network
+      vpcId:
+      cidrIp:
+      mounttarget:
+        subnets:
+          - az:
+            scope:
+            id:
+          - az:
+            scope:
+            id:
+          - az:
+            scope:
+            id:
 
 provider:
   # provider.awsConfigName -- The name of the AWS Crossplane Provider used to provision this component.

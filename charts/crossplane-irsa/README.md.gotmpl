@@ -92,7 +92,7 @@ metadata:
   labels:
     name: myapp
 spec:
-  serviceAccountName: default-sa
+  serviceAccountName: <namespace>-sa
   containers:
     :
 ```
@@ -145,9 +145,6 @@ metadata:
   name: irsa-sample
   namespace: default
 spec:
-  roleFor:
-    namespace: default
-
   remoteRoleArn: arn:aws:iam::<AWS ACCOUNT ID>:role/<REMOTE TENANT ROLE NAME>
 
   deletionPolicy: Delete
@@ -167,7 +164,7 @@ metadata:
   labels:
     name: myapp
 spec:
-  serviceAccountName: namespace-sa
+  serviceAccountName: <namespace>-sa
   containers:
     :
 ```

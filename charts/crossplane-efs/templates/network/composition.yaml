@@ -1,0 +1,99 @@
+# Crossplane Composition linking the XRD with the concrete managed EFS Network resource.
+# See https://negz.github.io/crossplane.github.io/docs/v1.4/reference/composition.html#compositions for details
+
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: {{ .Values.composition.efs.network.name }}
+  labels:
+    crossplane.io/xrd: efsnetworks.{{ .Values.xrd.apiGroup }}
+spec:
+  writeConnectionSecretsToNamespace: crossplane-system
+  compositeTypeRef:
+    apiVersion: {{ .Values.xrd.apiGroup }}/{{ .Values.xrd.version }}
+    kind: EFSNetwork
+  resources:
+    - name: securitygroup
+      base:
+        apiVersion: ec2.aws.crossplane.io/v1beta1
+        kind: SecurityGroup
+        spec:
+          forProvider:
+            region:
+            vpcId: {{ .Values.composition.efs.network.vpcId }}
+            groupName:
+            description:
+            ingress:
+              - fromPort: 2049
+                toPort: 2049
+                ipProtocol: tcp
+                ipRanges:
+                  - cidrIp: {{ .Values.composition.efs.network.cidrIp }}
+            tags:
+              - key: "crossplane-efs/project-id"
+                value:
+              - key: "crossplane-efs/created-by"
+                value: crossplane
+              - key: "crossplane-efs/kind"
+                value: securitygroup.ec2.aws.crossplane.io
+              - key: "crossplane-efs/xrd-kind"
+                value: efsnetworks.{{ .Values.xrd.apiGroup }}
+              - key: "crossplane-efs/xrd-helm_chart_version"
+                value: {{ .Chart.Version }}
+              - key: "crossplane-efs/providerconfig"
+                value: {{ .Values.provider.awsConfigName }}
+          providerConfigRef:
+            name: {{ .Values.provider.awsConfigName }}
+      patches:
+        - fromFieldPath: "spec.id"
+          toFieldPath: "spec.forProvider.tags[0].value"
+        - fromFieldPath: "metadata.name"
+          toFieldPath: "metadata.name"
+        - fromFieldPath: "metadata.name"
+          toFieldPath: "spec.forProvider.groupName"
+        - fromFieldPath: "spec.parameters.region"
+          toFieldPath: "spec.forProvider.region"
+        - fromFieldPath: "spec.parameters.fileSystemID"
+          toFieldPath: "spec.forProvider.description"
+          transforms:
+            - type: string
+              string:
+                fmt: "Security Group allowing NFS Access to filesystem %s"
+        - fromFieldPath: "status.atProvider.securityGroupID"
+          toFieldPath: "metadata.annotations[crossplane.io/external-name]"
+        - type: ToCompositeFieldPath
+          fromFieldPath: "spec.forProvider.groupName"
+          toFieldPath: "status.securityGroupName"
+    {{- range $k, $v := .Values.composition.efs.network.mounttarget.subnets }}
+    - name: mounttarget-{{ $v.scope }}-{{ $v.az }}
+      base:
+        apiVersion: efs.aws.crossplane.io/v1alpha1
+        kind: MountTarget
+        metadata:
+          name: {{ $v.scope }}-{{ $v.az }}
+          labels:
+            "crossplane-efs/project-id":
+            "crossplane-efs/created-by": crossplane
+            "crossplane-efs/kind":  mounttarget.efs.aws.crossplane.io
+            "crossplane-efs/xrd-kind": efsnetworks.{{ $.Values.xrd.apiGroup }}
+            "crossplane-efs/xrd-helm_chart_version": {{ $.Chart.Version }}
+            "crossplane-efs/providerconfig": {{ $.Values.provider.awsConfigName }}
+        spec:
+          forProvider:
+            region:
+            fileSystemID:
+            subnetID: {{ $v.id }}
+            securityGroupsRefs:
+              - name:
+          providerConfigRef:
+            name: {{ $.Values.provider.awsConfigName }}
+      patches:
+        - fromFieldPath: "spec.id"
+          toFieldPath: "metadata.labels[crossplane-efs/project-id]"
+        - fromFieldPath: "spec.parameters.fileSystemID"
+          toFieldPath: "spec.forProvider.fileSystemID"
+        - fromFieldPath: "spec.parameters.region"
+          toFieldPath: "spec.forProvider.region"
+        - fromFieldPath: "status.securityGroupName"
+          toFieldPath: "spec.forProvider.securityGroupsRefs[0].name"
+    {{- end }}

@@ -4,11 +4,7 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: Composition
 metadata:
-{{- if eq .Values.xrd.type "remote" }}
-  name: crossplane-remote-irsa
-{{- else }}
-  name: crossplane-irsa
-{{- end }}
+  name: {{ .Values.composition.name }}
   labels:
 {{- if eq .Values.xrd.type "remote" }}
     crossplane.io/xrd: remoteiamrolesforserviceaccounts.{{ .Values.xrd.apiGroup }}
@@ -25,6 +21,7 @@ spec:
     kind: IamRoleForServiceAccount
 {{- end }}
   resources:
+{{- if eq .Values.xrd.type "local" }}
     - name: policy
       base:
         apiVersion: iam.aws.crossplane.io/v1beta1
@@ -32,6 +29,7 @@ spec:
         metadata:
           name:
         spec:
+          deletionPolicy: Delete
           forProvider:
             name:
             document:
@@ -54,42 +52,20 @@ spec:
           transforms:
             - type: string
               string:
-{{- if eq .Values.xrd.type "remote" }}
-                fmt: "%s-irsa-remote-policy"
-{{- else }}
                 fmt: "%s-irsa-policy"
-{{- end }}
         - fromFieldPath: "spec.roleFor.namespace"
           toFieldPath: "spec.forProvider.name"
           transforms:
             - type: string
               string:
                 fmt: "%s-irsa-policy"
-{{- if eq .Values.xrd.type "remote" }}
-        - fromFieldPath: "spec.remoteRoleArn"
-          toFieldPath: "spec.forProvider.document"
-          transforms:
-            - type: string
-              string:
-                fmt: |
-                  {
-                    "Version": "2012-10-17",
-                    "Statement": [
-                      {
-                        "Sid": "",
-                        "Effect": "Allow",
-                        "Action": "sts:AssumeRole",
-                        "Resource": "%s"
-                      }
-                    ]
-                  }
-{{- else }}
         - fromFieldPath: "spec.policy"
           toFieldPath: "spec.forProvider.document"
-{{- end }}
         - type: ToCompositeFieldPath
           fromFieldPath: "status.atProvider.arn"
           toFieldPath: "status.policyArn"
+        - fromFieldPath: "spec.deletionPolicy"
+          toFieldPath: "spec.deletionPolicy"
     - name: role
       base:
         apiVersion: iam.aws.crossplane.io/v1beta1
@@ -119,11 +95,7 @@ spec:
           transforms:
             - type: string
               string:
-{{- if eq .Values.xrd.type "remote" }}
-                fmt: "k8s-%s-sa-remote-role"
-{{- else }}
                 fmt: "k8s-%s-sa-role"
-{{- end }}
         - type: CombineFromComposite
           combine:
             variables:
@@ -131,11 +103,7 @@ spec:
               - fromFieldPath: "spec.roleFor.namespace"
             strategy: string
             string:
-{{- if eq .Values.xrd.type "remote" }}
-              fmt: "IAM Role for Service Account %s-remote-sa in K8S namespace %s"
-{{- else }}
               fmt: "IAM Role for Service Account %s-sa in K8S namespace %s"
-{{- end }}
           toFieldPath: spec.forProvider.description
         - fromFieldPath: "spec.roleFor.namespace"
           toFieldPath: "spec.forProvider.path"
@@ -161,11 +129,7 @@ spec:
                       },
                       "Condition": {
                         "StringEquals": {
-{{- if eq .Values.xrd.type "remote" }}
-                          "oidc.eks.eu-west-1.amazonaws.com/id/{{ .Values.aws.oidcProviderId }}:sub": "system:serviceaccount:%s:%s-remote-sa",
-{{- else }}
                           "oidc.eks.eu-west-1.amazonaws.com/id/{{ .Values.aws.oidcProviderId }}:sub": "system:serviceaccount:%s:%s-sa",
-{{- end }}
                           "oidc.eks.eu-west-1.amazonaws.com/id/{{ .Values.aws.oidcProviderId }}:aud": "sts.amazonaws.com"
                         }
                       },
@@ -187,6 +151,7 @@ spec:
         metadata:
           name:
         spec:
+          deletionPolicy: Delete
           forProvider:
             policyArn:
             roleName:
@@ -198,11 +163,7 @@ spec:
           transforms:
             - type: string
               string:
-{{- if eq .Values.xrd.type "remote" }}
-                fmt: "%s-irsa-remote-role-policy-attachment"
-{{- else }}
                 fmt: "%s-irsa-role-policy-attachment"
-{{- end }}
         - fromFieldPath: "status.policyArn"
           toFieldPath: "spec.forProvider.policyArn"
         - fromFieldPath: "spec.roleFor.namespace"
@@ -210,16 +171,16 @@ spec:
           transforms:
             - type: string
               string:
-{{- if eq .Values.xrd.type "remote" }}
-                fmt: "k8s-%s-sa-remote-role"
-{{- else }}
                 fmt: "k8s-%s-sa-role"
+        - fromFieldPath: "spec.deletionPolicy"
+          toFieldPath: "spec.deletionPolicy"
 {{- end }}
     - name: serviceAccount
       base:
         apiVersion: kubernetes.crossplane.io/v1alpha1
         kind: Object
         spec:
+          deletionPolicy: Delete
           forProvider:
             manifest:
               apiVersion: v1
@@ -238,9 +199,7 @@ spec:
           providerConfigRef:
             name: {{ .Values.provider.k8sConfigName }}
       patches:
-        - fromFieldPath: "spec.roleFor.namespace"
-          toFieldPath: "spec.forProvider.manifest.metadata.namespace"
-        - fromFieldPath: "spec.roleFor.namespace"
+        - fromFieldPath: "metadata.labels[crossplane.io/claim-namespace]"
           toFieldPath: "spec.forProvider.manifest.metadata.name"
           transforms:
             - type: string
@@ -250,5 +209,14 @@ spec:
 {{- else }}
                 fmt: "%s-sa"
 {{- end }}
+        - fromFieldPath: "metadata.labels[crossplane.io/claim-namespace]"
+          toFieldPath: "spec.forProvider.manifest.metadata.namespace"
+{{- if eq .Values.xrd.type "remote" }}
+        - fromFieldPath: "spec.remoteRoleArn"
+          toFieldPath: "spec.forProvider.manifest.metadata.annotations[eks.amazonaws.com/role-arn]"
+{{- else }}
         - fromFieldPath: "status.roleArn"
           toFieldPath: "spec.forProvider.manifest.metadata.annotations[eks.amazonaws.com/role-arn]"
+{{- end }}
+        - fromFieldPath: "spec.deletionPolicy"
+          toFieldPath: "spec.deletionPolicy"
