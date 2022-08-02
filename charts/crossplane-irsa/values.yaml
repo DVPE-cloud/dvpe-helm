@@ -17,3 +17,7 @@ provider:
   awsConfigName:
   # provider.k8sConfigName -- The name of the K8S Crossplane Provider used to provision this component.
   k8sConfigName:
+
+composition:
+  # composition.name -- The name of the crossplane composition (MUST not be overridden from outside).
+  name:
