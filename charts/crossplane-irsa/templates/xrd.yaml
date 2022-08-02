@@ -39,6 +39,11 @@ spec:
             spec:
               type: object
               properties:
+{{- if eq .Values.xrd.type "remote" }}
+                remoteRoleArn:
+                  type: string
+                  description: "The remote AWS account ARN for role assume."
+{{- else }}
                 roleFor:
                   type: object
                   properties:
@@ -47,26 +52,22 @@ spec:
                       description: "The namespace for which this resource should create resources for."
                   required:
                     - namespace
-                deletionPolicy:
-                  type: string
-                  description: "The deletion policy to use for IRSA resources."
-                  enum: ["Delete", "Orphan"]
-{{- if eq .Values.xrd.type "remote" }}
-                remoteRoleArn:
-                  type: string
-                  description: "The remote AWS account ARN for role assume."
-{{- else }}
                 policy:
                   type: string
                   description: "The policy that should be applied to the IRSA Role for granting access to AWS services."
 {{- end }}
+                deletionPolicy:
+                  type: string
+                  description: "The deletion policy to use for IRSA resources."
+                  enum: ["Delete", "Orphan"]
               required:
-                - roleFor
 {{- if eq .Values.xrd.type "remote" }}
                 - remoteRoleArn
 {{- else }}
+                - roleFor
                 - policy
 {{- end }}
+                - deletionPolicy
             status:
               type: object
               properties:
