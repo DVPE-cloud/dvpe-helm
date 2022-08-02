@@ -9,7 +9,7 @@ Helm Chart for installing a Custom Crossplane API, allowing to create an EFS Fil
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | aws.accountId | string | `nil` | ID of the AWS Account this component should be provisioned to. |
-| composition.efs.name | string | `"wadtfy-efs"` |  |
+| composition.efs.name | string | `"crossplane-efs"` |  |
 | composition.efs.network.cidrIp | string | `"10.19.128.0/18"` |  |
 | composition.efs.network.mounttarget.subnets[0].az | string | `"eu-west-1a"` |  |
 | composition.efs.network.mounttarget.subnets[0].id | string | `"subnet-00a68d9f7c298071c"` |  |
@@ -20,7 +20,7 @@ Helm Chart for installing a Custom Crossplane API, allowing to create an EFS Fil
 | composition.efs.network.mounttarget.subnets[2].az | string | `"eu-west-1c"` |  |
 | composition.efs.network.mounttarget.subnets[2].id | string | `"subnet-03a442384bd785047"` |  |
 | composition.efs.network.mounttarget.subnets[2].scope | string | `"private"` |  |
-| composition.efs.network.name | string | `"wadtfy-efs-network"` |  |
+| composition.efs.network.name | string | `"crossplane-efs-network"` |  |
 | composition.efs.network.vpcId | string | `"vpc-0d4f2f4f6e1fc386c"` |  |
 | provider.awsConfigName | string | `nil` | The name of the AWS Crossplane Provider used to provision this component. |
 | provider.k8sConfigName | string | `nil` | The name of the K8S Crossplane Provider used to provision this component. |
