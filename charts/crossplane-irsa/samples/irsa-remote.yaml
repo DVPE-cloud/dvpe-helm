@@ -20,10 +20,6 @@ metadata:
   name: remote-irsa-sample
   namespace: default
 spec:
-  roleFor:
-    # Provide the namespace where the K8S Service Account should later be created in.
-    namespace: default
-
   # The remote AWS account role to assume
   remoteRoleArn: arn:aws:iam::<AWS ACCOUNT ID>:role/<REMOTE TENANT ROLE NAME>
 
