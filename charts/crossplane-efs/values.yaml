@@ -11,9 +11,9 @@ xrd:
 composition:
   # composition.name -- The name of the crossplane composition (MUST not be overridden from outside).
   efs:
-    name: wadtfy-efs
+    name: crossplane-efs
     network:
-      name: wadtfy-efs-network
+      name: crossplane-efs-network
       vpcId: vpc-0d4f2f4f6e1fc386c
       cidrIp: 10.19.128.0/18
       mounttarget:
