@@ -1,0 +1,49 @@
+# Crossplane Composite Resource Definition (XRD) describing
+# the type and schema of the corresponding Composite Resource.
+# See https://negz.github.io/crossplane.github.io/docs/v1.4/reference/composition.html#compositeresourcedefinitions for details
+
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: efsnetworks.{{ .Values.xrd.apiGroup }}
+spec:
+  group: {{ .Values.xrd.apiGroup }}
+  names:
+    kind: EFSNetwork
+    plural: efsnetworks
+  versions:
+    - name: {{ .Values.xrd.version }}
+      served: true
+      referenceable: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: "Unique id used for tagging all dependent components."
+                parameters:
+                  type: object
+                  properties:
+                    region:
+                      type: string
+                      description: "AWS Region in which to create network resources."
+                      enum: ["eu-west-1", "eu-central-1", "us-east-1"]
+                    fileSystemID:
+                      type: string
+                      description: "Id of the EFS Filesystem for which to create the corresponding Mount Target Groups."
+                  required:
+                    - region
+                    - fileSystemID
+              required:
+                - id
+                - parameters
+            status:
+              type: object
+              properties:
+                securityGroupName:
+                  type: string
+                  description: The name of the Security Group which needs to be associated with each Mount Target.

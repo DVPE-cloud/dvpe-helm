@@ -1,0 +1,76 @@
+# Crossplane Composite Resource Definition (XRD) describing
+# the type and schema of the corresponding Composite Resource.
+# See https://negz.github.io/crossplane.github.io/docs/v1.4/reference/composition.html#compositeresourcedefinitions for details
+
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: elasticfilesystems.{{ .Values.xrd.apiGroup }}
+spec:
+  group: {{ .Values.xrd.apiGroup }}
+  names:
+    kind: ElasticFilesystem
+    plural: elasticfilesystems
+  claimNames:
+    kind: ElasticFilesystemClaim
+    plural: elasticfilesystemclaims
+  versions:
+    - name: {{ .Values.xrd.version }}
+      served: true
+      referenceable: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: "Unique id used for tagging all dependent components."
+                parameters:
+                  type: object
+                  properties:
+                    region:
+                      type: string
+                      description: "AWS Region in which to create network resources."
+                      enum: ["eu-west-1", "eu-central-1", "us-east-1"]
+                    performanceMode:
+                      type: string
+                      description: "The performance mode this EFS instance should operate in."
+                      enum: ["generalPurpose", "maxIO"]
+                    kmsPermissionRoleArn:
+                      type: string
+                      description: "The AWS IAM Role ARN that should be granted permission to access and modify the KMS key associated with this Elastic Filesystem Instance."
+                    storageClass:
+                      type: object
+                      description: "see https://github.com/kubernetes-sigs/aws-efs-csi-driver for details on how to configure the storageClass properly"
+                      properties:
+                        directoryPerms:
+                          type: string
+                        uid:
+                          type: string
+                        gid:
+                          type: string
+                        gidRangeStart:
+                          type: string
+                        gidRangeEnd:
+                          type: string
+                        basePath:
+                          type: string
+                  required:
+                    - region
+                    - performanceMode
+                    - kmsPermissionRoleArn
+              required:
+                - id
+                - parameters
+            status:
+              type: object
+              properties:
+                kmsKeyName:
+                  type: string
+                  description: The KMS Key name referenced by the EFS Filesystem.
+                fileSystemID:
+                  type: string
+                  description: The ID of the generated EFS Filesystem.
