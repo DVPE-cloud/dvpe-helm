@@ -8,7 +8,7 @@ xrd:
   # xrd.apiGroup -- The name of the API Group this resource should be exposed to.
   apiGroup:
   # xrd.version -- The version of this component (MUST not be overridden from outside).
-  version: v1alpha1
+  version:
   # xrd.type -- Set the IAM Policy access mode (`local` or `remote`). Local means IRSA policy for same AWS account. Remote will create a assume role for remote account ARN
   type:
 
