@@ -11,15 +11,9 @@ Helm Chart for installing a Custom Crossplane API, allowing to create an EFS Fil
 | aws.accountId | string | `nil` | ID of the AWS Account this component should be provisioned to. |
 | composition.efs.name | string | `"crossplane-efs"` |  |
 | composition.efs.network.cidrIp | string | `nil` |  |
-| composition.efs.network.mounttarget.subnets[0].az | string | `nil` |  |
+| composition.efs.network.mounttarget.subnets[0].az | string | `"azname"` |  |
 | composition.efs.network.mounttarget.subnets[0].id | string | `nil` |  |
 | composition.efs.network.mounttarget.subnets[0].scope | string | `nil` |  |
-| composition.efs.network.mounttarget.subnets[1].az | string | `nil` |  |
-| composition.efs.network.mounttarget.subnets[1].id | string | `nil` |  |
-| composition.efs.network.mounttarget.subnets[1].scope | string | `nil` |  |
-| composition.efs.network.mounttarget.subnets[2].az | string | `nil` |  |
-| composition.efs.network.mounttarget.subnets[2].id | string | `nil` |  |
-| composition.efs.network.mounttarget.subnets[2].scope | string | `nil` |  |
 | composition.efs.network.name | string | `"crossplane-efs-network"` |  |
 | composition.efs.network.vpcId | string | `nil` |  |
 | provider.awsConfigName | string | `nil` | The name of the AWS Crossplane Provider used to provision this component. |

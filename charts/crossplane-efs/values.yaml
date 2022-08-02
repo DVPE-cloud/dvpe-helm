@@ -18,13 +18,7 @@ composition:
       cidrIp:
       mounttarget:
         subnets:
-          - az:
-            scope:
-            id:
-          - az:
-            scope:
-            id:
-          - az:
+          - az: azname
             scope:
             id:
 
