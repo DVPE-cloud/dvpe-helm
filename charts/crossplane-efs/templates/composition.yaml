@@ -103,6 +103,8 @@ spec:
             kmsKeyIdRef:
               name:
             performanceMode:
+            throughputMode:
+            provisionedThroughputInMibps:
             region:
             tags:
               - key: "crossplane-efs/project-id"
@@ -126,6 +128,10 @@ spec:
           toFieldPath: "spec.forProvider.region"
         - fromFieldPath: "spec.parameters.performanceMode"
           toFieldPath: "spec.forProvider.performanceMode"
+        - fromFieldPath: "spec.parameters.throughputMode"
+          toFieldPath: "spec.forProvider.throughputMode"
+        - fromFieldPath: "spec.parameters.provisionedThroughputInMibps"
+          toFieldPath: "spec.forProvider.provisionedThroughputInMibps"
         - fromFieldPath: "status.kmsKeyName"
           toFieldPath: "spec.forProvider.kmsKeyIdRef[name]"
         - type: ToCompositeFieldPath

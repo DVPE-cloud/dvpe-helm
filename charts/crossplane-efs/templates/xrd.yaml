@@ -39,6 +39,13 @@ spec:
                       type: string
                       description: "The performance mode this EFS instance should operate in."
                       enum: ["generalPurpose", "maxIO"]
+                    throughputMode:
+                      type: string
+                      description: "Specifies the throughput mode for the file system, either bursting or provisioned. If you set ThroughputMode to provisioned, you must also set a value for ProvisionedThroughputInMibps"
+                      enum: ["bursting", "provisioned"]
+                    provisionedThroughputInMibps:
+                      type: string
+                      description: "The throughput, measured in MiB/s, that you want to provision for a file system that you're creating. Valid values are 1-1024. Required if ThroughputMode is set to provisioned."
                     kmsPermissionRoleArn:
                       type: string
                       description: "The AWS IAM Role ARN that should be granted permission to access and modify the KMS key associated with this Elastic Filesystem Instance."
