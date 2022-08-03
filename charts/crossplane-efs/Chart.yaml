@@ -2,7 +2,7 @@ apiVersion: v2
 appVersion: "1.1"
 description: "Helm Chart for installing a Custom Crossplane API, allowing to create an EFS Filesystem."
 name: crossplane-efs
-version: 0.1.0
+version: 0.0.1
 home: https://github.com/dvpe-cloud/dvpe-helm
 keywords:
   - dvpe-helm
