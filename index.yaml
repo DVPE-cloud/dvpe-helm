@@ -3,6 +3,25 @@ entries:
   crossplane-efs:
   - apiVersion: v2
     appVersion: "1.1"
+    created: "2022-08-03T07:46:50.892400119Z"
+    description: Helm Chart for installing a Custom Crossplane API, allowing to create
+      an EFS Filesystem.
+    digest: 747e73da41b447613a123a749c69a902a3c53d682d4aac865dcc4215c9806a0a
+    home: https://github.com/dvpe-cloud/dvpe-helm
+    keywords:
+    - dvpe-helm
+    - automation
+    - gitops
+    - crossplane
+    maintainers:
+    - name: mithie
+    - name: herrLierb
+    name: crossplane-efs
+    urls:
+    - https://github.com/DVPE-cloud/dvpe-helm/releases/download/crossplane-efs-0.1.0/crossplane-efs-0.1.0.tgz
+    version: 0.1.0
+  - apiVersion: v2
+    appVersion: "1.1"
     created: "2022-08-03T07:33:40.208832162Z"
     description: Helm Chart for installing a Custom Crossplane API, allowing to create
       an EFS Filesystem.
@@ -1218,4 +1237,4 @@ entries:
     urls:
     - https://github.com/DVPE-cloud/dvpe-helm/releases/download/dvpe-netfilter-0.0.1/dvpe-netfilter-0.0.1.tgz
     version: 0.0.1
-generated: "2022-08-03T07:33:40.209222888Z"
+generated: "2022-08-03T07:46:50.892790822Z"
