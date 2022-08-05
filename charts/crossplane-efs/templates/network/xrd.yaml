@@ -5,7 +5,7 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: CompositeResourceDefinition
 metadata:
-  name: efsnetworks.{{ .Values.xrd.apiGroup }}.{{ .Values.xrd.version }}
+  name: efsnetworks.{{ .Values.xrd.apiGroup }}
 spec:
   group: {{ .Values.xrd.apiGroup }}
   names:
