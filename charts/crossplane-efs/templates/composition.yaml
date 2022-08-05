@@ -4,9 +4,9 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: Composition
 metadata:
-  name: {{ .Values.composition.efs.name }}.{{ .Values.xrd.version }}
+  name: {{ .Values.composition.efs.name }}
   labels:
-    crossplane.io/xrd: elasticfilesystems.{{ .Values.xrd.apiGroup }}.{{ .Values.xrd.version }}
+    crossplane.io/xrd: elasticfilesystems.{{ .Values.xrd.apiGroup }}
 spec:
   writeConnectionSecretsToNamespace: crossplane-system
   compositeTypeRef:
@@ -159,7 +159,8 @@ spec:
               kind: StorageClass
               metadata:
                 annotations:
-                  restrictedNamespaces: ""
+                  "restrictedNamespaces": ""
+                  "wadtfy.bmwgroup.net/restricted-namespaces": ""
                 labels:
                   "crossplane-efs/created-by": crossplane
                   "crossplane-efs/project-id":
@@ -184,6 +185,8 @@ spec:
       patches:
         - fromFieldPath: "metadata.labels[crossplane.io/claim-namespace]"
           toFieldPath: "spec.forProvider.manifest.metadata.annotations[restrictedNamespaces]"
+        - fromFieldPath: "metadata.labels[crossplane.io/claim-namespace]"
+          toFieldPath: "spec.forProvider.manifest.metadata.annotations[wadtfy.bmwgroup.net/restricted-namespaces]"
         - fromFieldPath: "spec.id"
           toFieldPath: "spec.forProvider.manifest.metadata.labels[crossplane-efs/project-id]"
         - fromFieldPath: "status.fileSystemID"

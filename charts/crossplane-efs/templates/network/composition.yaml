@@ -4,9 +4,9 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: Composition
 metadata:
-  name: {{ .Values.composition.efs.network.name }}.{{ .Values.xrd.version }}
+  name: {{ .Values.composition.efs.network.name }}
   labels:
-    crossplane.io/xrd: efsnetworks.{{ .Values.xrd.apiGroup }}.{{ .Values.xrd.version }}
+    crossplane.io/xrd: efsnetworks.{{ .Values.xrd.apiGroup }}
 spec:
   writeConnectionSecretsToNamespace: crossplane-system
   compositeTypeRef:
