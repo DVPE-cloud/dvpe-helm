@@ -5,7 +5,7 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: CompositeResourceDefinition
 metadata:
-  name: elasticfilesystems.{{ .Values.xrd.apiGroup }}
+  name: elasticfilesystems.{{ .Values.xrd.apiGroup }}.{{ .Values.xrd.version }}
 spec:
   group: {{ .Values.xrd.apiGroup }}
   names:
