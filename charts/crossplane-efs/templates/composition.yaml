@@ -21,7 +21,8 @@ spec:
           forProvider:
             region:
             policy:
-            #key rotation will always be enabled, see "https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cis-controls.html#securityhub-cis-controls-2.8"
+            # key rotation will always be enabled
+            # see "https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cis-controls.html#securityhub-cis-controls-2.8"
             enableKeyRotation: true
             tags:
               - tagKey: "crossplane-efs/project-id"
