@@ -162,7 +162,6 @@ spec:
               kind: StorageClass
               metadata:
                 annotations:
-                  "restrictedNamespaces": ""
                   "wadtfy.bmwgroup.net/restricted-namespaces": ""
                 labels:
                   "crossplane-efs/created-by": crossplane
@@ -186,8 +185,6 @@ spec:
           providerConfigRef:
             name: {{ .Values.provider.k8sConfigName }}
       patches:
-        - fromFieldPath: "metadata.labels[crossplane.io/claim-namespace]"
-          toFieldPath: "spec.forProvider.manifest.metadata.annotations[restrictedNamespaces]"
         - fromFieldPath: "metadata.labels[crossplane.io/claim-namespace]"
           toFieldPath: "spec.forProvider.manifest.metadata.annotations[wadtfy.bmwgroup.net/restricted-namespaces]"
         - fromFieldPath: "spec.id"
