@@ -108,6 +108,16 @@ spec:
             timeoutSeconds: {{ .Values.deployment.spec.containers.readinessProbe.timeoutSeconds }}
             successThreshold: {{ .Values.deployment.spec.containers.readinessProbe.successThreshold }}
             failureThreshold: {{ .Values.deployment.spec.containers.readinessProbe.failureThreshold }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.deployment.spec.containers.livenessProbe.httpGet.path }}
+              port: {{ .Values.deployment.spec.containers.livenessProbe.httpGet.port }}
+              scheme: {{ .Values.deployment.spec.containers.livenessProbe.httpGet.scheme }}
+            initialDelaySeconds: {{ .Values.deployment.spec.containers.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.deployment.spec.containers.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.deployment.spec.containers.livenessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.deployment.spec.containers.livenessProbe.successThreshold }}
+            failureThreshold: {{ .Values.deployment.spec.containers.livenessProbe.failureThreshold }}
           resources:
             limits:
               {{- if .Values.deployment.spec.resources.limits.cpu }}
