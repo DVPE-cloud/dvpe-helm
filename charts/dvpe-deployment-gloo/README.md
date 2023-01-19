@@ -1,6 +1,6 @@
 # dvpe-deployment-gloo
 
-![Version: 3.2.3](https://img.shields.io/badge/Version-3.2.3-informational?style=flat-square)
+![Version: 3.2.4](https://img.shields.io/badge/Version-3.2.4-informational?style=flat-square)
 
 Helm chart for installing microservices as gloo enabled VirtualService definitions.
 
@@ -211,7 +211,7 @@ The following table lists the configurable parameters of the chart and its defau
 | datadog.source | string | `nil` | Defines the source which creates log outputs. Source defines the log format and triggers Datadog parser pipelines |
 | datadog.team | string | `nil` | Label in Datadog for the responsible team |
 | datadog.version | string | `nil` | Label in Datadog for the service version. If undefined, the value of `deployment.spec.image.tag` is used. This value should not be set by ordinary deployments. It is intended for special cases (e.g. CI triggered deployments). |
-| deployment | object | `{"podAnnotations":{},"spec":{"containers":{"readinessProbe":{"failureThreshold":3,"httpGet":{"path":"/","port":80,"scheme":"HTTP"},"initialDelaySeconds":5,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":1}},"image":{"name":null,"pullPolicy":"Always","repository":null,"tag":"latest"},"imagePullSecrets":"docker-reg-secret","replicas":1,"resources":{"limits":{"cpu":null,"memory":null},"requests":{"cpu":"150m","memory":"200M"}},"serviceAccountName":null}}` | -----------------------------# |
+| deployment | object | `{"podAnnotations":{},"spec":{"containers":{"readinessProbe":{"failureThreshold":3,"httpGet":{"path":"/","port":80,"scheme":"HTTP"},"initialDelaySeconds":5,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":1}},"image":{"name":null,"pullPolicy":"Always","repository":null,"tag":"latest"},"imagePullSecrets":"docker-reg-secret","livenessProbe":{"enabled":false,"failureThreshold":3,"httpGet":{"path":"/","port":80,"scheme":"HTTP"},"initialDelaySeconds":60,"periodSeconds":120,"timeoutSeconds":20},"replicas":1,"resources":{"limits":{"cpu":null,"memory":null},"requests":{"cpu":"150m","memory":"200M"}},"serviceAccountName":null}}` | -----------------------------# |
 | deployment.podAnnotations | object | `{}` | Object of additional `podAnnotations`. |
 | deployment.spec.containers.readinessProbe.failureThreshold | int | `3` | Number of times to retry the probe before giving up. |
 | deployment.spec.containers.readinessProbe.httpGet.path | string | `"/"` | Service's http path on which to execute a readinessProbe |
