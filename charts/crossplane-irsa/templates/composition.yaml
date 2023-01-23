@@ -199,7 +199,7 @@ spec:
           providerConfigRef:
             name: {{ .Values.provider.k8sConfigName }}
       patches:
-        - fromFieldPath: "metadata.labels[crossplane.io/claim-namespace]"
+        - fromFieldPath: "spec.roleFor.namespace"
           toFieldPath: "spec.forProvider.manifest.metadata.name"
           transforms:
             - type: string
@@ -209,7 +209,7 @@ spec:
 {{- else }}
                 fmt: "%s-sa"
 {{- end }}
-        - fromFieldPath: "metadata.labels[crossplane.io/claim-namespace]"
+        - fromFieldPath: "spec.roleFor.namespace"
           toFieldPath: "spec.forProvider.manifest.metadata.namespace"
 {{- if eq .Values.xrd.type "remote" }}
         - fromFieldPath: "spec.remoteRoleArn"
