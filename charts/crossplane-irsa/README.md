@@ -1,6 +1,6 @@
 # crossplane-irsa
 
-![Version: 0.4.0](https://img.shields.io/badge/Version-0.4.0-informational?style=flat-square)
+![Version: 0.5.0](https://img.shields.io/badge/Version-0.5.0-informational?style=flat-square)
 
 Helm chart for installing a custom crossplane xrd for creating AWS IRSA roles.
 
