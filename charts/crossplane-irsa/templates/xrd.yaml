@@ -43,7 +43,7 @@ spec:
                 remoteRoleArn:
                   type: string
                   description: "The remote AWS account ARN for role assume."
-{{- else }}
+{{- end }}
                 roleFor:
                   type: object
                   properties:
@@ -55,7 +55,6 @@ spec:
                 policy:
                   type: string
                   description: "The policy that should be applied to the IRSA Role for granting access to AWS services."
-{{- end }}
                 deletionPolicy:
                   type: string
                   description: "The deletion policy to use for IRSA resources."
@@ -64,9 +63,9 @@ spec:
 {{- if eq .Values.xrd.type "remote" }}
                 - remoteRoleArn
 {{- else }}
-                - roleFor
                 - policy
 {{- end }}
+                - roleFor
                 - deletionPolicy
             status:
               type: object
