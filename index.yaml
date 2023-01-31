@@ -137,6 +137,25 @@ entries:
   crossplane-irsa:
   - apiVersion: v1
     appVersion: "1.1"
+    created: "2023-01-31T07:15:45.234852396Z"
+    description: Helm chart for installing a custom crossplane xrd for creating AWS
+      IRSA roles.
+    digest: 504adde1b16c2a1fc40a5f972941e53eb4013d2063c630c80fa5b9af4ab756d8
+    home: https://github.com/dvpe-cloud/dvpe-helm
+    keywords:
+    - dvpe-helm
+    - automation
+    - gitops
+    - crossplane
+    maintainers:
+    - name: mithie
+    - name: herrLierb
+    name: crossplane-irsa
+    urls:
+    - https://github.com/DVPE-cloud/dvpe-helm/releases/download/crossplane-irsa-0.6.0/crossplane-irsa-0.6.0.tgz
+    version: 0.6.0
+  - apiVersion: v1
+    appVersion: "1.1"
     created: "2023-01-23T13:47:05.355018239Z"
     description: Helm chart for installing a custom crossplane xrd for creating AWS
       IRSA roles.
@@ -1370,4 +1389,4 @@ entries:
     urls:
     - https://github.com/DVPE-cloud/dvpe-helm/releases/download/dvpe-netfilter-0.0.1/dvpe-netfilter-0.0.1.tgz
     version: 0.0.1
-generated: "2023-01-23T13:47:05.355122444Z"
+generated: "2023-01-31T07:15:45.235071212Z"
