@@ -7,8 +7,13 @@ externalSecrets:
   service:
     # externalSecrets.service.key -- `Key` to AWS Secret Manager object where all sensitive application data should be stored. Each key in the Secret Manager Object should be named like your needed environment variable
     key:
-    # externalSecrets.service.roleArn -- `roleArn` must be set if secret is pulled from a third party-account (aka DevOps-Teams Account). If left empty, no RoleArn is set in ExternalSecrets secrets.
-    roleArn:
+
+    # externalSecrets.service.secretstoreName -- `secretstoreName` is the Name of the SecretStore inside the Release Namespace. If empty, default is set to `external-secret-store-NAMESPACE`
+    secretstoreName:
+
+    # externalSecrets.service.refreshInterval -- `refreshInterval` set the sync time range from AWS Secret Manager. Default is set to 15m
+    refreshInterval:
+
   oauth2:
     # externalSecrets.oauth2.key -- `Key` to AWS Secret Manager object where the client secret for OAuth2 provider should be stored. The key in the Secret Manager Object has to be named as the given `gloo.authConfig.spec.configs.oauth2.clientId`. The value has to be formatted as `clientSecret: <secret>`.
     # **This definition is exclusive to `gloo.authConfig.spec.configs.oauth.clientSecretRef`. If defined, `gloo.authConfig.spec.configs.oauth.clientSecretRef` is ignored.**
