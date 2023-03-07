@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0]
+### Changed
+* Cluster issuer secret uses External Secrets Operator (`issuercontroller.externalsecrets.clusterIssuer`)
+* Cluster needs to be configured to use the [External Secrets Operator](https://external-secrets.io/v0.7.2/) 
+
 ## [0.2.3]
 ### Fixed
 * Cluster issuer secret source parameterized (`issuercontroller.externalsecrets.clusterIssuer`)
