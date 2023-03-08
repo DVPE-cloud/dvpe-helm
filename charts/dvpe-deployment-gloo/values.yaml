@@ -8,9 +8,6 @@ externalSecrets:
     # externalSecrets.service.key -- `Key` to AWS Secret Manager object where all sensitive application data should be stored. Each key in the Secret Manager Object should be named like your needed environment variable
     key:
 
-    # externalSecrets.service.secretstoreName -- `secretstoreName` is the Name of the SecretStore inside the Release Namespace. If empty, default is set to `external-secret-store-NAMESPACE`
-    secretstoreName:
-
     # externalSecrets.service.refreshInterval -- `refreshInterval` set the sync time range from AWS Secret Manager. Default is set to 15m
     refreshInterval:
 
