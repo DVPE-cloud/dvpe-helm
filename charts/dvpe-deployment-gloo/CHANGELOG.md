@@ -6,6 +6,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased]
 
+## [4.0.0]  
+
+### **Breaking Changes**
+
+* The old External Secret CRD's are not supported anymore.
+From Version 4.0.0 of `dvpe-deployment-gloo` onwards the ExternalSecrets are switched to new Kubernetes kinds.
+The Kubernetes secrets deployment has changed and will generate new Kubernetes Resource Kinds (external-secrets.io/v1beta1).
+
+INFO: To use the 4.0.0 Version you need an AWS SecretStore in **your** AWS account.
+The ExternalSecretStore reference will generated on Namespace generation by WADTFY automatism. 
+
+* Parameter changes
+  - removed `externalSecrets.service.roleArn` (not required anymore with new SecretStores per Namespace)
+  - added `externalSecrets.service.refreshInterval` to control the refresh/sync interval from ExternalSecrets Operator. Default is set to 15 minutes.
+  The new Chart Version with new Secret Generator is only available after upgrade to ExternalSecret Version 0.7 (https://external-secrets.io/). It does not work with old Kubernetes External Secrets (https://github.com/external-secrets/kubernetes-external-secrets)
+
 ## [3.2.4]
 ### Added
 * LivenessProbe in deployment.yaml as optional property
@@ -320,3 +336,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [3.2.2]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-3.2.2/charts/dvpe-deployment-gloo
 [3.2.3]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-3.2.3/charts/dvpe-deployment-gloo
 [3.2.4]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-3.2.4/charts/dvpe-deployment-gloo
+[4.0.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-4.0.0/charts/dvpe-deployment-gloo
