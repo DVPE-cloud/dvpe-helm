@@ -9,7 +9,7 @@ externalSecrets:
     key:
 
     # externalSecrets.service.refreshInterval -- `refreshInterval` set the sync time range from AWS Secret Manager. Default is set to 15m
-    refreshInterval:
+    refreshInterval: 15m
 
   oauth2:
     # externalSecrets.oauth2.key -- `Key` to AWS Secret Manager object where the client secret for OAuth2 provider should be stored. The key in the Secret Manager Object has to be named as the given `gloo.authConfig.spec.configs.oauth2.clientId`. The value has to be formatted as `clientSecret: <secret>`.
