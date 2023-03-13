@@ -1,0 +1,21 @@
+{{ template "chart.header" . }}
+{{ template "chart.versionBadge" . }}
+
+{{ template "chart.description" . }}
+
+Helm Chart for installing a Custom Crossplane API, allowing to create an EFS Filesystem.
+
+# Deprecated
+This project has been deprecated and will soon be removed. Please have a look at [tenantfilesystem](https://github.com/DVPE-cloud/wadtfy-custom-components/tree/master/charts/tenantfilesystem)
+
+## Installation
+
+```sh
+helm install crossplane-efs . -f values.yaml
+```
+
+## Configuration
+
+The following table lists the configurable parameters of the chart and its default values.
+
+{{ template "chart.valuesSection" . }}
