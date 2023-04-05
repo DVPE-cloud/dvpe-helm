@@ -25,3 +25,5 @@ issuercontroller:
     dockerCredentials:
     # issuercontroller.externalsecrets.clusterIssuer -- The name of the external secret for the cluster certificate issuer
     clusterIssuer:
+    # issuercontroller.externalsecrets.secretStoreRefName -- Name of the External Secret's Secret Store to use
+    secretStoreRefName:
