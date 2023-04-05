@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.0]
+### Changed
+* Name of Secret Store now must be passed as variable
+
 ## [2.0.0]
 > NOTE: This is a breaking change since the underlying naming concept for
 > secret stores changed.
@@ -79,4 +83,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [0.2.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-certificate-issuer-controller-0.2.0/charts/dvpe-certificate-issuer-controller
 [0.2.1]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-certificate-issuer-controller-0.2.1/charts/dvpe-certificate-issuer-controller
 [0.2.3]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-certificate-issuer-controller-0.2.3/charts/dvpe-certificate-issuer-controller
-[2.0.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-certificate-issuer-controller-0.2.3/charts/dvpe-certificate-issuer-controller
+[2.0.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-certificate-issuer-controller-2.0.0/charts/dvpe-certificate-issuer-controller
+[2.1.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-certificate-issuer-controller-2.1.0/charts/dvpe-certificate-issuer-controller
