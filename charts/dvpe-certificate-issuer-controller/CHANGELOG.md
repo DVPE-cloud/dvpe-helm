@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0]
+> NOTE: This is a breaking change since the underlying naming concept for
+> secret stores changed.
+### Changed
+* pre-defined name of referenced secret-store changed to `secret-store-<NAMESPACE_NAME>`
+
 ## [1.0.0]
 ### Changed
 * Cluster issuer secret uses External Secrets Operator (`issuercontroller.externalsecrets.clusterIssuer`)
@@ -73,3 +79,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [0.2.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-certificate-issuer-controller-0.2.0/charts/dvpe-certificate-issuer-controller
 [0.2.1]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-certificate-issuer-controller-0.2.1/charts/dvpe-certificate-issuer-controller
 [0.2.3]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-certificate-issuer-controller-0.2.3/charts/dvpe-certificate-issuer-controller
+[2.0.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-certificate-issuer-controller-0.2.3/charts/dvpe-certificate-issuer-controller
