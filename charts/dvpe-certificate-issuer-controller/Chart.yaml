@@ -2,7 +2,7 @@ apiVersion: v2
 appVersion: 1.1.1
 description: Helm chart for deploying a custom certificate issuer controller. The certificate issuer controller is a [cert-manager](https://cert-manager.io/docs/) resource managing certificate requests in a private PKI.
 name: dvpe-certificate-issuer-controller
-version: 1.0.0
+version: 2.0.0
 keywords:
   - automation
   - gitops
