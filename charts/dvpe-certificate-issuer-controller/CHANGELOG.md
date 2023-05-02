@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.2.1]
+### Fixed
+* Reformant ExternalSecrets properly
+
 ## [2.2.0]
 ### Changed
 * Format of ExternalSecret change for docker-reg-secret and issuer-secret
@@ -90,3 +94,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [2.0.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-certificate-issuer-controller-2.0.0/charts/dvpe-certificate-issuer-controller
 [2.1.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-certificate-issuer-controller-2.1.0/charts/dvpe-certificate-issuer-controller
 [2.2.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-certificate-issuer-controller-2.2.0/charts/dvpe-certificate-issuer-controller
+[2.2.1]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-certificate-issuer-controller-2.2.1/charts/dvpe-certificate-issuer-controller
