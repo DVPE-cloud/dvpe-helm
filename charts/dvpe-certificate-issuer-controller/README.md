@@ -1,6 +1,6 @@
 # dvpe-certificate-issuer-controller
 
-![Version: 2.1.0](https://img.shields.io/badge/Version-2.1.0-informational?style=flat-square)
+![Version: 2.2.0](https://img.shields.io/badge/Version-2.2.0-informational?style=flat-square)
 
 Helm chart for deploying a custom certificate issuer controller. The certificate issuer controller is a [cert-manager](https://cert-manager.io/docs/) resource managing certificate requests in a private PKI.
 
