@@ -51,7 +51,7 @@ spec:
           envFrom:
             {{- if .Values.externalSecrets.service.key }}
             - secretRef:
-                name: {{ $serviceName }}-service-secrets
+                name: "{{ $serviceName }}-service-secrets"
             {{- end }}
             {{- if .Values.additionalparameters.customConfigMapReference }}
             - configMapRef:
@@ -98,27 +98,19 @@ spec:
                 {{- end}}
                 key: {{ $value.secretKeyRef.key }}
           {{- end}}
+          {{- with .Values.deployment.spec.containers }}
+          {{- if .startupProbe }}
+          startupProbe:
+          {{- .startupProbe | toYaml | nindent 12 }}
+          {{- end }}
+          {{- if .readinessProbe }}
           readinessProbe:
-            httpGet:
-              path: {{ .Values.deployment.spec.containers.readinessProbe.httpGet.path }}
-              port: {{ .Values.deployment.spec.containers.readinessProbe.httpGet.port }}
-              scheme: {{ .Values.deployment.spec.containers.readinessProbe.httpGet.scheme }}
-            initialDelaySeconds: {{ .Values.deployment.spec.containers.readinessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.deployment.spec.containers.readinessProbe.periodSeconds }}
-            timeoutSeconds: {{ .Values.deployment.spec.containers.readinessProbe.timeoutSeconds }}
-            successThreshold: {{ .Values.deployment.spec.containers.readinessProbe.successThreshold }}
-            failureThreshold: {{ .Values.deployment.spec.containers.readinessProbe.failureThreshold }}
-          {{- if .Values.deployment.spec.containers.livenessProbe.enabled }}
+          {{- .readinessProbe | toYaml | nindent 12  }}
+          {{- end }}
+          {{- if .livenessProbe }}
           livenessProbe:
-            httpGet:
-              path: {{ .Values.deployment.spec.containers.livenessProbe.httpGet.path }}
-              port: {{ .Values.deployment.spec.containers.livenessProbe.httpGet.port }}
-              scheme: {{ .Values.deployment.spec.containers.livenessProbe.httpGet.scheme }}
-            initialDelaySeconds: {{ .Values.deployment.spec.containers.livenessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.deployment.spec.containers.livenessProbe.periodSeconds }}
-            timeoutSeconds: {{ .Values.deployment.spec.containers.livenessProbe.timeoutSeconds }}
-            successThreshold: 1
-            failureThreshold: {{ .Values.deployment.spec.containers.livenessProbe.failureThreshold }}
+          {{- .livenessProbe | toYaml | nindent 12 }}
+          {{- end }}
           {{- end }}
           resources:
             limits:

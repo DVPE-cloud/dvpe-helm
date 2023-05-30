@@ -6,7 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased]
 
-## [4.0.0]  
+
+## [4.1.0]
+### Changed
+- Deployment now fully supports all probes of type `startupProbe`, `livenessProbe` and `readinessProbe`. Now not only
+  http probes but everything which Kubernetes offers.
+- `livenessProbe.enabled` has been removed. LivenessProbe will be added if there are corresponding values defined.
+- All probes are now optional.
+
+## [4.0.0]
 
 ### **Breaking Changes**
 
@@ -337,3 +345,4 @@ The ExternalSecretStore reference will generated on Namespace generation by WADT
 [3.2.3]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-3.2.3/charts/dvpe-deployment-gloo
 [3.2.4]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-3.2.4/charts/dvpe-deployment-gloo
 [4.0.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-4.0.0/charts/dvpe-deployment-gloo
+[4.1.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-4.1.0/charts/dvpe-deployment-gloo
