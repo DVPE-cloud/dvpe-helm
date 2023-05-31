@@ -1,6 +1,6 @@
 # dvpe-cluster-issuer
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square)
+![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square)
 
 Helm chart for installing cert-manager's ClusterIssuer resource, to be used in Kubernetes automation scripts.
 
@@ -45,7 +45,7 @@ The following table lists the configurable parameters of the chart and its defau
 | clcm.healthCheckTimeoutInSeconds | int | `60` | CLCM health check interval in seconds |
 | clcm.host | string | `nil` | CLCM host |
 | clcm.port | string | `nil` | CLCM port |
-| internet | object | `{"caInstance":null,"certificateDateCAType":null,"ciClient":null,"ciContactEmail":null,"ciID":null,"ciRequester":null,"ciType":null}` | configuration for the internet cluster issuer |
+| internet | object | `{"caInstance":null,"certificateDateCAType":null,"ciClient":null,"ciContactEmail":null,"ciID":null,"ciRequester":null,"ciType":null,"credentialsSecret":null}` | configuration for the internet cluster issuer |
 | internet.caInstance | string | `nil` | CA instance |
 | internet.certificateDateCAType | string | `nil` | CA type |
 | internet.ciClient | string | `nil` | CI client |
@@ -53,7 +53,17 @@ The following table lists the configurable parameters of the chart and its defau
 | internet.ciID | string | `nil` | CI id |
 | internet.ciRequester | string | `nil` | CI requester |
 | internet.ciType | string | `nil` | CI type |
-| intranet | object | `{"caInstance":null,"certificateDateCAType":null,"ciClient":null,"ciContactEmail":null,"ciID":null,"ciRequester":null,"ciType":null}` | configuration for the intranet cluster issuer |
+| internet.credentialsSecret | string | `nil` | Secret for CLCM connect |
+| internetFallback | object | `{"caInstance":null,"certificateDateCAType":null,"ciClient":null,"ciContactEmail":null,"ciID":null,"ciRequester":null,"ciType":null,"credentialsSecret":null}` | configuration for the intranet cluster issuer |
+| internetFallback.caInstance | string | `nil` | CA instance |
+| internetFallback.certificateDateCAType | string | `nil` | CA type |
+| internetFallback.ciClient | string | `nil` | CI client |
+| internetFallback.ciContactEmail | string | `nil` | CI contact e-mail |
+| internetFallback.ciID | string | `nil` | CI id |
+| internetFallback.ciRequester | string | `nil` | CI requester |
+| internetFallback.ciType | string | `nil` | CI type |
+| internetFallback.credentialsSecret | string | `nil` | Secret for CLCM connect |
+| intranet | object | `{"caInstance":null,"certificateDateCAType":null,"ciClient":null,"ciContactEmail":null,"ciID":null,"ciRequester":null,"ciType":null,"credentialsSecret":null}` | configuration for the intranet cluster issuer |
 | intranet.caInstance | string | `nil` | CA instance |
 | intranet.certificateDateCAType | string | `nil` | CA type |
 | intranet.ciClient | string | `nil` | CI client |
@@ -61,3 +71,13 @@ The following table lists the configurable parameters of the chart and its defau
 | intranet.ciID | string | `nil` | CI id |
 | intranet.ciRequester | string | `nil` | CI requester |
 | intranet.ciType | string | `nil` | CI type |
+| intranet.credentialsSecret | string | `nil` | Secret for CLCM connect |
+| intranetFallback | object | `{"caInstance":null,"certificateDateCAType":null,"ciClient":null,"ciContactEmail":null,"ciID":null,"ciRequester":null,"ciType":null,"credentialsSecret":null}` | configuration for the intranet cluster issuer |
+| intranetFallback.caInstance | string | `nil` | CA instance |
+| intranetFallback.certificateDateCAType | string | `nil` | CA type |
+| intranetFallback.ciClient | string | `nil` | CI client |
+| intranetFallback.ciContactEmail | string | `nil` | CI contact e-mail |
+| intranetFallback.ciID | string | `nil` | CI id |
+| intranetFallback.ciRequester | string | `nil` | CI requester |
+| intranetFallback.ciType | string | `nil` | CI type |
+| intranetFallback.credentialsSecret | string | `nil` | Secret for CLCM connect |
