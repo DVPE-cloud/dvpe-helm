@@ -39,42 +39,12 @@ deployment:
       # deployment.spec.image.pullPolicy -- The default rule for downloading images.
       pullPolicy: Always
     containers:
-      readinessProbe:
-        httpGet:
-          # deployment.spec.containers.readinessProbe.httpGet.path -- Service's http path on which to execute a readinessProbe
-          path: /
-          # deployment.spec.containers.readinessProbe.httpGet.port -- Service's http port on which to execute a readinessProbe
-          port: 80
-          # deployment.spec.containers.readinessProbe.httpGet.scheme -- Http Scheme to use for readinesProbe. Can be either `HTTP` or `HTTPS`.
-          scheme: HTTP
-        # deployment.spec.containers.readinessProbe.initialDelaySeconds -- Amount of time to wait before performing the first probe.
-        initialDelaySeconds: 5
-        # deployment.spec.containers.readinessProbe.periodSeconds -- How often to perform the probe (in seconds).
-        periodSeconds: 10
-        # deployment.spec.containers.readinessProbe.timeoutSeconds -- Number of seconds after which the probe times out.
-        timeoutSeconds: 1
-        # deployment.spec.containers.readinessProbe.successThreshold -- Threshold to be considered successful after having failed.
-        successThreshold: 1
-        # deployment.spec.containers.readinessProbe.failureThreshold -- Number of times to retry the probe before giving up.
-        failureThreshold: 3
-    livenessProbe:
-        # deployment.spec.containers.livenessProbe.enabled -- If `enabled` set to true liveness probe defines when to restart a container.
-        enabled: false
-        httpGet:
-          # deployment.spec.containers.livenessProbe.httpGet.path -- Service's http path on which to execute a livenessProbe
-          path: /
-          # deployment.spec.containers.livenessProbe.httpGet.port -- Service's http port on which to execute a livenessProbe
-          port: 80
-          # deployment.spec.containers.livenessProbe.httpGet.scheme -- Http Scheme to use for readinesProbe. Can be either `HTTP` or `HTTPS`.
-          scheme: HTTP
-        # deployment.spec.containers.livenessProbe.initialDelaySeconds -- Amount of time to wait before performing the first probe.
-        initialDelaySeconds: 60
-        # deployment.spec.containers.livenessProbe.periodSeconds -- How often to perform the probe (in seconds).
-        periodSeconds: 120
-        # deployment.spec.containers.livenessProbe.timeoutSeconds -- Number of seconds after which the probe times out.
-        timeoutSeconds: 20
-        # deployment.spec.containers.livenessProbe.failureThreshold -- Number of times to retry the probe before giving up.
-        failureThreshold: 3
+      # deployment.spec.containers.startupProbe -- Configuration of StartupProbe as documented here: [Configure Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)
+      startupProbe: {}
+      # deployment.spec.containers.livenessProbe -- Configuration of LivenessProbe as documented here: [Configure Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)
+      livenessProbe: {}
+      # deployment.spec.containers.readinessProbe -- Configuration of ReadinessProbe as documented here: [Configure Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)
+      readinessProbe: {}
     resources:
       limits:
         # deployment.spec.resources.limits.cpu -- Total amount of CPU time that a container can use every 100 ms. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage.

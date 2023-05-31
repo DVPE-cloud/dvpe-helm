@@ -1,6 +1,6 @@
 # dvpe-deployment-gloo
 
-![Version: 4.0.0](https://img.shields.io/badge/Version-4.0.0-informational?style=flat-square)
+![Version: 4.1.0](https://img.shields.io/badge/Version-4.1.0-informational?style=flat-square)
 
 Helm chart for installing microservices as gloo enabled VirtualService definitions.
 
@@ -211,16 +211,11 @@ The following table lists the configurable parameters of the chart and its defau
 | datadog.source | string | `nil` | Defines the source which creates log outputs. Source defines the log format and triggers Datadog parser pipelines |
 | datadog.team | string | `nil` | Label in Datadog for the responsible team |
 | datadog.version | string | `nil` | Label in Datadog for the service version. If undefined, the value of `deployment.spec.image.tag` is used. This value should not be set by ordinary deployments. It is intended for special cases (e.g. CI triggered deployments). |
-| deployment | object | `{"podAnnotations":{},"spec":{"containers":{"readinessProbe":{"failureThreshold":3,"httpGet":{"path":"/","port":80,"scheme":"HTTP"},"initialDelaySeconds":5,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":1}},"image":{"name":null,"pullPolicy":"Always","repository":null,"tag":"latest"},"imagePullSecrets":"docker-reg-secret","livenessProbe":{"enabled":false,"failureThreshold":3,"httpGet":{"path":"/","port":80,"scheme":"HTTP"},"initialDelaySeconds":60,"periodSeconds":120,"timeoutSeconds":20},"replicas":1,"resources":{"limits":{"cpu":null,"memory":null},"requests":{"cpu":"150m","memory":"200M"}},"serviceAccountName":null}}` | -----------------------------# |
+| deployment | object | `{"podAnnotations":{},"spec":{"containers":{"livenessProbe":{},"readinessProbe":{},"startupProbe":{}},"image":{"name":null,"pullPolicy":"Always","repository":null,"tag":"latest"},"imagePullSecrets":"docker-reg-secret","replicas":1,"resources":{"limits":{"cpu":null,"memory":null},"requests":{"cpu":"150m","memory":"200M"}},"serviceAccountName":null}}` | -----------------------------# |
 | deployment.podAnnotations | object | `{}` | Object of additional `podAnnotations`. |
-| deployment.spec.containers.readinessProbe.failureThreshold | int | `3` | Number of times to retry the probe before giving up. |
-| deployment.spec.containers.readinessProbe.httpGet.path | string | `"/"` | Service's http path on which to execute a readinessProbe |
-| deployment.spec.containers.readinessProbe.httpGet.port | int | `80` | Service's http port on which to execute a readinessProbe |
-| deployment.spec.containers.readinessProbe.httpGet.scheme | string | `"HTTP"` | Http Scheme to use for readinesProbe. Can be either `HTTP` or `HTTPS`. |
-| deployment.spec.containers.readinessProbe.initialDelaySeconds | int | `5` | Amount of time to wait before performing the first probe. |
-| deployment.spec.containers.readinessProbe.periodSeconds | int | `10` | How often to perform the probe (in seconds). |
-| deployment.spec.containers.readinessProbe.successThreshold | int | `1` | Threshold to be considered successful after having failed. |
-| deployment.spec.containers.readinessProbe.timeoutSeconds | int | `1` | Number of seconds after which the probe times out. |
+| deployment.spec.containers.livenessProbe | object | `{}` | Configuration of LivenessProbe as documented here: [Configure Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) |
+| deployment.spec.containers.readinessProbe | object | `{}` | Configuration of ReadinessProbe as documented here: [Configure Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) |
+| deployment.spec.containers.startupProbe | object | `{}` | Configuration of StartupProbe as documented here: [Configure Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) |
 | deployment.spec.image.name | string | `nil` | The image name to use. |
 | deployment.spec.image.pullPolicy | string | `"Always"` | The default rule for downloading images. |
 | deployment.spec.image.repository | string | `nil` | The docker repository to pull the service image from. |
