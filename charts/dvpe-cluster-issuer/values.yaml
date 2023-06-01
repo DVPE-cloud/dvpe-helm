@@ -11,7 +11,7 @@ clcm:
 issuers:
   # internet -- configuration for the internet cluster issuer
   internet:
-    # -- Secret for CLCM connect
+    # -- Secret containing CLCM connect credentials
     credentialsSecret:
     # -- CA instance
     caInstance:

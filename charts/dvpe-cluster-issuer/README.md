@@ -45,39 +45,12 @@ The following table lists the configurable parameters of the chart and its defau
 | clcm.healthCheckTimeoutInSeconds | int | `60` | CLCM health check interval in seconds |
 | clcm.host | string | `nil` | CLCM host |
 | clcm.port | string | `nil` | CLCM port |
-| internet | object | `{"caInstance":null,"certificateDateCAType":null,"ciClient":null,"ciContactEmail":null,"ciID":null,"ciRequester":null,"ciType":null,"credentialsSecret":null}` | configuration for the internet cluster issuer |
-| internet.caInstance | string | `nil` | CA instance |
-| internet.certificateDateCAType | string | `nil` | CA type |
-| internet.ciClient | string | `nil` | CI client |
-| internet.ciContactEmail | string | `nil` | CI contact e-mail |
-| internet.ciID | string | `nil` | CI id |
-| internet.ciRequester | string | `nil` | CI requester |
-| internet.ciType | string | `nil` | CI type |
-| internet.credentialsSecret | string | `nil` | Secret for CLCM connect |
-| internetFallback | object | `{"caInstance":null,"certificateDateCAType":null,"ciClient":null,"ciContactEmail":null,"ciID":null,"ciRequester":null,"ciType":null,"credentialsSecret":null}` | configuration for the intranet cluster issuer |
-| internetFallback.caInstance | string | `nil` | CA instance |
-| internetFallback.certificateDateCAType | string | `nil` | CA type |
-| internetFallback.ciClient | string | `nil` | CI client |
-| internetFallback.ciContactEmail | string | `nil` | CI contact e-mail |
-| internetFallback.ciID | string | `nil` | CI id |
-| internetFallback.ciRequester | string | `nil` | CI requester |
-| internetFallback.ciType | string | `nil` | CI type |
-| internetFallback.credentialsSecret | string | `nil` | Secret for CLCM connect |
-| intranet | object | `{"caInstance":null,"certificateDateCAType":null,"ciClient":null,"ciContactEmail":null,"ciID":null,"ciRequester":null,"ciType":null,"credentialsSecret":null}` | configuration for the intranet cluster issuer |
-| intranet.caInstance | string | `nil` | CA instance |
-| intranet.certificateDateCAType | string | `nil` | CA type |
-| intranet.ciClient | string | `nil` | CI client |
-| intranet.ciContactEmail | string | `nil` | CI contact e-mail |
-| intranet.ciID | string | `nil` | CI id |
-| intranet.ciRequester | string | `nil` | CI requester |
-| intranet.ciType | string | `nil` | CI type |
-| intranet.credentialsSecret | string | `nil` | Secret for CLCM connect |
-| intranetFallback | object | `{"caInstance":null,"certificateDateCAType":null,"ciClient":null,"ciContactEmail":null,"ciID":null,"ciRequester":null,"ciType":null,"credentialsSecret":null}` | configuration for the intranet cluster issuer |
-| intranetFallback.caInstance | string | `nil` | CA instance |
-| intranetFallback.certificateDateCAType | string | `nil` | CA type |
-| intranetFallback.ciClient | string | `nil` | CI client |
-| intranetFallback.ciContactEmail | string | `nil` | CI contact e-mail |
-| intranetFallback.ciID | string | `nil` | CI id |
-| intranetFallback.ciRequester | string | `nil` | CI requester |
-| intranetFallback.ciType | string | `nil` | CI type |
-| intranetFallback.credentialsSecret | string | `nil` | Secret for CLCM connect |
+| clcm.secretsNamespace | string | `nil` | Namespace, where secrets are deployed |
+| issuers.internet.caInstance | string | `nil` | CA instance |
+| issuers.internet.certificateDateCAType | string | `nil` | CA type |
+| issuers.internet.ciClient | string | `nil` | CI client |
+| issuers.internet.ciContactEmail | string | `nil` | CI contact e-mail |
+| issuers.internet.ciID | string | `nil` | CI id |
+| issuers.internet.ciRequester | string | `nil` | CI requester |
+| issuers.internet.ciType | string | `nil` | CI type |
+| issuers.internet.credentialsSecret | string | `nil` | Secret containing CLCM connect credentials |
