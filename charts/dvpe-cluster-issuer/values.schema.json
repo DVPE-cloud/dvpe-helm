@@ -3,26 +3,23 @@
   "type": "object",
   "properties": {
     "clcm": {
-      "$ref": "#/definitions/Clcm"
+      "$ref": "#/definitions/clcm"
     },
-    "intranet": {
-      "$ref": "#/definitions/Cert"
-    },
-    "internet": {
-      "$ref": "#/definitions/Cert"
+    "issuers": {
+      "$ref": "#/definitions/issuers"
     }
   },
+  "additionalProperties": false,
   "required": [
     "clcm",
-    "internet",
-    "intranet"
+    "issuers"
   ],
   "definitions": {
-    "Clcm": {
+    "clcm": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "credentialsSecret": {
+        "secretsNamespace": {
           "type": "string"
         },
         "host": {
@@ -37,47 +34,54 @@
         }
       },
       "required": [
-        "credentialsSecret",
+        "secretsNamespace",
         "healthCheckTimeoutInSeconds",
         "host",
         "port"
       ]
     },
-    "Cert": {
+    "issuers": {
       "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "caInstance": {
-          "type": "string"
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "secretsManagerSecretName": {
+            "type": "string"
+          },
+          "caInstance": {
+            "type": "string"
+          },
+          "certificateDateCAType": {
+            "type": "string"
+          },
+          "ciID": {
+            "type": "string"
+          },
+          "ciType": {
+            "type": "string"
+          },
+          "ciClient": {
+            "type": "string"
+          },
+          "ciContactEmail": {
+            "type": "string"
+          },
+          "ciRequester": {
+            "type": "string"
+          }
         },
-        "certificateDateCAType": {
-          "type": "string"
-        },
-        "ciID": {
-          "type": "string"
-        },
-        "ciType": {
-          "type": "string"
-        },
-        "ciClient": {
-          "type": "string"
-        },
-        "ciContactEmail": {
-          "type": "string"
-        },
-        "ciRequester": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "caInstance",
-        "certificateDateCAType",
-        "ciClient",
-        "ciContactEmail",
-        "ciID",
-        "ciRequester",
-        "ciType"
-      ]
+        "required": [
+          "secretsManagerSecretName",
+          "caInstance",
+          "certificateDateCAType",
+          "ciClient",
+          "ciContactEmail",
+          "ciID",
+          "ciRequester",
+          "ciType"
+        ]
+      }
     }
   }
 }

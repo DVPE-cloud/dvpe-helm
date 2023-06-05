@@ -5,35 +5,25 @@ clcm:
   port:
   # clcm.healthCheckTimeoutInSeconds -- CLCM health check interval in seconds
   healthCheckTimeoutInSeconds: 60
-# internet -- configuration for the internet cluster issuer
-internet:
-  # -- CA instance
-  caInstance:
-  # -- CA type
-  certificateDateCAType:
-  # -- CI id
-  ciID:
-  # -- CI type
-  ciType:
-  # -- CI client
-  ciClient:
-  # -- CI contact e-mail
-  ciContactEmail:
-  # -- CI requester
-  ciRequester:
-# intranet -- configuration for the intranet cluster issuer
-intranet:
-  # -- CA instance
-  caInstance:
-  # -- CA type
-  certificateDateCAType:
-  # -- CI id
-  ciID:
-  # -- CI type
-  ciType:
-  # -- CI client
-  ciClient:
-  # -- CI contact e-mail
-  ciContactEmail:
-  # -- CI requester
-  ciRequester:
+  # clcm.secretsNamespace -- Namespace, where secrets are deployed
+  secretsNamespace: cert-manager-system
+# issuers -- map of objects: each entry describes a new cluster issuer
+issuers:
+  # internet -- configuration for the internet cluster issuer
+  internet:
+    # -- Secret in AWS SecretsManager containing CLCM connect credentials
+    secretsManagerSecretName:
+    # -- CA instance
+    caInstance:
+    # -- CA type
+    certificateDateCAType:
+    # -- CI id
+    ciID:
+    # -- CI type
+    ciType:
+    # -- CI client
+    ciClient:
+    # -- CI contact e-mail
+    ciContactEmail:
+    # -- CI requester
+    ciRequester:

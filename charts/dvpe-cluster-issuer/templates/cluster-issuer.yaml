@@ -1,28 +1,35 @@
-{{- $clcm := .Values.clcm }}
-{{- include "cluster-issuer" (list $clcm "wadtfy-internet-cluster-issuer" .Values.internet) }}
-{{- include "cluster-issuer" (list $clcm "wadtfy-intranet-cluster-issuer" .Values.intranet) }}
-
-{{- define "cluster-issuer" }}
-{{- $clcm := index . 0 }}
-{{- $name := index . 1 }}
-{{- $cert := index . 2 }}
+{{- range $issuerName, $issuerParams := .Values.issuers }}
 ---
+
 apiVersion: controller-manager.dvpe-cloud.github.io/v1alpha1
 kind: ClusterIssuer
 metadata:
-  name: {{ $name }}
+  name: wadtfy-{{ $issuerName }}-cluster-issuer
 spec:
   certificateDetails:
-    caInstance: {{ $cert.caInstance }}
-    ciID: {{ $cert.ciID }}
-    ciType: {{ $cert.ciType }}
-    certificateDataCAType: {{ $cert.certificateDateCAType }}
-    client: {{ $cert.ciClient }}
-    contactEmail: {{ $cert.ciContactEmail }}
-    requester: {{ $cert.ciRequester }}
+    caInstance: {{ $issuerParams.caInstance }}
+    ciID: {{ $issuerParams.ciID }}
+    ciType: {{ $issuerParams.ciType }}
+    certificateDataCAType: {{ $issuerParams.certificateDateCAType }}
+    client: {{ $issuerParams.ciClient }}
+    contactEmail: {{ $issuerParams.ciContactEmail }}
+    requester: {{ $issuerParams.ciRequester }}
   clcm:
-    credentialsSecret: wadtfy-cluster-issuer-secret
-    clcmHost: {{ $clcm.host }}
-    clcmPort: {{ $clcm.port }}
-    healthCheckTimeoutInSeconds: {{ $clcm.healthCheckTimeoutInSeconds }}
+    credentialsSecret: wadtfy-{{ $issuerName }}-cluster-issuer-secret
+    clcmHost: {{ $.Values.clcm.host }}
+    clcmPort: {{ $.Values.clcm.port }}
+    healthCheckTimeoutInSeconds: {{ $.Values.clcm.healthCheckTimeoutInSeconds }}
+
+---
+
+apiVersion: kubernetes-client.io/v1
+kind: ExternalSecret
+metadata:
+  name: wadtfy-{{ $issuerName }}-cluster-issuer-secret
+  namespace: {{ $.Values.clcm.secretsNamespace }}
+spec:
+  backendType: secretsManager
+  dataFrom:
+    - {{ $issuerParams.secretsManagerSecretName }}
+---
 {{- end }}

@@ -1,6 +1,6 @@
 # dvpe-cluster-issuer
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square)
+![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square)
 
 Helm chart for installing cert-manager's ClusterIssuer resource, to be used in Kubernetes automation scripts.
 
@@ -45,19 +45,13 @@ The following table lists the configurable parameters of the chart and its defau
 | clcm.healthCheckTimeoutInSeconds | int | `60` | CLCM health check interval in seconds |
 | clcm.host | string | `nil` | CLCM host |
 | clcm.port | string | `nil` | CLCM port |
-| internet | object | `{"caInstance":null,"certificateDateCAType":null,"ciClient":null,"ciContactEmail":null,"ciID":null,"ciRequester":null,"ciType":null}` | configuration for the internet cluster issuer |
-| internet.caInstance | string | `nil` | CA instance |
-| internet.certificateDateCAType | string | `nil` | CA type |
-| internet.ciClient | string | `nil` | CI client |
-| internet.ciContactEmail | string | `nil` | CI contact e-mail |
-| internet.ciID | string | `nil` | CI id |
-| internet.ciRequester | string | `nil` | CI requester |
-| internet.ciType | string | `nil` | CI type |
-| intranet | object | `{"caInstance":null,"certificateDateCAType":null,"ciClient":null,"ciContactEmail":null,"ciID":null,"ciRequester":null,"ciType":null}` | configuration for the intranet cluster issuer |
-| intranet.caInstance | string | `nil` | CA instance |
-| intranet.certificateDateCAType | string | `nil` | CA type |
-| intranet.ciClient | string | `nil` | CI client |
-| intranet.ciContactEmail | string | `nil` | CI contact e-mail |
-| intranet.ciID | string | `nil` | CI id |
-| intranet.ciRequester | string | `nil` | CI requester |
-| intranet.ciType | string | `nil` | CI type |
+| clcm.secretsNamespace | string | `"cert-manager-system"` | Namespace, where secrets are deployed |
+| issuers | object | `{"internet":{"caInstance":null,"certificateDateCAType":null,"ciClient":null,"ciContactEmail":null,"ciID":null,"ciRequester":null,"ciType":null,"secretsManagerSecretName":null}}` | map of objects: each entry describes a new cluster issuer |
+| issuers.internet.caInstance | string | `nil` | CA instance |
+| issuers.internet.certificateDateCAType | string | `nil` | CA type |
+| issuers.internet.ciClient | string | `nil` | CI client |
+| issuers.internet.ciContactEmail | string | `nil` | CI contact e-mail |
+| issuers.internet.ciID | string | `nil` | CI id |
+| issuers.internet.ciRequester | string | `nil` | CI requester |
+| issuers.internet.ciType | string | `nil` | CI type |
+| issuers.internet.secretsManagerSecretName | string | `nil` | Secret in AWS SecretsManager containing CLCM connect credentials |
