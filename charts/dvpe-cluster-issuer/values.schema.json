@@ -9,7 +9,6 @@
       "$ref": "#/definitions/issuers"
     }
   },
-  "additionalProperties": false,
   "required": [
     "clcm",
     "issuers"
