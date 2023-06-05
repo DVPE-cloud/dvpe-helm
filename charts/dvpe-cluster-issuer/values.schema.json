@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "clcm": {
+      "$ref": "#/definitions/clcm"
+    },
+    "issuers": {
+      "$ref": "#/definitions/issuers"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "clcm",
+    "issuers"
+  ],
+  "definitions": {
+    "clcm": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "secretsNamespace": {
+          "type": "string"
+        },
+        "host": {
+          "type": "string",
+          "format": "uri"
+        },
+        "port": {
+          "type": "integer"
+        },
+        "healthCheckTimeoutInSeconds": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "secretsNamespace",
+        "healthCheckTimeoutInSeconds",
+        "host",
+        "port"
+      ]
+    },
+    "issuers": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "secretsManagerSecretName": {
+            "type": "string"
+          },
+          "caInstance": {
+            "type": "string"
+          },
+          "certificateDateCAType": {
+            "type": "string"
+          },
+          "ciID": {
+            "type": "string"
+          },
+          "ciType": {
+            "type": "string"
+          },
+          "ciClient": {
+            "type": "string"
+          },
+          "ciContactEmail": {
+            "type": "string"
+          },
+          "ciRequester": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "secretsManagerSecretName",
+          "caInstance",
+          "certificateDateCAType",
+          "ciClient",
+          "ciContactEmail",
+          "ciID",
+          "ciRequester",
+          "ciType"
+        ]
+      }
+    }
+  }
+}

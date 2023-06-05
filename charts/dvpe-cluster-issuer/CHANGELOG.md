@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.2.0]
 ### Changed
-* Enable chart to carry a fallback configuration of ClusterIssuer with alternate User
+* Enable chart to create an arbitrary list of ClusterIssuers
 
 ## [0.1.0]
 ### Changed

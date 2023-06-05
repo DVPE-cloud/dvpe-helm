@@ -6,13 +6,13 @@ clcm:
   # clcm.healthCheckTimeoutInSeconds -- CLCM health check interval in seconds
   healthCheckTimeoutInSeconds: 60
   # clcm.secretsNamespace -- Namespace, where secrets are deployed
-  secretsNamespace:
-# internet -- configuration for the internet cluster issuer
+  secretsNamespace: cert-manager-system
+# issuers -- map of objects: each entry describes a new cluster issuer
 issuers:
   # internet -- configuration for the internet cluster issuer
   internet:
-    # -- Secret containing CLCM connect credentials
-    credentialsSecret:
+    # -- Secret in AWS SecretsManager containing CLCM connect credentials
+    secretsManagerSecretName:
     # -- CA instance
     caInstance:
     # -- CA type

@@ -1,13 +1,10 @@
-# Needs to be done in order to make .Values...work in range (limitation of go-templating (https://github.com/helm/helm/issues/1311)
-{{- $root := . -}}
+{{- range $issuerName, $issuerParams := .Values.issuers }}
+---
 
-
-# Create for each entry in Issuers a ClusterIssuer and a Secret containing the
-{{- range $issuerName, $issuerParams := .Values.issuers}}
 apiVersion: controller-manager.dvpe-cloud.github.io/v1alpha1
 kind: ClusterIssuer
 metadata:
-  name: wadtfy-cluster-issuer-{{ $issuerName }}
+  name: wadtfy-{{ $issuerName }}-cluster-issuer
 spec:
   certificateDetails:
     caInstance: {{ $issuerParams.caInstance }}
@@ -18,20 +15,21 @@ spec:
     contactEmail: {{ $issuerParams.ciContactEmail }}
     requester: {{ $issuerParams.ciRequester }}
   clcm:
-    credentialsSecret: wadtfy-cluster-issuer-{{ $issuerName }}-secret
-    clcmHost: {{ $root.Values.clcm.host }}
-    clcmPort: {{ $root.Values.clcm.port }}
-    healthCheckTimeoutInSeconds: {{ $root.Values.clcm.healthCheckTimeoutInSeconds }}
+    credentialsSecret: wadtfy-{{ $issuerName }}-cluster-issuer-secret
+    clcmHost: {{ $.Values.clcm.host }}
+    clcmPort: {{ $.Values.clcm.port }}
+    healthCheckTimeoutInSeconds: {{ $.Values.clcm.healthCheckTimeoutInSeconds }}
 
 ---
 
 apiVersion: kubernetes-client.io/v1
 kind: ExternalSecret
 metadata:
-  name: wadtfy-cluster-issuer-{{ $issuerName }}-secret
-  namespace: {{ $root.Values.clcm.secretsNamespace }}
+  name: wadtfy-{{ $issuerName }}-cluster-issuer-secret
+  namespace: {{ $.Values.clcm.secretsNamespace }}
 spec:
   backendType: secretsManager
   dataFrom:
-    - {{ $issuerParams.secretsmanagerSecretName }}
-{{- end}}
+    - {{ $issuerParams.secretsManagerSecretName }}
+---
+{{- end }}

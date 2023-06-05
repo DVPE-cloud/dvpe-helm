@@ -45,7 +45,8 @@ The following table lists the configurable parameters of the chart and its defau
 | clcm.healthCheckTimeoutInSeconds | int | `60` | CLCM health check interval in seconds |
 | clcm.host | string | `nil` | CLCM host |
 | clcm.port | string | `nil` | CLCM port |
-| clcm.secretsNamespace | string | `nil` | Namespace, where secrets are deployed |
+| clcm.secretsNamespace | string | `"cert-manager-system"` | Namespace, where secrets are deployed |
+| issuers | object | `{"internet":{"caInstance":null,"certificateDateCAType":null,"ciClient":null,"ciContactEmail":null,"ciID":null,"ciRequester":null,"ciType":null,"secretsManagerSecretName":null}}` | map of objects: each entry describes a new cluster issuer |
 | issuers.internet.caInstance | string | `nil` | CA instance |
 | issuers.internet.certificateDateCAType | string | `nil` | CA type |
 | issuers.internet.ciClient | string | `nil` | CI client |
@@ -53,4 +54,4 @@ The following table lists the configurable parameters of the chart and its defau
 | issuers.internet.ciID | string | `nil` | CI id |
 | issuers.internet.ciRequester | string | `nil` | CI requester |
 | issuers.internet.ciType | string | `nil` | CI type |
-| issuers.internet.credentialsSecret | string | `nil` | Secret containing CLCM connect credentials |
+| issuers.internet.secretsManagerSecretName | string | `nil` | Secret in AWS SecretsManager containing CLCM connect credentials |
