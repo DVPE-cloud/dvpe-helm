@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ## [2.3.0]
-## Removed
+### Removed
 * Remove secret for cluster issuer. Secret will be deployed in cluster-issuer chart.
 
 ## [2.2.1]
