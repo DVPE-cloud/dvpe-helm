@@ -22,14 +22,22 @@ spec:
 
 ---
 
-apiVersion: kubernetes-client.io/v1
+apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
   name: wadtfy-{{ $issuerName }}-cluster-issuer-secret
   namespace: {{ $.Values.clcm.secretsNamespace }}
 spec:
-  backendType: secretsManager
+  refreshInterval: 1h
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: wadtfy-cluster-secret-store
+  target:
+    name: {{ $issuerParams.secretsManagerSecretName }}
+    creationPolicy: Owner
   dataFrom:
-    - {{ $issuerParams.secretsManagerSecretName }}
+    - extract:
+        key: "{{ $issuerParams.secretsManagerSecretName }}"
+
 ---
 {{- end }}
