@@ -32,8 +32,7 @@ s
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| issuercontroller | object | `{"externalsecrets":{"clusterIssuer":null,"dockerCredentials":null,"name":null,"secretStoreRefName":null},"plane":{"name":"wadtfy-cert-issuer-controller-system"},"spec":{"image":{"name":"wadtfy-issuer","pullPolicy":"IfNotPresent","repository":null,"tag":"v1.2.0"}}}` | -----------------------------# |
-| issuercontroller.externalsecrets.clusterIssuer | string | `nil` | The name of the external secret for the cluster certificate issuer |
+| issuercontroller | object | `{"externalsecrets":{"dockerCredentials":null,"name":null,"secretStoreRefName":null},"plane":{"name":"wadtfy-cert-issuer-controller-system"},"spec":{"image":{"name":"wadtfy-issuer","pullPolicy":"IfNotPresent","repository":null,"tag":"v1.2.0"}}}` | -----------------------------# |
 | issuercontroller.externalsecrets.dockerCredentials | string | `nil` | The name of the external secret key containing the docker credentials for this deployment (earlier: `issuercontroller.externalsecrets.name`) |
 | issuercontroller.externalsecrets.name | string | `nil` | DEPRECATED; rename to `issuercontroller.externalsecrets.dockerCredentials` |
 | issuercontroller.externalsecrets.secretStoreRefName | string | `nil` | Name of the External Secret's Secret Store to use |
