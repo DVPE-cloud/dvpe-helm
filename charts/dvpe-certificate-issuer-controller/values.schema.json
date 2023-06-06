@@ -11,29 +11,18 @@
               "properties": {
                 "dockerCredentials": {
                   "type": "string"
-                },
-                "clusterIssuer": {
-                  "type": "string"
                 }
               },
               "required": [
-                "dockerCredentials",
-                "clusterIssuer"
+                "dockerCredentials"
               ]
             },
             {
               "properties": {
                 "name": {
                   "type": "string"
-                },
-                "clusterIssuer": {
-                  "type": "string"
                 }
-              },
-              "required": [
-                "name",
-                "clusterIssuer"
-              ]
+              }
             }
           ]
         }
