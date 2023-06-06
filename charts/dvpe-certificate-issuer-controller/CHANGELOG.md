@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+## [2.3.0]
+## Removed
+* Remove secret for cluster issuer. Secret will be deployed in cluster-issuer chart.
 
 ## [2.2.1]
 ### Fixed
@@ -95,3 +98,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [2.1.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-certificate-issuer-controller-2.1.0/charts/dvpe-certificate-issuer-controller
 [2.2.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-certificate-issuer-controller-2.2.0/charts/dvpe-certificate-issuer-controller
 [2.2.1]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-certificate-issuer-controller-2.2.1/charts/dvpe-certificate-issuer-controller
+[2.3.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-certificate-issuer-controller-2.3.0/charts/dvpe-certificate-issuer-controller
