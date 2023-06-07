@@ -33,7 +33,7 @@ spec:
     kind: ClusterSecretStore
     name: wadtfy-cluster-secret-store
   target:
-    name: {{ $issuerParams.secretsManagerSecretName }}
+    name: wadtfy-{{ $issuerName }}-cluster-issuer-secret
     creationPolicy: Owner
   dataFrom:
     - extract:
