@@ -48,6 +48,7 @@ spec:
               domain: {{ .Values.gloo.authConfig.spec.configs.oauth.cookieDomain | quote }}
               {{- end }}
               maxAge: {{ .Values.gloo.authConfig.spec.configs.oauth.maxAge }}
+              sameSite: {{ .Values.gloo.authConfig.spec.configs.oauth.sameSite }}
             {{- if .Values.gloo.authConfig.spec.configs.oauth.cache.enabled }}
             redis:
               cookieName: {{ .Values.gloo.authConfig.spec.configs.oauth.cache.cookieName }}
