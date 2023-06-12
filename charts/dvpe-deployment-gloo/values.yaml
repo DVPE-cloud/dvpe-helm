@@ -239,6 +239,8 @@ gloo:
           cookieDomain:
           # gloo.authConfig.spec.configs.oauth.maxAge -- The `maxAge` of the session cookie. Gloo will use the `maxAge` as TTL in Redis as well .If set to `0` the cookie is valid for the existing browser session.
           maxAge: 0
+          # gloo.authConfig.spec.configs.oauth.sameSite -- The `sameSite` cookie property for restricting the site context. The default is set to 0 and will be ignored. Users of this property can overwrite this setting with numeric values according to https://docs.solo.io/gloo-network/latest/reference/api/auth_config/#usersession-cookieoptions-samesite.
+          sameSite: 0
           cache:
             # gloo.authConfig.spec.configs.oauth.cache.enabled -- If `enabled` set to true the Gloo redis cache will be used
             enabled: true
