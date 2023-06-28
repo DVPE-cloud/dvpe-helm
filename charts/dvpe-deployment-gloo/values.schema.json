@@ -1,9 +1,16 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema",
   "required": [
+    "product",
     "gloo"
   ],
   "properties": {
+    "product": {
+      "type": "object",
+      "required": [
+        "name"
+      ]
+    },
     "gloo": {
       "type": "object",
       "required": [
