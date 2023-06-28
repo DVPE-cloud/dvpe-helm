@@ -1,6 +1,6 @@
 # dvpe-deployment-gloo
 
-![Version: 4.2.0](https://img.shields.io/badge/Version-4.2.0-informational?style=flat-square)
+![Version: 4.3.0](https://img.shields.io/badge/Version-4.3.0-informational?style=flat-square)
 
 Helm chart for installing microservices as gloo enabled VirtualService definitions.
 
@@ -308,6 +308,7 @@ The following table lists the configurable parameters of the chart and its defau
 | istio.destinationRule.spec.trafficPolicy.tls.mode | string | `"ISTIO_MUTUAL"` | trafficPolicy [ClientTLSSettings-TLSmode](https://istio.io/latest/docs/reference/config/networking/destination-rule/#ClientTLSSettings-TLSmode) |
 | istio.enabled | bool | `true` | Enables mtls per workload (pod) |
 | istio.peerAuthentication.spec.mtls.mode | string | `"STRICT"` | mTLS mode for istio. [PeerAuthentication-MutualTLS-Mode](https://istio.io/latest/docs/reference/config/security/peer_authentication/#PeerAuthentication-MutualTLS-Mode) |
+| product.name | string | `nil` | Name of the product, this service should be deployed for. This value must match with the product provided with the initial IaC configuration of a tenant. |
 | service | object | `{"spec":{"ports":{"http":{"name":"http","port":"8080","protocol":"TCP","targetPort":""},"https":{"name":"https","port":"","protocol":"TCP","targetPort":""}},"type":"ClusterIP"}}` | -----------------------------# |
 | service.spec.ports.http.name | string | `"http"` | Name of the port within the service. If Istio is enabled, please check [Istio naming conventions](https://istio.io/latest/docs/ops/configuration/traffic-management/protocol-selection/#manual-protocol-selection) |
 | service.spec.ports.http.port | string | `"8080"` | The http port the service is exposed to in the cluster. If no port is defined, port mapping is disabled. |
