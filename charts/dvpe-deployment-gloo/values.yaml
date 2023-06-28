@@ -1,12 +1,16 @@
 # Values for default microservice projects
 
+product:
+  # product.name -- Name of the product, this service should be deployed for. This value must match with the product provided with the initial IaC configuration of a tenant.
+  name:
+
 # -------------------------------#
 # secret.yaml value section     #
 # -------------------------------#
 externalSecrets:
   service:
     # externalSecrets.service.key -- `Key` to AWS Secret Manager object where all sensitive application data should be stored. Each key in the Secret Manager Object should be named like your needed environment variable
-    key:
+    key: my.test.secret
 
     # externalSecrets.service.refreshInterval -- `refreshInterval` set the sync time range from AWS Secret Manager. Default is set to 15m
     refreshInterval: 15m
@@ -123,7 +127,7 @@ gloo:
   namespace: gloo-system
   ingress:
     # gloo.ingress.scope -- Signals Gloo which Gateway Proxy to use for deploying a Virtual Service into. Value must be one of `private` for intranet- or `public` for internet-deployment.
-    scope:
+    scope: public
 
   # -------------------------------------#
   # Gloo VirtualService value section    #
