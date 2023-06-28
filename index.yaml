@@ -678,6 +678,25 @@ entries:
   dvpe-deployment-gloo:
   - apiVersion: v1
     appVersion: "1.1"
+    created: "2023-06-28T12:42:00.073821567Z"
+    description: Helm chart for installing microservices as gloo enabled VirtualService
+      definitions.
+    digest: dfc80bbdde664da32aa713581457b00bcb3639639fbea2d099843a6638aa9fe4
+    home: https://github.com/dvpe-cloud/dvpe-helm
+    keywords:
+    - dvpe-helm
+    - automation
+    - gitops
+    maintainers:
+    - name: mithie
+    - name: herrLierb
+    - name: crimbler2
+    name: dvpe-deployment-gloo
+    urls:
+    - https://github.com/DVPE-cloud/dvpe-helm/releases/download/dvpe-deployment-gloo-4.3.0/dvpe-deployment-gloo-4.3.0.tgz
+    version: 4.3.0
+  - apiVersion: v1
+    appVersion: "1.1"
     created: "2023-06-12T10:31:52.623088987Z"
     description: Helm chart for installing microservices as gloo enabled VirtualService
       definitions.
@@ -1622,4 +1641,4 @@ entries:
     urls:
     - https://github.com/DVPE-cloud/dvpe-helm/releases/download/dvpe-netfilter-0.0.1/dvpe-netfilter-0.0.1.tgz
     version: 0.0.1
-generated: "2023-06-12T11:37:11.378021509Z"
+generated: "2023-06-28T12:42:00.074420479Z"
