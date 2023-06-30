@@ -1,9 +1,5 @@
 # Values for default microservice projects
 
-product:
-  # product.name -- Name of the product, this service should be deployed for. This value must match with the product provided with the initial IaC configuration of a tenant.
-  name:
-
 # -------------------------------#
 # secret.yaml value section     #
 # -------------------------------#
