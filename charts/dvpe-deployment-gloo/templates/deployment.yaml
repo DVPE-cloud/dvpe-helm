@@ -42,8 +42,8 @@ spec:
         {{- end }}
     spec:
       securityContext:
-        runAsUser: {{ int .Values.deployment.spec.userId | default 1000 }}
-        runAsGroup: {{ int .Values.deployment.spec.groupId | default 1000 }}
+        runAsUser: {{ int .Values.deployment.spec.userId }}
+        runAsGroup: {{ int .Values.deployment.spec.groupId }}
       imagePullSecrets:
         - name: {{ .Values.deployment.spec.imagePullSecrets }}
       serviceAccountName: {{ $serviceAccountName }}

@@ -216,7 +216,7 @@ The following table lists the configurable parameters of the chart and its defau
 | deployment.spec.containers.livenessProbe | object | `{}` | Configuration of LivenessProbe as documented here: [Configure Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) |
 | deployment.spec.containers.readinessProbe | object | `{}` | Configuration of ReadinessProbe as documented here: [Configure Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) |
 | deployment.spec.containers.startupProbe | object | `{}` | Configuration of StartupProbe as documented here: [Configure Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) |
-| deployment.spec.groupId | int | `1000` | The Group ID number of process running inside the container (default: 1000, if not set). |
+| deployment.spec.groupId | int | `1000` | The Group ID number of process running inside the container. |
 | deployment.spec.image.name | string | `nil` | The image name to use. |
 | deployment.spec.image.pullPolicy | string | `"Always"` | The default rule for downloading images. |
 | deployment.spec.image.repository | string | `nil` | The docker repository to pull the service image from. |
@@ -228,7 +228,7 @@ The following table lists the configurable parameters of the chart and its defau
 | deployment.spec.resources.requests.cpu | string | `"150m"` | Fractional amount of CPU allowed for a Pod. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage. |
 | deployment.spec.resources.requests.memory | string | `"200M"` | Amount of memory reserved for a Pod. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage. |
 | deployment.spec.serviceAccountName | string | `nil` | The ServiceAccount this service will be associated with. If empty, `serviceAccountName` will be `<namespace>-sa` |
-| deployment.spec.userId | int | `1000` | The User ID number of process running inside the container (default: 1000, if not set). |
+| deployment.spec.userId | int | `1000` | The User ID number of process running inside the container. |
 | externalSecrets | object | `{"oauth2":{"key":null},"service":{"key":null,"refreshInterval":"15m"}}` | -----------------------------# |
 | externalSecrets.oauth2.key | string | `nil` | `Key` to AWS Secret Manager object where the client secret for OAuth2 provider should be stored. The key in the Secret Manager Object has to be named as the given `gloo.authConfig.spec.configs.oauth2.clientId`. The value has to be formatted as `clientSecret: <secret>`. **This definition is exclusive to `gloo.authConfig.spec.configs.oauth.clientSecretRef`. If defined, `gloo.authConfig.spec.configs.oauth.clientSecretRef` is ignored.** |
 | externalSecrets.service.key | string | `nil` | `Key` to AWS Secret Manager object where all sensitive application data should be stored. Each key in the Secret Manager Object should be named like your needed environment variable |
