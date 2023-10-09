@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [4.5.0]
 ### Changed
+- Added `deployment.spec.userId` and `deployment.spec.groupId` to define `runAsUser` and `runAsGroup` id numbers
+
+## [4.5.0]
+### Changed
 - Removed product property from schema validation
 
 ## [4.4.0]
