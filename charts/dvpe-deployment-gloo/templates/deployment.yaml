@@ -41,6 +41,9 @@ spec:
           {{- toYaml .Values.deployment.podAnnotations | nindent 8 }}
         {{- end }}
     spec:
+      securityContext:
+        runAsUser: {{ int .Values.deployment.spec.securityContext.userId }}
+        runAsGroup: {{ int .Values.deployment.spec.securityContext.groupId }}
       imagePullSecrets:
         - name: {{ .Values.deployment.spec.imagePullSecrets }}
       serviceAccountName: {{ $serviceAccountName }}

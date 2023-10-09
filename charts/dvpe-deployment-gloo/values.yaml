@@ -23,6 +23,11 @@ deployment:
   # deployment.podAnnotations -- Object of additional `podAnnotations`.
   podAnnotations: {}
   spec:
+    securityContext:
+      # deployment.spec.securityContext.userId -- The User ID number of process running inside the container.
+      userId: 1000
+      # deployment.spec.securityContext.groupId -- The Group ID number of process running inside the container.
+      groupId: 1000
     # deployment.spec.replicas -- The number of service instances to deploy. Will be ignored when autoscaling.enabled is true
     replicas: 1
     # deployment.spec.serviceAccountName -- The ServiceAccount this service will be associated with. If empty, `serviceAccountName` will be `<namespace>-sa`
