@@ -95,7 +95,7 @@ spec:
           single:
             upstream:
               name: {{ $upstreamName }}
-              namespace: {{ .Values.gloo.upstream.namespace }}
+              namespace: {{ .Release.Namespace }}
         options:
           extauth:
             configRef:
@@ -109,7 +109,7 @@ spec:
           single:
             upstream:
               name: {{ $upstreamName }}
-              namespace: {{ .Values.gloo.upstream.namespace }}
+              namespace: {{ .Release.Namespace }}
         options:
           {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.appPathRewrite }}
           prefixRewrite: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.appPathRewrite }}
@@ -131,7 +131,7 @@ spec:
           single:
             upstream:
               name: {{ default $upstreamName .Values.gloo.virtualservice.spec.virtualHost.routes.rootPath.upstream }}
-              namespace: {{ .Values.gloo.upstream.namespace }}
+              namespace: {{ .Release.Namespace }}
         {{- if or .Values.gloo.virtualservice.spec.virtualHost.routes.rootPath.withAuthConfig .Values.gloo.virtualservice.spec.virtualHost.routes.rootPath.timeout }}
         options:
           {{- if .Values.gloo.virtualservice.spec.virtualHost.routes.rootPath.timeout }}
