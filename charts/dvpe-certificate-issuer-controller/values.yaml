@@ -19,8 +19,6 @@ issuercontroller:
       # issuercontroller.spec.image.pullPolicy -- The default rule for downloading images.
       pullPolicy: IfNotPresent
   externalsecrets:
-    # issuercontroller.externalsecrets.name -- DEPRECATED; rename to `issuercontroller.externalsecrets.dockerCredentials`
-    name:
     # issuercontroller.externalsecrets.dockerCredentials -- The name of the external secret key containing the docker credentials for this deployment (earlier: `issuercontroller.externalsecrets.name`)
     dockerCredentials:
     # issuercontroller.externalsecrets.secretStoreRefName -- Name of the External Secret's Secret Store to use
