@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+## [2.4.0]
+### Removed
+* Remove deprecated parameter `issuercontroller.externalsecrets.name`
+* Hardcode name of ExternalSecret to container registry to `docker-reg-secret`
+
 ## [2.3.0]
 ### Removed
 * Remove secret for cluster issuer. Secret will be deployed in cluster-issuer chart.
