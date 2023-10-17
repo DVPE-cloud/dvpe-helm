@@ -32,9 +32,8 @@ s
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| issuercontroller | object | `{"externalsecrets":{"dockerCredentials":null,"name":null,"secretStoreRefName":null},"plane":{"name":"wadtfy-cert-issuer-controller-system"},"spec":{"image":{"name":"wadtfy-issuer","pullPolicy":"IfNotPresent","repository":null,"tag":"v1.2.0"}}}` | -----------------------------# |
+| issuercontroller | object | `{"externalsecrets":{"dockerCredentials":null,"secretStoreRefName":null},"plane":{"name":"wadtfy-cert-issuer-controller-system"},"spec":{"image":{"name":"wadtfy-issuer","pullPolicy":"IfNotPresent","repository":null,"tag":"v1.2.0"}}}` | -----------------------------# |
 | issuercontroller.externalsecrets.dockerCredentials | string | `nil` | The name of the external secret key containing the docker credentials for this deployment (earlier: `issuercontroller.externalsecrets.name`) |
-| issuercontroller.externalsecrets.name | string | `nil` | DEPRECATED; rename to `issuercontroller.externalsecrets.dockerCredentials` |
 | issuercontroller.externalsecrets.secretStoreRefName | string | `nil` | Name of the External Secret's Secret Store to use |
 | issuercontroller.plane.name | string | `"wadtfy-cert-issuer-controller-system"` | Name of the Controller Plane |
 | issuercontroller.spec.image | object | `{"name":"wadtfy-issuer","pullPolicy":"IfNotPresent","repository":null,"tag":"v1.2.0"}` | Name of issuer-controller deployment image |
