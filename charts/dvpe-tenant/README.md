@@ -26,3 +26,11 @@ helm install -f values.yaml --namespace `TARGET_K8S_NAMESPACE` `HELM_RELEASE_NAM
 
 The following table lists the configurable parameters of the chart and its default values.
 
+## Values
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| allowedNamespaces | list | `[]` |  |
+| githubAppInstallationId | string | `""` |  |
+| repository | string | `""` |  |
+| users | list | `[]` |  |

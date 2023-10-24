@@ -1,45 +1,37 @@
 {
-  "$schema": "http://json-schema.org/draft-06/schema#",
-  "definitions": {
-      "properties": {
-        "tenants": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Tenant"
-          }
-        }
-      },
-    "Tenant": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "repoURL": {
-          "type": "string",
-          "format": "uri",
-          "qt-uri-protocols": [
-            "https"
-          ],
-          "qt-uri-extensions": [
-            ".git"
-          ]
-        },
-        "githubAppInstallationID": {
-          "type": "string",
-          "format": "integer"
-        },
-        "users": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      },
-      "required": [
-        "githubAppInstallationID",
-        "repoURL",
-        "users"
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "users": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "repository": {
+      "type": "string",
+      "format": "uri",
+      "qt-uri-protocols": [
+        "https"
       ],
-      "title": "Repository"
+      "qt-uri-extensions": [
+        ".git"
+      ]
+    },
+    "githubAppInstallationId": {
+      "type": "string",
+      "format": "integer"
+    },
+    "allowedNamespaces": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     }
-  }
+  },
+  "required": [
+    "allowedNamespaces",
+    "githubAppInstallationId",
+    "repository",
+    "users"
+  ]
 }

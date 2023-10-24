@@ -1,6 +1,4 @@
-tenants: []
-  # - name: jeremy-fragrance
-  #   repoURL: https://github.com/jeremy/fragrance.git
-  #   githubAppInstallationID:
-  #   users:
-  #     - jeremy
+users: []
+repository: ''
+githubAppInstallationId: ''
+allowedNamespaces: []
