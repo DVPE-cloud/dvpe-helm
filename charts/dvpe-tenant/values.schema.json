@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "users": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "repository": {
+      "type": "string",
+      "format": "uri",
+      "qt-uri-protocols": [
+        "https"
+      ],
+      "qt-uri-extensions": [
+        ".git"
+      ]
+    },
+    "githubAppInstallationId": {
+      "type": "string",
+      "format": "integer"
+    },
+    "allowedNamespaces": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "allowedNamespaces",
+    "githubAppInstallationId",
+    "repository",
+    "users"
+  ]
+}
