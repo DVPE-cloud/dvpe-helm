@@ -2,7 +2,7 @@
 
 ![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square)
 
-Helm chart for creating the resources a Tenant needs. For the beginning, this includes only the ArgoCD resources.
+Helm chart for creating the resources with information readable from the the GitHub API. For the beginning, this includes only the ArgoCD resources.
 
 ## Installation
 Installs a tenant's ArgoCD resources into a cluster.
@@ -30,7 +30,4 @@ The following table lists the configurable parameters of the chart and its defau
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| allowedNamespaces | list | `[]` |  |
-| githubAppInstallationId | string | `""` |  |
-| repository | string | `""` |  |
-| users | list | `[]` |  |
+| repositories | list | `[]` |  |

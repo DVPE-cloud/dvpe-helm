@@ -1,4 +1,5 @@
-users: []
-repository: ''
-githubAppInstallationId: ''
-allowedNamespaces: []
+repositories: []
+  # - url: https://github.com/jeremy/fragrance.git
+  #   githubAppInstallationId: "1234"
+  #   users:
+  #     - jeremy

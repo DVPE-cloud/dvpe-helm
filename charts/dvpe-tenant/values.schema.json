@@ -1,37 +1,45 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "properties": {
-    "users": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
-    "repository": {
-      "type": "string",
-      "format": "uri",
-      "qt-uri-protocols": [
-        "https"
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "definitions": {
+      "properties": {
+        "repositories": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Repository"
+          }
+        }
+      },
+    "Repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "qt-uri-protocols": [
+            "https"
+          ],
+          "qt-uri-extensions": [
+            ".git"
+          ]
+        },
+        "githubAppInstallationId": {
+          "type": "string",
+          "format": "integer"
+        },
+        "users": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "githubAppInstallationId",
+        "url",
+        "users"
       ],
-      "qt-uri-extensions": [
-        ".git"
-      ]
-    },
-    "githubAppInstallationId": {
-      "type": "string",
-      "format": "integer"
-    },
-    "allowedNamespaces": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
+      "title": "Repository"
     }
-  },
-  "required": [
-    "allowedNamespaces",
-    "githubAppInstallationId",
-    "repository",
-    "users"
-  ]
+  }
 }
