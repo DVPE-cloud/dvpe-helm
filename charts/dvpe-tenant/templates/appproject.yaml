@@ -1,33 +1,17 @@
+{{- range $_, $repository := .Values.repositories }}
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: {{ .Release.Name }}
-  namespace: {{ .Release.Namespace }}
+  name: {{ include "normalizeRepoPath" $repository.url }}
+  namespace: {{ $.Release.Namespace }}
 spec:
-  destinations:
-    {{- range $namespace := .Values.allowedNamespaces }}
-    - namespace: '{{ $namespace }}'
-      server: 'https://kubernetes.default.svc'
-    {{- end }}
-  clusterResourceWhitelist:
-    - group: 'iam.aws.crossplane.io'
-      kind: 'RolePolicyAttachment'
-    - group: 'iam.aws.crossplane.io'
-      kind: 'Policy'
-    - group: 's3.aws.crossplane.io'
-      kind: 'Bucket'
-    - group: 's3.aws.crossplane.io'
-      kind: 'BucketPolicy'
-    - group: 'dynamodb.aws.crossplane.io'
-      kind: 'Table'
-  sourceRepos:
-    - '{{ .Values.repository }}'
   roles:
-    - name: '{{ .Release.Name }}'
+    - name: '{{ include "normalizeRepoPath" $repository.url }}'
       policies:
-        - 'p, role:{{ .Release.Name }}, projects, *, {{ .Release.Name }}, allow'
-        - 'p, role:{{ .Release.Name }}, applications, *, {{ .Release.Name }}/*, allow'
-        - 'p, role:{{ .Release.Name }}, repositories, *, {{ .Values.repository }}, allow'
-        {{- range $user := .Values.users }}
-        - 'g, {{ $user }}, role:{{ $.Release.Name }}'
+        - 'p, role:{{ include "normalizeRepoPath" $repository.url }}, projects, *, {{ include "normalizeRepoPath" $repository.url }}, allow'
+        - 'p, role:{{ include "normalizeRepoPath" $repository.url }}, applications, *, {{ include "normalizeRepoPath" $repository.url }}/*, allow'
+        - 'p, role:{{ include "normalizeRepoPath" $repository.url }}, repositories, *, {{ include "normalizeRepoPath" $repository.url }}, allow'
+        {{- range $user := $repository.users }}
+        - 'g, {{ $user }}, role:{{ include "normalizeRepoPath" $repository.url }}'
         {{- end }}
+{{- end }}
