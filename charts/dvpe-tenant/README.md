@@ -30,4 +30,7 @@ The following table lists the configurable parameters of the chart and its defau
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| repositories | list | `[]` |  |
+| tenants[0].githubAppInstallationID | string | `nil` |  |
+| tenants[0].name | string | `"jeremy-fragrance"` |  |
+| tenants[0].repoURL | string | `"https://github.com/jeremy/fragrance.git"` |  |
+| tenants[0].users[0] | string | `"jeremy"` |  |
