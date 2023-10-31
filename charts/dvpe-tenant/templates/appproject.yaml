@@ -10,7 +10,7 @@ spec:
       policies:
         - 'p, role:{{ $tenant.name }}, projects, *, {{ $tenant.name }}, allow'
         - 'p, role:{{ $tenant.name }}, applications, *, {{ $tenant.name }}/*, allow'
-        - 'p, role:{{ $tenant.name }}, repositories, *, {{ $tenant.name }}, allow'
+        - 'p, role:{{ $tenant.name }}, repositories, *, {{ $tenant.repoURL }}, allow'
         {{- range $user := $tenant.users }}
         - 'g, {{ $user }}, role:{{ $tenant.name }}'
         {{- end }}
