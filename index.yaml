@@ -1736,4 +1736,15 @@ entries:
     urls:
     - https://github.com/DVPE-cloud/dvpe-helm/releases/download/dvpe-netfilter-0.0.1/dvpe-netfilter-0.0.1.tgz
     version: 0.0.1
-generated: "2023-10-18T08:29:37.220598311Z"
+  dvpe-tenant:
+  - apiVersion: v1
+    created: "2023-10-31T11:12:40.739902701Z"
+    description: Helm chart for creating the resources with information readable from
+      the the GitHub API. For the beginning, this includes only the ArgoCD resources.
+    digest: 5ecf07a342e33ef81d983cf8e006e793ebfaebe48da60a5c946f4f4aaa5ba3c7
+    home: https://github.com/dvpe-cloud/dvpe-helm
+    name: dvpe-tenant
+    urls:
+    - https://github.com/DVPE-cloud/dvpe-helm/releases/download/dvpe-tenant-0.1.0/dvpe-tenant-0.1.0.tgz
+    version: 0.1.0
+generated: "2023-10-31T11:12:40.740093499Z"
