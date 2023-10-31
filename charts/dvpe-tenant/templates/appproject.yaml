@@ -1,17 +1,17 @@
-{{- range $_, $repository := .Values.repositories }}
+{{- range $_, $tenant := .Values.tenants }}
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: {{ include "normalizeRepoPath" $repository.url }}
+  name: {{ $tenant.name }}
   namespace: {{ $.Release.Namespace }}
 spec:
   roles:
-    - name: '{{ include "normalizeRepoPath" $repository.url }}'
+    - name: '{{ $tenant.name }}'
       policies:
-        - 'p, role:{{ include "normalizeRepoPath" $repository.url }}, projects, *, {{ include "normalizeRepoPath" $repository.url }}, allow'
-        - 'p, role:{{ include "normalizeRepoPath" $repository.url }}, applications, *, {{ include "normalizeRepoPath" $repository.url }}/*, allow'
-        - 'p, role:{{ include "normalizeRepoPath" $repository.url }}, repositories, *, {{ include "normalizeRepoPath" $repository.url }}, allow'
-        {{- range $user := $repository.users }}
-        - 'g, {{ $user }}, role:{{ include "normalizeRepoPath" $repository.url }}'
+        - 'p, role:{{ $tenant.name }}, projects, *, {{ $tenant.name }}, allow'
+        - 'p, role:{{ $tenant.name }}, applications, *, {{ $tenant.name }}/*, allow'
+        - 'p, role:{{ $tenant.name }}, repositories, *, {{ $tenant.name }}, allow'
+        {{- range $user := $tenant.users }}
+        - 'g, {{ $user }}, role:{{ $tenant.name }}'
         {{- end }}
 {{- end }}

@@ -2,18 +2,18 @@
   "$schema": "http://json-schema.org/draft-06/schema#",
   "definitions": {
       "properties": {
-        "repositories": {
+        "tenants": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/Repository"
+            "$ref": "#/definitions/Tenant"
           }
         }
       },
-    "Repository": {
+    "Tenant": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "url": {
+        "repoURL": {
           "type": "string",
           "format": "uri",
           "qt-uri-protocols": [
@@ -23,7 +23,7 @@
             ".git"
           ]
         },
-        "githubAppInstallationId": {
+        "githubAppInstallationID": {
           "type": "string",
           "format": "integer"
         },
@@ -35,8 +35,8 @@
         }
       },
       "required": [
-        "githubAppInstallationId",
-        "url",
+        "githubAppInstallationID",
+        "repoURL",
         "users"
       ],
       "title": "Repository"
