@@ -5,6 +5,16 @@ metadata:
   name: {{ $tenant.name }}
   namespace: {{ $.Release.Namespace }}
 spec:
+  sourceRepos:
+    - '{{ $tenant.repoURL }}'
+  destinations:
+    {{- range $namespace := $tenant.namespaces }}
+    - namespace: '{{ $namespace }}'
+      server: 'https://kubernetes.default.svc'
+    {{- end }}
+    - namespace: gloo-system
+      server: 'https://kubernetes.default.svc'
+  clusterResourceWhitelist: {{- $tenant.clusterResourceWhiteList | toYaml | nindent 4 }}
   roles:
     - name: '{{ $tenant.name }}'
       policies:

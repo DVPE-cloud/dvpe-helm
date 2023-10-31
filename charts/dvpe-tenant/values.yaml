@@ -1,6 +1,16 @@
-tenants: []
+tenants:
   # - name: jeremy-fragrance
   #   repoURL: https://github.com/jeremy/fragrance.git
   #   githubAppInstallationID:
+  #   valueFiles:
+  #     - values.yaml
+  #     - values-test.yaml
+  #   namespaces:
+  #     - test-samples
+  #   clusterResourceWhiteList:
+  #     - group: 'iam.aws.crossplane.io'
+  #       kind: 'RolePolicyAttachment'
+  #     - group: 'iam.aws.crossplane.io'
+  #       kind: 'Policy'
   #   users:
   #     - jeremy

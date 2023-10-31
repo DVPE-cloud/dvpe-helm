@@ -1,0 +1,46 @@
+{{- range $_, $tenant := .Values.tenants }}
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: {{ $tenant.name }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  syncPolicy:
+    # Prevents ApplicationSet from overwriting application when using another branch or disabling auto-sync in UI
+    applicationsSync: create-delete
+  generators:
+    - git:
+        repoURL: '{{ $tenant.repoURL }}'
+        revision: HEAD
+        directories:
+          {{- range $_, $namespace := $tenant.namespaces }}
+          - path: '{{- $namespace }}/*'
+          {{- end }}
+  template:
+    metadata:
+      name: '{{`{{ path.basenameNormalized }}`}}'
+    spec:
+      project: {{ $tenant.name }}
+      source:
+        repoURL: {{ $tenant.repoURL }}
+        targetRevision: HEAD
+        path: '{{`{{ path }}`}}'
+        helm:
+          ignoreMissingValueFiles: true
+          valueFiles: {{- $tenant.valueFiles | toYaml | nindent 12 }}
+      destination:
+        name: in-cluster
+        namespace: '{{`{{ path[0] }}`}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - RespectIgnoreDifferences=true
+      ignoreDifferences:
+        - group: dynamodb.aws.crossplane.io
+          kind: Table
+          jsonPointers:
+            - /spec
+            - /metadata
+{{- end }}
