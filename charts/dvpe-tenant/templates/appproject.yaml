@@ -1,0 +1,17 @@
+{{- range $_, $tenant := .Values.tenants }}
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: {{ $tenant.name }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  roles:
+    - name: '{{ $tenant.name }}'
+      policies:
+        - 'p, role:{{ $tenant.name }}, projects, *, {{ $tenant.name }}, allow'
+        - 'p, role:{{ $tenant.name }}, applications, *, {{ $tenant.name }}/*, allow'
+        - 'p, role:{{ $tenant.name }}, repositories, *, {{ $tenant.repoURL }}, allow'
+        {{- range $user := $tenant.users }}
+        - 'g, {{ $user }}, role:{{ $tenant.name }}'
+        {{- end }}
+{{- end }}
