@@ -24,4 +24,5 @@ spec:
         {{- range $user := $tenant.users }}
         - 'g, {{ $user }}, role:{{ $tenant.name }}'
         {{- end }}
+---
 {{- end }}
