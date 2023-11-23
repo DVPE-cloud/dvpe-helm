@@ -25,9 +25,13 @@ spec:
         repoURL: {{ $tenant.repoURL }}
         targetRevision: HEAD
         path: '{{`{{ path }}`}}'
-        helm:
-          ignoreMissingValueFiles: true
-          valueFiles: {{- $tenant.valueFiles | toYaml | nindent 12 }}
+        plugin:
+          name: argocd-lovely-plugin
+          env:
+            - name: LOVELY_PREPROCESSORS
+              value: 'touch {{ $.Values.valueFiles | join " " }}'
+            - name: LOVELY_HELM_TEMPLATE_PARAMS
+              value: '-f {{ $.Values.valueFiles | join " -f " }}'
       destination:
         name: in-cluster
         namespace: '{{`{{ path[0] }}`}}'

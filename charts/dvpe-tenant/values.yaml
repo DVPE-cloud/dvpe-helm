@@ -1,10 +1,11 @@
-tenants:
+valueFiles: []
+  # - values-int.yaml
+  # - values-test.yaml
+
+tenants: []
   # - name: jeremy-fragrance
   #   repoURL: https://github.com/jeremy/fragrance.git
   #   githubAppInstallationID:
-  #   valueFiles:
-  #     - values.yaml
-  #     - values-test.yaml
   #   namespaces:
   #     - test-samples
   #   clusterResourceWhiteList:

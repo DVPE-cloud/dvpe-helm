@@ -1,7 +1,18 @@
 {
   "$schema": "http://json-schema.org/draft-06/schema#",
+  "$ref": "#/definitions/Values",
   "definitions": {
+    "Values": {
+      "type": "object",
+      "additionalProperties": false,
       "properties": {
+        "valueFiles": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^values.*\\.yaml$"
+          }
+        },
         "tenants": {
           "type": "array",
           "items": {
@@ -9,10 +20,19 @@
           }
         }
       },
+      "required": [
+        "tenants",
+        "valueFiles"
+      ],
+      "title": "Values"
+    },
     "Tenant": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
+        "name": {
+          "type": "string"
+        },
         "repoURL": {
           "type": "string",
           "format": "uri",
@@ -32,14 +52,46 @@
           "items": {
             "type": "string"
           }
+        },
+        "namespaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "clusterResourceWhiteList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ClusterResourceWhiteList"
+          }
         }
       },
       "required": [
+        "clusterResourceWhiteList",
         "githubAppInstallationID",
+        "name",
+        "namespaces",
         "repoURL",
         "users"
       ],
-      "title": "Repository"
+      "title": "Tenant"
+    },
+    "ClusterResourceWhiteList": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "group": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "group",
+        "kind"
+      ],
+      "title": "ClusterResourceWhiteList"
     }
   }
 }
