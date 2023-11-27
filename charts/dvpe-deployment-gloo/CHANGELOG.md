@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Deleted unused Datadog annotations
 ### Changed
 - `deployment.spec.userId` and `deployment.spec.groupId` are not mandatory anymore.
+- Default value for `imagePullPolicy` is now `IfNotPresent`.
 
 ## [4.7.0]
 ### Removed
