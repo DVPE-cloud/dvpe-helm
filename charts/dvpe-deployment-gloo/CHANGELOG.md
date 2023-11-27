@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [4.7.1]
 ### Removed
-- Unused Datadog Labels
+- Deleted unused Datadog annotations
 ### Changed
 - `deployment.spec.userId` and `deployment.spec.groupId` are not mandatory anymore.
 
