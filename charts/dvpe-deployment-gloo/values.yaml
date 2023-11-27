@@ -25,9 +25,9 @@ deployment:
   spec:
     securityContext:
       # deployment.spec.securityContext.userId -- The User ID number of process running inside the container.
-      userId: 1000
+      userId:
       # deployment.spec.securityContext.groupId -- The Group ID number of process running inside the container.
-      groupId: 1000
+      groupId:
     # deployment.spec.replicas -- The number of service instances to deploy. Will be ignored when autoscaling.enabled is true
     replicas: 1
     # deployment.spec.serviceAccountName -- The ServiceAccount this service will be associated with. If empty, `serviceAccountName` will be `<namespace>-sa`
@@ -42,7 +42,7 @@ deployment:
       # deployment.spec.image.tag -- The image version to use.
       tag: latest
       # deployment.spec.image.pullPolicy -- The default rule for downloading images.
-      pullPolicy: Always
+      pullPolicy: IfNotPresent
     containers:
       # deployment.spec.containers.startupProbe -- Configuration of StartupProbe as documented here: [Configure Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)
       startupProbe: {}

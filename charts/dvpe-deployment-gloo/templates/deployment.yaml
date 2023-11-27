@@ -32,8 +32,6 @@ spec:
         {{- end }}
       annotations:
         {{- if .Values.datadog.enabled }}
-        ad.datadoghq.com/{{ $serviceName }}.check_names: '["{{ $serviceName }}"]'
-        ad.datadoghq.com/{{ $serviceName }}.init_configs: '[{}]'
         ad.datadoghq.com/{{ $serviceName }}.logs: '[{"source":"{{ .Values.datadog.source }}", "service":"{{ $serviceName }}" }]'
         ad.datadoghq.com/{{ $serviceName }}.tags: '{"team": "{{ .Values.datadog.team }}"}'
         {{- end}}
@@ -42,8 +40,12 @@ spec:
         {{- end }}
     spec:
       securityContext:
+        {{- if .Values.deployment.spec.securityContext.userId }}
         runAsUser: {{ int .Values.deployment.spec.securityContext.userId }}
+        {{- end }}
+        {{- if .Values.deployment.spec.securityContext.groupId }}
         runAsGroup: {{ int .Values.deployment.spec.securityContext.groupId }}
+        {{- end }}
       imagePullSecrets:
         - name: {{ .Values.deployment.spec.imagePullSecrets }}
       serviceAccountName: {{ $serviceAccountName }}
