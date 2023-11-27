@@ -211,13 +211,13 @@ The following table lists the configurable parameters of the chart and its defau
 | datadog.source | string | `nil` | Defines the source which creates log outputs. Source defines the log format and triggers Datadog parser pipelines |
 | datadog.team | string | `nil` | Label in Datadog for the responsible team |
 | datadog.version | string | `nil` | Label in Datadog for the service version. If undefined, the value of `deployment.spec.image.tag` is used. This value should not be set by ordinary deployments. It is intended for special cases (e.g. CI triggered deployments). |
-| deployment | object | `{"podAnnotations":{},"spec":{"containers":{"livenessProbe":{},"readinessProbe":{},"startupProbe":{}},"image":{"name":null,"pullPolicy":"Always","repository":null,"tag":"latest"},"imagePullSecrets":"docker-reg-secret","replicas":1,"resources":{"limits":{"cpu":null,"memory":null},"requests":{"cpu":"150m","memory":"200M"}},"securityContext":{"groupId":1000,"userId":1000},"serviceAccountName":null}}` | -----------------------------# |
+| deployment | object | `{"podAnnotations":{},"spec":{"containers":{"livenessProbe":{},"readinessProbe":{},"startupProbe":{}},"image":{"name":null,"pullPolicy":"IfNotPresent","repository":null,"tag":"latest"},"imagePullSecrets":"docker-reg-secret","replicas":1,"resources":{"limits":{"cpu":null,"memory":null},"requests":{"cpu":"150m","memory":"200M"}},"securityContext":{"groupId":null,"userId":null},"serviceAccountName":null}}` | -----------------------------# |
 | deployment.podAnnotations | object | `{}` | Object of additional `podAnnotations`. |
 | deployment.spec.containers.livenessProbe | object | `{}` | Configuration of LivenessProbe as documented here: [Configure Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) |
 | deployment.spec.containers.readinessProbe | object | `{}` | Configuration of ReadinessProbe as documented here: [Configure Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) |
 | deployment.spec.containers.startupProbe | object | `{}` | Configuration of StartupProbe as documented here: [Configure Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) |
 | deployment.spec.image.name | string | `nil` | The image name to use. |
-| deployment.spec.image.pullPolicy | string | `"Always"` | The default rule for downloading images. |
+| deployment.spec.image.pullPolicy | string | `"IfNotPresent"` | The default rule for downloading images. |
 | deployment.spec.image.repository | string | `nil` | The docker repository to pull the service image from. |
 | deployment.spec.image.tag | string | `"latest"` | The image version to use. |
 | deployment.spec.imagePullSecrets | string | `"docker-reg-secret"` | Image Pull Secret to access docker registry. |

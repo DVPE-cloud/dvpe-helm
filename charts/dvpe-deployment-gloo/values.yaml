@@ -42,7 +42,7 @@ deployment:
       # deployment.spec.image.tag -- The image version to use.
       tag: latest
       # deployment.spec.image.pullPolicy -- The default rule for downloading images.
-      pullPolicy: Always
+      pullPolicy: IfNotPresent
     containers:
       # deployment.spec.containers.startupProbe -- Configuration of StartupProbe as documented here: [Configure Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)
       startupProbe: {}
