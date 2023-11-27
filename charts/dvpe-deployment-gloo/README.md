@@ -1,6 +1,6 @@
 # dvpe-deployment-gloo
 
-![Version: 4.7.0](https://img.shields.io/badge/Version-4.7.0-informational?style=flat-square)
+![Version: 4.7.1](https://img.shields.io/badge/Version-4.7.1-informational?style=flat-square)
 
 Helm chart for installing microservices as gloo enabled VirtualService definitions.
 
@@ -226,8 +226,8 @@ The following table lists the configurable parameters of the chart and its defau
 | deployment.spec.resources.limits.memory | string | `nil` | The memory limit for a Pod. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage. |
 | deployment.spec.resources.requests.cpu | string | `"150m"` | Fractional amount of CPU allowed for a Pod. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage. |
 | deployment.spec.resources.requests.memory | string | `"200M"` | Amount of memory reserved for a Pod. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage. |
-| deployment.spec.securityContext.groupId | int | `1000` | The Group ID number of process running inside the container. |
-| deployment.spec.securityContext.userId | int | `1000` | The User ID number of process running inside the container. |
+| deployment.spec.securityContext.groupId | string | `nil` | The Group ID number of process running inside the container. |
+| deployment.spec.securityContext.userId | string | `nil` | The User ID number of process running inside the container. |
 | deployment.spec.serviceAccountName | string | `nil` | The ServiceAccount this service will be associated with. If empty, `serviceAccountName` will be `<namespace>-sa` |
 | externalSecrets | object | `{"oauth2":{"key":null},"service":{"key":null,"refreshInterval":"15m"}}` | -----------------------------# |
 | externalSecrets.oauth2.key | string | `nil` | `Key` to AWS Secret Manager object where the client secret for OAuth2 provider should be stored. The key in the Secret Manager Object has to be named as the given `gloo.authConfig.spec.configs.oauth2.clientId`. The value has to be formatted as `clientSecret: <secret>`. **This definition is exclusive to `gloo.authConfig.spec.configs.oauth.clientSecretRef`. If defined, `gloo.authConfig.spec.configs.oauth.clientSecretRef` is ignored.** |
