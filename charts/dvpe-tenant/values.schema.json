@@ -44,8 +44,7 @@
           ]
         },
         "githubAppInstallationID": {
-          "type": "string",
-          "format": "integer"
+          "type": "integer"
         },
         "users": {
           "type": "array",
