@@ -2,6 +2,7 @@
 {{- $imageUrl := include "image.url" . -}}
 {{- $serviceAccountName := include "deployment.spec.serviceAccountName" . -}}
 
+{{- with .Values.deployment.spec }}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -9,14 +10,14 @@ metadata:
   name: {{ $serviceName }}
   namespace: {{ .Release.Namespace }}
   labels:
-    {{- if .Values.datadog.enabled }}
-    tags.datadoghq.com/env: {{ .Values.datadog.env }}
+    {{- if $.Values.datadog.enabled }}
+    tags.datadoghq.com/env: {{ $.Values.datadog.env }}
     tags.datadoghq.com/service: {{ $serviceName }}
-    tags.datadoghq.com/version: {{ default .Values.deployment.spec.image.tag .Values.datadog.version }}
+    tags.datadoghq.com/version: {{ default .image.tag $.Values.datadog.version }}
     {{- end }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.deployment.spec.replicas }}
+  {{- if not $.Values.autoscaling.enabled }}
+  replicas: {{ .replicas }}
   {{- end }}
   selector:
     matchLabels:
@@ -25,47 +26,49 @@ spec:
     metadata:
       labels:
         app: {{ $serviceName }}
-        {{- if .Values.datadog.enabled }}
+        {{- if $.Values.datadog.enabled }}
         tags.datadoghq.com/env: {{ .Values.datadog.env }}
         tags.datadoghq.com/service: {{ $serviceName }}
-        tags.datadoghq.com/version: {{ default .Values.deployment.spec.image.tag .Values.datadog.version }}
+        tags.datadoghq.com/version: {{ default .image.tag $.Values.datadog.version }}
         {{- end }}
       annotations:
-        {{- if .Values.datadog.enabled }}
-        ad.datadoghq.com/{{ $serviceName }}.logs: '[{"source":"{{ .Values.datadog.source }}", "service":"{{ $serviceName }}" }]'
-        ad.datadoghq.com/{{ $serviceName }}.tags: '{"team": "{{ .Values.datadog.team }}"}'
+        {{- if $.Values.datadog.enabled }}
+        ad.datadoghq.com/{{ $serviceName }}.logs: '[{"source":"{{ $.Values.datadog.source }}", "service":"{{ $serviceName }}" }]'
+        ad.datadoghq.com/{{ $serviceName }}.tags: '{"team": "{{ $.Values.datadog.team }}"}'
         {{- end}}
-        {{- if .Values.deployment.podAnnotations }}
-          {{- toYaml .Values.deployment.podAnnotations | nindent 8 }}
+        {{- if $.Values.deployment.podAnnotations }}
+          {{- toYaml $.Values.deployment.podAnnotations | nindent 8 }}
         {{- end }}
     spec:
+      {{- if or .securityContext.userId .securityContext.groupId }}
       securityContext:
-        {{- if .Values.deployment.spec.securityContext.userId }}
-        runAsUser: {{ int .Values.deployment.spec.securityContext.userId }}
+        {{- if .securityContext.userId }}
+        runAsUser: {{ int .securityContext.userId }}
         {{- end }}
-        {{- if .Values.deployment.spec.securityContext.groupId }}
-        runAsGroup: {{ int .Values.deployment.spec.securityContext.groupId }}
+        {{- if .securityContext.groupId }}
+        runAsGroup: {{ int .securityContext.groupId }}
         {{- end }}
+      {{- end }}
       imagePullSecrets:
-        - name: {{ .Values.deployment.spec.imagePullSecrets }}
+        - name: {{ .imagePullSecrets }}
       serviceAccountName: {{ $serviceAccountName }}
       containers:
         - name: {{ $serviceName }}
-          imagePullPolicy: {{ .Values.deployment.spec.image.pullPolicy }}
+          imagePullPolicy: {{ .spec.image.pullPolicy }}
           image: {{ $imageUrl }}
           envFrom:
-            {{- if .Values.externalSecrets.service.key }}
+            {{- if $.Values.externalSecrets.service.key }}
             - secretRef:
                 name: "{{ $serviceName }}-service-secrets"
             {{- end }}
-            {{- if .Values.additionalparameters.customConfigMapReference }}
+            {{- if $.Values.additionalparameters.customConfigMapReference }}
             - configMapRef:
-                name: {{ .Values.additionalparameters.customConfigMapReference }}
+                name: {{ $.Values.additionalparameters.customConfigMapReference }}
             {{- end}}
           env:
-          {{- if .Values.datadog.enabled }}
+          {{- if $.Values.datadog.enabled }}
           - name: "ENABLE_DATADOG"
-            value: {{ quote .Values.datadog.enabled }}
+            value: {{ quote $.Values.datadog.enabled }}
           - name: "DD_AGENT_HOST"
             valueFrom:
               fieldRef:
@@ -83,8 +86,8 @@ spec:
               fieldRef:
                 fieldPath: metadata.labels['tags.datadoghq.com/version']
           {{- end}}
-          {{- if .Values.additionalparameters.configMapApplied }}
-          {{- range $key, $value := .Values.additionalparameters.config }}
+          {{- if $.Values.additionalparameters.configMapApplied }}
+          {{- range $key, $value := $.Values.additionalparameters.config }}
           - name: "{{$key}}"
             valueFrom:
               configMapKeyRef:
@@ -92,7 +95,7 @@ spec:
                 key: {{$key}}
           {{- end}}
           {{- end}}
-          {{- range $key, $value := .Values.additionalparameters.secrets }}
+          {{- range $key, $value := $.Values.additionalparameters.secrets }}
           - name: {{ $key | quote }}
             valueFrom:
               secretKeyRef:
@@ -103,7 +106,7 @@ spec:
                 {{- end}}
                 key: {{ $value.secretKeyRef.key }}
           {{- end}}
-          {{- with .Values.deployment.spec.containers }}
+          {{- with .containers }}
           {{- if .startupProbe }}
           startupProbe:
           {{- .startupProbe | toYaml | nindent 12 }}
@@ -119,16 +122,16 @@ spec:
           {{- end }}
           resources:
             limits:
-              {{- if .Values.deployment.spec.resources.limits.cpu }}
-              cpu: {{ .Values.deployment.spec.resources.limits.cpu }}
+              {{- if .resources.limits.cpu }}
+              cpu: {{ .resources.limits.cpu }}
               {{- end }}
-              {{- if .Values.deployment.spec.resources.limits.memory }}
-              memory: {{ .Values.deployment.spec.resources.limits.memory }}
+              {{- if .resources.limits.memory }}
+              memory: {{ .resources.limits.memory }}
               {{- end }}
             requests:
-              cpu: {{ .Values.deployment.spec.resources.requests.cpu }}
-              memory: {{ .Values.deployment.spec.resources.requests.memory }}
-      {{- if .Values.additionalparameters.yamlConfigFileApplied }}
+              cpu: {{ .resources.requests.cpu }}
+              memory: {{ .resources.requests.memory }}
+      {{- if $.Values.additionalparameters.yamlConfigFileApplied }}
           volumeMounts:
             - name: yaml-config-volume
               mountPath: /etc/config
@@ -136,4 +139,5 @@ spec:
         - name: yaml-config-volume
           configMap:
             name: {{ $serviceName }}-additional-config-yaml
-      {{ end }}
+      {{- end }}
+{{- end }}
