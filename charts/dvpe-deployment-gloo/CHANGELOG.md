@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased]
 
+## [4.7.2]
+### Changed
+- AutConfig is now completely optional if not a single plugin has been configured
+
 ## [4.7.1]
 ### Removed
 - Deleted unused Datadog annotations
@@ -383,3 +387,4 @@ The ExternalSecretStore reference will generated on Namespace generation by WADT
 [4.6.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-4.6.0/charts/dvpe-deployment-gloo
 [4.7.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-4.7.0/charts/dvpe-deployment-gloo
 [4.7.1]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-4.7.1/charts/dvpe-deployment-gloo
+[4.7.2]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-4.7.2/charts/dvpe-deployment-gloo

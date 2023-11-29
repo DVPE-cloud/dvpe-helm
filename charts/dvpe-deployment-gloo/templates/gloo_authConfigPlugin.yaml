@@ -1,115 +1,119 @@
 {{- $serviceName := include "service.name" . -}}
 {{- $appUrl := include "oauth2.oidcAuthorizationCode.appUrl" . -}}
 
+{{- with .Values.gloo.authConfig.spec.configs }}
+{{- if and $.Values.gloo.enabled }}
+{{- if or .authExtensionPlugin.enabled .authInterceptorPlugin.enabled .clientCredentialsPlugin.enabled .oauth.enabled .tokenValidationPlugin.enabled .additionalPlugins }}
 
-  {{- if .Values.gloo.enabled }}
 
 apiVersion: enterprise.gloo.solo.io/v1
 kind: AuthConfig
 metadata:
-  name: {{ $serviceName}}-{{ .Values.gloo.authConfig.name }}
-  namespace: {{default .Release.Namespace .Values.gloo.authConfig.namespace }}
+  name: {{ $serviceName}}-{{ $.Values.gloo.authConfig.name }}
+  namespace: {{default $.Release.Namespace $.Values.gloo.authConfig.namespace }}
 spec:
   configs:
-    {{- if .Values.gloo.authConfig.spec.configs.authInterceptorPlugin.enabled }}
+    {{- if .authInterceptorPlugin.enabled }}
     - passThroughAuth:
         config:
-          openIdConfigurationUrl: {{ .Values.gloo.authConfig.spec.configs.authInterceptorPlugin.config.oidcUrl }}
-          strongAuthenticationLevel: {{ .Values.gloo.authConfig.spec.configs.oauth.strongAuthenticationLevel }}
+          openIdConfigurationUrl: {{ .authInterceptorPlugin.config.oidcUrl }}
+          strongAuthenticationLevel: {{ .oauth.strongAuthenticationLevel }}
         grpc:
-          address: {{ .Values.gloo.authConfig.spec.configs.authInterceptorPlugin.config.grpcAddress }}
+          address: {{ .authInterceptorPlugin.config.grpcAddress }}
     {{- end }}
-    {{- if .Values.gloo.authConfig.spec.configs.oauth.enabled }}
+    {{- if .oauth.enabled }}
     - oauth2:
         oidcAuthorizationCode:
-          {{- if .Values.gloo.authConfig.spec.configs.oauth.strongAuthenticationLevel }}
+          {{- if .oauth.strongAuthenticationLevel }}
           authEndpointQueryParams:
-            acr_values: {{ eq (int .Values.gloo.authConfig.spec.configs.oauth.strongAuthenticationLevel) 4000 | ternary "strongAuth4000Service" "strongAuth7000Service" }}
+            acr_values: {{ eq (int .oauth.strongAuthenticationLevel) 4000 | ternary "strongAuth4000Service" "strongAuth7000Service" }}
           {{- end }}
           appUrl: {{ $appUrl }}
-          callbackPath: {{ .Values.gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath }}
-          clientId: {{ .Values.gloo.authConfig.spec.configs.oauth.clientId }}
+          callbackPath: {{ $.Values.gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath }}
+          clientId: {{ .oauth.clientId }}
           clientSecretRef:
-            {{- if .Values.externalSecrets.oauth2.key }}
+            {{- if $.Values.externalSecrets.oauth2.key }}
             name: {{ $serviceName }}-oidc-secrets
-            namespace: {{ .Release.Namespace }}
+            namespace: {{ $.Release.Namespace }}
             {{- else }}
-            name: {{ .Values.gloo.authConfig.spec.configs.oauth.clientSecretRef.name }}
-            namespace: {{default .Release.Namespace .Values.gloo.authConfig.spec.configs.oauth.clientSecretRef.namespace }}
+            name: {{ .oauth.clientSecretRef.name }}
+            namespace: {{default $.Release.Namespace .oauth.clientSecretRef.namespace }}
             {{- end }}
-          issuerUrl: {{ .Values.gloo.authConfig.spec.configs.oauth.issuerUrl }}
+          issuerUrl: {{ .oauth.issuerUrl }}
           scopes:
-          {{- range .Values.gloo.authConfig.spec.configs.oauth.scopes }}
+          {{- range .oauth.scopes }}
             - {{ . }}
           {{- end }}
           session:
             cookieOptions:
-              {{- if .Values.gloo.authConfig.spec.configs.oauth.cookieDomain }}
-              domain: {{ .Values.gloo.authConfig.spec.configs.oauth.cookieDomain | quote }}
+              {{- if .oauth.cookieDomain }}
+              domain: {{ .oauth.cookieDomain | quote }}
               {{- end }}
-              maxAge: {{ .Values.gloo.authConfig.spec.configs.oauth.maxAge }}
-              sameSite: {{ .Values.gloo.authConfig.spec.configs.oauth.sameSite }}
-            {{- if .Values.gloo.authConfig.spec.configs.oauth.cache.enabled }}
+              maxAge: {{ .oauth.maxAge }}
+              sameSite: {{ .oauth.sameSite }}
+            {{- if .oauth.cache.enabled }}
             redis:
-              cookieName: {{ .Values.gloo.authConfig.spec.configs.oauth.cache.cookieName }}
+              cookieName: {{ .oauth.cache.cookieName }}
               options:
-                host: {{ .Values.gloo.authConfig.spec.configs.oauth.cache.host }}
+                host: {{ .oauth.cache.host }}
             {{- end }}
     {{- end }}
-    {{- if .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.enabled }}
+    {{- if .tokenValidationPlugin.enabled }}
     - passThroughAuth:
         grpc:
-          address: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.grpcAddress }}
+          address: {{ .tokenValidationPlugin.config.grpcAddress }}
         config:
-          openIdConfigurationUrl: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.oidcUrl }}
-          {{- if .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds }}
+          openIdConfigurationUrl: {{ .tokenValidationPlugin.config.oidcUrl }}
+          {{- if .tokenValidationPlugin.config.allowedClientIds }}
           allowedClientIds:
-          {{- range .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds }}
+          {{- range .tokenValidationPlugin.config.allowedClientIds }}
             - {{ . }}
           {{- end }}
           {{- end }}
-          {{- if .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.strongAuthenticationLevel }}
-          strongAuthenticationLevel: {{ .Values.gloo.authConfig.spec.configs.tokenValidationPlugin.config.strongAuthenticationLevel }}
+          {{- if .tokenValidationPlugin.config.strongAuthenticationLevel }}
+          strongAuthenticationLevel: {{ .tokenValidationPlugin.config.strongAuthenticationLevel }}
           {{- end }}
     {{- end }}
-    {{- if .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.enabled }}
+    {{- if .clientCredentialsPlugin.enabled }}
     - passThroughAuth:
         grpc:
-          address: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.grpcAddress }}
+          address: {{ .clientCredentialsPlugin.config.grpcAddress }}
         config:
           cache:
-            disabled: {{ not .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.cache.enabled}}
-          clientId: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientId }}
+            disabled: {{ not .clientCredentialsPlugin.config.cache.enabled}}
+          clientId: {{ .clientCredentialsPlugin.config.clientId }}
           clientSecretRef:
-            {{- if .Values.externalSecrets.oauth2.key }}
+            {{- if $.Values.externalSecrets.oauth2.key }}
             name: {{ $serviceName }}-oauth2-client-credentials-secrets
-            namespace: {{ .Release.Namespace }}
+            namespace: {{ $.Release.Namespace }}
             {{- else }}
-            name: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientSecretRef.name }}
-            namespace: {{ default .Release.Namespace .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.clientSecretRef.namespace }}
+            name: {{ .clientCredentialsPlugin.config.clientSecretRef.name }}
+            namespace: {{ default $.Release.Namespace .clientCredentialsPlugin.config.clientSecretRef.namespace }}
             {{- end }}
-          mode: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.mode }}
-          openIdConfigurationUrl: {{ .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.oidcUrl }}
-          {{- if .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.allowedClientIds }}
+          mode: {{ .clientCredentialsPlugin.config.mode }}
+          openIdConfigurationUrl: {{ .clientCredentialsPlugin.config.oidcUrl }}
+          {{- if .clientCredentialsPlugin.config.allowedClientIds }}
           allowedClientIds:
-          {{- range .Values.gloo.authConfig.spec.configs.clientCredentialsPlugin.config.allowedClientIds }}
+          {{- range .clientCredentialsPlugin.config.allowedClientIds }}
             - {{ . }}
           {{- end }}
           {{- end }}
     {{- end }}
-    {{- if .Values.gloo.authConfig.spec.configs.authExtensionPlugin.enabled }}
+    {{- if .authExtensionPlugin.enabled }}
     - passThroughAuth:
         config:
-          enableAccessTokenForwarding: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.config.enableAccessTokenForwarding }}
-          enableQAccountMatching: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.config.enableQAccountMatching }}
-          enableSubjectForwarding: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.config.enableSubjectForwarding }}
-          enableUserInfoForwarding: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.config.enableUserInfoForwarding }}
-          enableJwtContentForwarding: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.config.enableJwtContentForwarding }}
-          openIdConfigurationUrl: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.config.oidcUrl }}
+          enableAccessTokenForwarding: {{ .authExtensionPlugin.config.enableAccessTokenForwarding }}
+          enableQAccountMatching: {{ .authExtensionPlugin.config.enableQAccountMatching }}
+          enableSubjectForwarding: {{ .authExtensionPlugin.config.enableSubjectForwarding }}
+          enableUserInfoForwarding: {{ .authExtensionPlugin.config.enableUserInfoForwarding }}
+          enableJwtContentForwarding: {{ .authExtensionPlugin.config.enableJwtContentForwarding }}
+          openIdConfigurationUrl: {{ .authExtensionPlugin.config.oidcUrl }}
         grpc:
-          address: {{ .Values.gloo.authConfig.spec.configs.authExtensionPlugin.config.grpcAddress }}
+          address: {{ .authExtensionPlugin.config.grpcAddress }}
     {{- end }}
-    {{- if .Values.gloo.authConfig.spec.configs.additionalPlugins }}
-    {{- toYaml .Values.gloo.authConfig.spec.configs.additionalPlugins | nindent 4 }}
-  {{- end }}
-  {{- end }}
+    {{- if .additionalPlugins }}
+    {{- toYaml .additionalPlugins | nindent 4 }}
+    {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
