@@ -8,7 +8,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ $serviceName }}
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ $.Release.Namespace }}
   labels:
     {{- if $.Values.datadog.enabled }}
     tags.datadoghq.com/env: {{ $.Values.datadog.env }}
@@ -27,7 +27,7 @@ spec:
       labels:
         app: {{ $serviceName }}
         {{- if $.Values.datadog.enabled }}
-        tags.datadoghq.com/env: {{ .Values.datadog.env }}
+        tags.datadoghq.com/env: {{ $.Values.datadog.env }}
         tags.datadoghq.com/service: {{ $serviceName }}
         tags.datadoghq.com/version: {{ default .image.tag $.Values.datadog.version }}
         {{- end }}
@@ -54,7 +54,7 @@ spec:
       serviceAccountName: {{ $serviceAccountName }}
       containers:
         - name: {{ $serviceName }}
-          imagePullPolicy: {{ .spec.image.pullPolicy }}
+          imagePullPolicy: {{ .image.pullPolicy }}
           image: {{ $imageUrl }}
           envFrom:
             {{- if $.Values.externalSecrets.service.key }}
