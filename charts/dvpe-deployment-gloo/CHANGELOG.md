@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased]
 
+## [4.7.4]
+### Changed
+- Updated Api Version of Horizontal Pod Autoscaler to `autoscaling/v2`
+
 ## [4.7.3]
 ### Fixed
 - Security Context will only be rendered if at least one value has to be set.
