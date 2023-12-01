@@ -1,20 +1,36 @@
 {{- $serviceName := include "service.name" . -}}
-{{- if .Values.autoscaling.enabled }}
+{{- with .Values.autoscaling }}
+{{- if .enabled }}
+{{- if or .metrics.resource.cpu.targetAverageUtilization .metrics.resource.memory.targetAverageUtilization }}
 ---
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ $serviceName }}
 spec:
-  maxReplicas: {{ .Values.autoscaling.maxReplicas }}
-  minReplicas: {{ .Values.autoscaling.minReplicas }}
+  minReplicas: {{ .minReplicas }}
+  maxReplicas: {{ .maxReplicas }}
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
     name: {{ $serviceName }}
   metrics:
+    {{- if .metrics.resource.cpu.targetAverageUtilization }}
     - type: Resource
       resource:
         name: cpu
-        targetAverageUtilization: {{ .Values.autoscaling.metrics.resource.cpu.targetAverageUtilization }}
+        target:
+          type: Utilization
+          averageUtilization: {{ .metrics.resource.cpu.targetAverageUtilization }}
+    {{- end }}
+    {{- if .metrics.resource.memory.targetAverageUtilization }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ .metrics.resource.memory.targetAverageUtilization }}
+    {{- end }}
+{{- end }}
+{{- end }}
 {{- end }}

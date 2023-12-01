@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [4.7.4]
 ### Changed
 - Updated Api Version of Horizontal Pod Autoscaler to `autoscaling/v2`
+- Added memory autoscaling capability
+- target for CPU by default is now 100%
 
 ## [4.7.3]
 ### Fixed
@@ -400,3 +402,4 @@ The ExternalSecretStore reference will generated on Namespace generation by WADT
 [4.7.1]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-4.7.1/charts/dvpe-deployment-gloo
 [4.7.2]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-4.7.2/charts/dvpe-deployment-gloo
 [4.7.3]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-4.7.3/charts/dvpe-deployment-gloo
+[4.7.4]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-4.7.4/charts/dvpe-deployment-gloo

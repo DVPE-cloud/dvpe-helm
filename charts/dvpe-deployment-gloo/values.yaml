@@ -103,7 +103,10 @@ autoscaling:
     resource:
       cpu:
         # autoscaling.metrics.resource.cpu.targetAverageUtilization -- Defines cpu utilization threshold in % for the HPA to scale up new pods.
-        targetAverageUtilization: 80
+        targetAverageUtilization: 100
+      memory:
+        # autoscaling.metrics.resource.memory.targetAverageUtilization -- Defines memory utilization threshold in % for the HPA to scale up new pods.
+        targetAverageUtilization:
 
 # -------------------------------------#
 # Extension param value section       #
