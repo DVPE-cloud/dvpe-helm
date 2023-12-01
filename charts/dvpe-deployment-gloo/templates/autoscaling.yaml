@@ -15,7 +15,9 @@ spec:
     kind: Deployment
     name: {{ $serviceName }}
   metrics:
-    {{- /* Order of metrics is important: https://argo-cd.readthedocs.io/en/stable/user-guide/diffing/, https://github.com/kubernetes/kubernetes/issues/74099 */ }}
+    {{- /*
+      Order of metrics is important: https://argo-cd.readthedocs.io/en/stable/user-guide/diffing/, https://github.com/kubernetes/kubernetes/issues/74099
+    */}}
     {{- if .metrics.resource.memory.targetAverageUtilization }}
     - type: Resource
       resource:
