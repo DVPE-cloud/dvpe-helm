@@ -15,14 +15,7 @@ spec:
     kind: Deployment
     name: {{ $serviceName }}
   metrics:
-    {{- if .metrics.resource.cpu.targetAverageUtilization }}
-    - type: Resource
-      resource:
-        name: cpu
-        target:
-          type: Utilization
-          averageUtilization: {{ .metrics.resource.cpu.targetAverageUtilization }}
-    {{- end }}
+    {{- /* Order of metrics is important: https://argo-cd.readthedocs.io/en/stable/user-guide/diffing/, https://github.com/kubernetes/kubernetes/issues/74099 */ }}
     {{- if .metrics.resource.memory.targetAverageUtilization }}
     - type: Resource
       resource:
@@ -30,6 +23,14 @@ spec:
         target:
           type: Utilization
           averageUtilization: {{ .metrics.resource.memory.targetAverageUtilization }}
+    {{- end }}
+    {{- if .metrics.resource.cpu.targetAverageUtilization }}
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ .metrics.resource.cpu.targetAverageUtilization }}
     {{- end }}
 {{- end }}
 {{- end }}
