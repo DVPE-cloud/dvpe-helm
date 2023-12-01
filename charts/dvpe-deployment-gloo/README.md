@@ -188,10 +188,11 @@ The following table lists the configurable parameters of the chart and its defau
 | additionalparameters.configMapApplied | bool | `false` | Set to `true` if you want to add a custom `ConfigMap` for your deployment. |
 | additionalparameters.secrets | object | `{}` | Object in the format { <environmentVariable>: secretKeyRef: { name: "", key: "" }, <environmentVariable>: secretKeyRef: { nameRef: "", key: "" }, ...} to reference existing secrets and inject them as environment variables. The first secret name (given with "name") gets prefixed by "$Release.Name". The second secret name (given with "nameRef") will be used as is. |
 | additionalparameters.yamlConfigFileApplied | bool | `false` | Set to `true` if you want to add a custom yaml configuration for your deployment. |
-| autoscaling | object | `{"enabled":true,"maxReplicas":5,"metrics":{"resource":{"cpu":{"targetAverageUtilization":80}}},"minReplicas":1}` | ------------------------------# |
+| autoscaling | object | `{"enabled":true,"maxReplicas":5,"metrics":{"resource":{"cpu":{"targetAverageUtilization":100},"memory":{"targetAverageUtilization":null}}},"minReplicas":1}` | ------------------------------# |
 | autoscaling.enabled | bool | `true` | Enables `Horizontal Pod Autoscaler (HPA)` to control the replicas. If it is enabled, the replicas will be removed from the deployment. |
 | autoscaling.maxReplicas | int | `5` | Defines `maxReplicas` of Pods scaled automatically by Horizontal Pod Autoscaler (HPA). |
-| autoscaling.metrics.resource.cpu.targetAverageUtilization | int | `80` | Defines cpu utilization threshold in % for the HPA to scale up new pods. |
+| autoscaling.metrics.resource.cpu.targetAverageUtilization | int | `100` | Defines cpu utilization threshold in % for the HPA to scale up new pods. |
+| autoscaling.metrics.resource.memory.targetAverageUtilization | string | `nil` | Defines memory utilization threshold in % for the HPA to scale up new pods. |
 | autoscaling.minReplicas | int | `1` | Defines `minReplicas` of Pods scaled automatically by Horizontal Pod Autoscaler (HPA). |
 | certificate | object | `{"countries":[],"customIssuer":"intranet","customIssuerSelector":{"name":null},"dnsNames":[],"emailAddresses":[],"localities":[],"organizationalUnits":[],"organizations":[],"provinces":[],"useCustomIssuer":true}` | -----------------------------------# |
 | certificate.countries | list | `[]` | list of countries listed in created certificate details |
