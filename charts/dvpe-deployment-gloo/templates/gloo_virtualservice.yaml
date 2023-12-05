@@ -25,10 +25,10 @@ spec:
       namespace: {{ .Values.gloo.virtualservice.spec.sslConfig.secretRef.namespace -}}
       {{ else if eq .Values.gloo.ingress.scope "public" }}
       name: gloo-public-tls
-      namespace: {{ .Values.gloo.namespace -}}
+      namespace: gloo-system
       {{ else }}
       name: gloo-private-tls
-      namespace: {{ .Values.gloo.namespace -}}
+      namespace: gloo-system
       {{ end }}
     sniDomains: {{ $domain }}
   virtualHost:
