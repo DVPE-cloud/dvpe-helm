@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased]
 
+## [4.8.0]
+### Removed
+- `gloo.namespace` has been removed, since all gloo-resources are now deployed in the release-namespace.
+
 ## [4.7.4]
 ### Changed
 - Updated Api Version of Horizontal Pod Autoscaler to `autoscaling/v2`
@@ -403,3 +407,4 @@ The ExternalSecretStore reference will generated on Namespace generation by WADT
 [4.7.2]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-4.7.2/charts/dvpe-deployment-gloo
 [4.7.3]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-4.7.3/charts/dvpe-deployment-gloo
 [4.7.4]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-4.7.4/charts/dvpe-deployment-gloo
+[4.8.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-4.8.0/charts/dvpe-deployment-gloo
