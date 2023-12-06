@@ -4,6 +4,8 @@ kind: AppProject
 metadata:
   name: {{ $tenant.name }}
   namespace: {{ $.Release.Namespace }}
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io # do not delete appproject if referenced by application
 spec:
   sourceRepos:
     - '{{ $tenant.repoURL }}'
