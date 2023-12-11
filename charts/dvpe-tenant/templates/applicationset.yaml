@@ -18,7 +18,7 @@ spec:
           {{- end }}
   template:
     metadata:
-      name: '{{`{{path[1]}}-{{ path.basenameNormalized }}`}}'
+      name: '{{`{{path[0]}}-{{ path.basenameNormalized }}`}}'
     spec:
       project: {{ $tenant.name }}
       source:
