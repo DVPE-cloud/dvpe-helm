@@ -2,6 +2,8 @@ valueFiles: []
   # - values-int.yaml
   # - values-test.yaml
 
+oidcIssuerUrl: ""
+
 tenants: []
   # - name: jeremy-fragrance
   #   repoURL: https://github.com/jeremy/fragrance.git

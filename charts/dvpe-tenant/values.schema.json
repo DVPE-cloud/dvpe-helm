@@ -13,6 +13,15 @@
             "pattern": "^values.*\\.yaml$"
           }
         },
+        "oidcIssuerUrl": {
+          "type": "string",
+          "qt-uri-protocols": [
+            "https"
+          ],
+          "qt-uri-extensions": [
+            ".git"
+          ]
+        },
         "tenants": {
           "type": "array",
           "items": {
@@ -22,7 +31,8 @@
       },
       "required": [
         "tenants",
-        "valueFiles"
+        "valueFiles",
+        "oidcIssuerUrl"
       ],
       "title": "Values"
     },
