@@ -30,5 +30,6 @@ The following table lists the configurable parameters of the chart and its defau
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| oidcIssuerUrl | string | `""` |  |
 | tenants | list | `[]` |  |
 | valueFiles | list | `[]` |  |
