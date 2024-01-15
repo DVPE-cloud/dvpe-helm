@@ -4,7 +4,19 @@ kind: AppProject
 metadata:
   name: {{ $tenant.name }}
   namespace: {{ $.Release.Namespace }}
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io # do not delete appproject if referenced by application
 spec:
+  sourceRepos:
+    - '{{ $tenant.repoURL }}'
+  destinations:
+    {{- range $namespace := $tenant.namespaces }}
+    - namespace: '{{ $namespace }}'
+      server: 'https://kubernetes.default.svc'
+    {{- end }}
+    - namespace: gloo-system
+      server: 'https://kubernetes.default.svc'
+  clusterResourceWhitelist: {{- $tenant.clusterResourceWhiteList | toYaml | nindent 4 }}
   roles:
     - name: '{{ $tenant.name }}'
       policies:
@@ -14,4 +26,5 @@ spec:
         {{- range $user := $tenant.users }}
         - 'g, {{ $user }}, role:{{ $tenant.name }}'
         {{- end }}
+---
 {{- end }}
