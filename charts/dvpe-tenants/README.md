@@ -1,4 +1,4 @@
-# dvpe-tenant
+# dvpe-tenants
 
 ![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square)
 
@@ -30,4 +30,6 @@ The following table lists the configurable parameters of the chart and its defau
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| oidcIssuerUrl | string | `""` |  |
 | tenants | list | `[]` |  |
+| valueFiles | list | `[]` |  |

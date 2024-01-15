@@ -1,0 +1,19 @@
+{{- range $_, $tenant := .Values.tenants }}
+{{- range $_, $namespace := $tenant.namespaces }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ $namespace }}
+  namespace: {{ $namespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+  {{- range $_, $user := $tenant.users }}
+  - apiGroup: rbac.authorization.k8s.io
+    kind: User
+    name: {{ $.Values.oidcIssuerUrl }}#{{ $user }}
+  {{- end }}
+{{- end }}
+{{- end }}
