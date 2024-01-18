@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [2.5.0]
+### Added
+* `securityContext` in IssuerController deployment spec in order to be compliant with PSA (Pod Security Admission) rules.
+
 ## [2.4.0]
 ### Removed
 * Remove deprecated parameter `issuercontroller.externalsecrets.name`
@@ -104,3 +109,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [2.2.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-certificate-issuer-controller-2.2.0/charts/dvpe-certificate-issuer-controller
 [2.2.1]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-certificate-issuer-controller-2.2.1/charts/dvpe-certificate-issuer-controller
 [2.3.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-certificate-issuer-controller-2.3.0/charts/dvpe-certificate-issuer-controller
+[2.4.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-certificate-issuer-controller-2.4.0/charts/dvpe-certificate-issuer-controller
+[2.5.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-certificate-issuer-controller-2.5.0/charts/dvpe-certificate-issuer-controller
