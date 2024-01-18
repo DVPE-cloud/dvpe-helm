@@ -295,6 +295,25 @@ entries:
   dvpe-certificate-issuer-controller:
   - apiVersion: v2
     appVersion: 1.1.1
+    created: "2024-01-18T11:58:00.071502715Z"
+    description: Helm chart for deploying a custom certificate issuer controller.
+      The certificate issuer controller is a [cert-manager](https://cert-manager.io/docs/)
+      resource managing certificate requests in a private PKI.
+    digest: 93cb49b3a36c081f8333bb87452b075432ec2523619bf748e102ab6eba301c30
+    keywords:
+    - automation
+    - gitops
+    - issuer-controller
+    maintainers:
+    - name: mithie
+    - name: herrLierb
+    - name: crimbler2
+    name: dvpe-certificate-issuer-controller
+    urls:
+    - https://github.com/DVPE-cloud/dvpe-helm/releases/download/dvpe-certificate-issuer-controller-2.5.0/dvpe-certificate-issuer-controller-2.5.0.tgz
+    version: 2.5.0
+  - apiVersion: v2
+    appVersion: 1.1.1
     created: "2023-10-17T10:09:00.388045763Z"
     description: Helm chart for deploying a custom certificate issuer controller.
       The certificate issuer controller is a [cert-manager](https://cert-manager.io/docs/)
@@ -1864,4 +1883,4 @@ entries:
     urls:
     - https://github.com/DVPE-cloud/dvpe-helm/releases/download/dvpe-tenants-0.1.0/dvpe-tenants-0.1.0.tgz
     version: 0.1.0
-generated: "2024-01-18T09:09:04.805848201Z"
+generated: "2024-01-18T11:58:00.071711665Z"
