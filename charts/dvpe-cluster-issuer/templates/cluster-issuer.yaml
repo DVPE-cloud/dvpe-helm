@@ -30,8 +30,8 @@ metadata:
 spec:
   refreshInterval: 1h
   secretStoreRef:
-    kind: ClusterSecretStore
-    name: wadtfy-cluster-secret-store
+    kind: SecretStore
+    name: secret-store-wadtfy-{{ $.Values.clcm.secretsNamespace }}
   target:
     name: wadtfy-{{ $issuerName }}-cluster-issuer-secret
     creationPolicy: Owner
