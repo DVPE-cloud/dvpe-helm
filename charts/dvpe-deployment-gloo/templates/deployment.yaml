@@ -33,7 +33,13 @@ spec:
         {{- end }}
       annotations:
         {{- if $.Values.datadog.enabled }}
-        ad.datadoghq.com/{{ $serviceName }}.logs: '[{"source":"{{ $.Values.datadog.source }}", "service":"{{ $serviceName }}" }]'
+        ad.datadoghq.com/{{ $serviceName }}.logs: '[{
+          "source": "{{ $.Values.datadog.source }}",
+          "service": "{{ $serviceName }}"
+          {{- if $.Values.datadog.logProcessingRules }},
+          "log_processing_rules": [{{ $.Values.datadog.logProcessingRules | toJson }}]
+          {{- end }}
+          }]'
         ad.datadoghq.com/{{ $serviceName }}.tags: '{"team": "{{ $.Values.datadog.team }}"}'
         {{- end}}
         {{- if $.Values.deployment.podAnnotations }}
