@@ -37,7 +37,7 @@ spec:
           "source": "{{ $.Values.datadog.source }}",
           "service": "{{ $serviceName }}"
           {{- if $.Values.datadog.logProcessingRules }},
-          "log_processing_rules": [{{ $.Values.datadog.logProcessingRules | toJson }}]
+          "log_processing_rules": {{ $.Values.datadog.logProcessingRules | toJson }}
           {{- end }}
           }]'
         ad.datadoghq.com/{{ $serviceName }}.tags: '{"team": "{{ $.Values.datadog.team }}"}'

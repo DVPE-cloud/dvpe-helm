@@ -6,6 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased]
 
+## [4.9.1]
+### Added
+- `datadog.logProcessingRules` supports now multiple matching patterns. See https://docs.datadoghq.com/agent/logs/advanced_log_collection/?tab=kubernetes#filter-logs
+  See the following snippet on how to add rules to exclude and to replace matches from/in logs sent to Datadog. 
+  ```yaml
+  datadog:
+    logProcessingRules:
+      - type: exclude_at_match
+        name: healthcheck
+        pattern: 'kube-probe/1.[0-9]+' # Regex matching e.g. kube-probe/1.25
+      - type: mask_sequences
+        name: masked_qnumbers
+        replace_placeholder: "q******"
+        pattern: "[qQ][a-zA-Z0-9_]{6}" # Regex matching Q-numbers
+  ```
 ## [4.9.0]
 ### Added
 - `datadog.logProcessingRules` has been added, so that it's now possible to filter logs before sending them to Datadog.
@@ -413,3 +428,4 @@ The ExternalSecretStore reference will be generated on Namespace generation by W
 [4.7.4]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-4.7.4/charts/dvpe-deployment-gloo
 [4.8.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-4.8.0/charts/dvpe-deployment-gloo
 [4.9.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-4.9.0/charts/dvpe-deployment-gloo
+[4.9.1]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-4.9.1/charts/dvpe-deployment-gloo
