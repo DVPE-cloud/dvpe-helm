@@ -1,190 +1,241 @@
+---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: wadtfy-issuer-leader-election-role
-  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: bmw-pki-issuer
+    app.kubernetes.io/instance: leader-election-role
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: role
+    app.kubernetes.io/part-of: bmw-pki-issuer
+  name: bmw-pki-issuer-leader-election-role
+  namespace: bmw-pki-issuer-system
 rules:
-- apiGroups:
-  - ""
-  resources:
-  - configmaps
-  verbs:
-  - get
-  - list
-  - watch
-  - create
-  - update
-  - patch
-  - delete
-- apiGroups:
-  - ""
-  resources:
-  - configmaps/status
-  verbs:
-  - get
-  - update
-  - patch
-- apiGroups:
-  - ""
-  resources:
-  - events
-  verbs:
-  - create
-- apiGroups:
-  - coordination.k8s.io
-  resources:
-  - leases
-  verbs:
-  - create
-  - get
-  - list
-  - update
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
+      - delete
+  - apiGroups:
+      - coordination.k8s.io
+    resources:
+      - leases
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
+      - delete
+  - apiGroups:
+      - ""
+    resources:
+      - events
+    verbs:
+      - create
+      - patch
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: wadtfy-issuer-cert-manager-controller-approve
+  name: bmw-pki-issuer-cert-manager-controller-approve:sample-issuer-example-com
 rules:
-- apiGroups:
-  - cert-manager.io
-  resourceNames:
-    - issuers.controller-manager.dvpe-cloud.github.io/*
-    - clusterissuers.controller-manager.dvpe-cloud.github.io/*
-  resources:
-  - signers
-  verbs:
-  - approve
+  - apiGroups:
+      - cert-manager.io
+    resourceNames:
+      - issuers.cert-manager.pki.bmwgroup.net/*
+      - clusterissuers.cert-manager.pki.bmwgroup.net/*
+    resources:
+      - signers
+    verbs:
+      - approve
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  creationTimestamp: null
-  name: wadtfy-issuer-manager-role
+  name: bmw-pki-issuer-manager-role
 rules:
-- apiGroups:
-  - ""
-  resources:
-  - secrets
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
-  - cert-manager.io
-  resources:
-  - certificaterequests
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
-  - cert-manager.io
-  resources:
-  - certificaterequests/status
-  verbs:
-  - get
-  - patch
-  - update
-- apiGroups:
-  - controller-manager.dvpe-cloud.github.io
-  resources:
-  - issuers
-  - clusterissuers
-  verbs:
-  - create
-  - delete
-  - get
-  - list
-  - patch
-  - update
-  - watch
-- apiGroups:
-  - controller-manager.dvpe-cloud.github.io
-  resources:
-  - issuers/status
-  - clusterissuers/status
-  verbs:
-  - get
-  - patch
-  - update
+  - apiGroups:
+      - ""
+    resources:
+      - events
+    verbs:
+      - create
+      - patch
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - cert-manager.io
+    resources:
+      - certificaterequests
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - cert-manager.io
+    resources:
+      - certificaterequests/status
+    verbs:
+      - get
+      - patch
+      - update
+  - apiGroups:
+      - cert-manager.pki.bmwgroup.net
+    resources:
+      - clusterissuers
+      - issuers
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - cert-manager.pki.bmwgroup.net
+    resources:
+      - clusterissuers/status
+      - issuers/status
+    verbs:
+      - get
+      - patch
+      - update
+  - apiGroups:
+      - cert-manager.pki.bmwgroup.net
+    resources:
+      - issuers/finalizers
+    verbs:
+      - update
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: wadtfy-issuer-metrics-reader
+  labels:
+    app.kubernetes.io/component: kube-rbac-proxy
+    app.kubernetes.io/created-by: bmw-pki-issuer
+    app.kubernetes.io/instance: metrics-reader
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/part-of: bmw-pki-issuer
+  name: bmw-pki-issuer-metrics-reader
 rules:
-- nonResourceURLs:
-  - /metrics
-  verbs:
-  - get
+  - nonResourceURLs:
+      - /metrics
+    verbs:
+      - get
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: wadtfy-issuer-proxy-role
+  labels:
+    app.kubernetes.io/component: kube-rbac-proxy
+    app.kubernetes.io/created-by: bmw-pki-issuer
+    app.kubernetes.io/instance: proxy-role
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/part-of: bmw-pki-issuer
+  name: bmw-pki-issuer-proxy-role
 rules:
-- apiGroups:
-  - authentication.k8s.io
-  resources:
-  - tokenreviews
-  verbs:
-  - create
-- apiGroups:
-  - authorization.k8s.io
-  resources:
-  - subjectaccessreviews
-  verbs:
-  - create
+  - apiGroups:
+      - authentication.k8s.io
+    resources:
+      - tokenreviews
+    verbs:
+      - create
+  - apiGroups:
+      - authorization.k8s.io
+    resources:
+      - subjectaccessreviews
+    verbs:
+      - create
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: wadtfy-issuer-leader-election-rolebinding
-  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: bmw-pki-issuer
+    app.kubernetes.io/instance: leader-election-rolebinding
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: rolebinding
+    app.kubernetes.io/part-of: bmw-pki-issuer
+  name: bmw-pki-issuer-leader-election-rolebinding
+  namespace: bmw-pki-issuer-system
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: wadtfy-issuer-leader-election-role
+  name: bmw-pki-issuer-leader-election-role
 subjects:
-- kind: ServiceAccount
-  name: {{ .Release.Namespace }}-sa
-  namespace: {{ .Release.Namespace }}
+  - kind: ServiceAccount
+    name: bmw-pki-issuer-controller-manager
+    namespace: bmw-pki-issuer-system
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{.Release.Name }}-controller-approve
+  name: bmw-pki-issuer-cert-manager-controller-approve:sample-issuer-example-com
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: wadtfy-issuer-cert-manager-controller-approve
+  name: bmw-pki-issuer-cert-manager-controller-approve:sample-issuer-example-com
 subjects:
-- kind: ServiceAccount
-  name: {{.Release.Namespace}}-sa
-  namespace: {{ .Release.Namespace }}
+  - kind: ServiceAccount
+    name: cert-manager-system-sa
+    namespace: cert-manager-system
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{.Release.Name }}-rolebinding
+  labels:
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: bmw-pki-issuer
+    app.kubernetes.io/instance: manager-rolebinding
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: clusterrolebinding
+    app.kubernetes.io/part-of: bmw-pki-issuer
+  name: bmw-pki-issuer-manager-rolebinding
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: wadtfy-issuer-manager-role
+  name: bmw-pki-issuer-manager-role
 subjects:
-- kind: ServiceAccount
-  name: {{ .Release.Namespace }}-sa
-  namespace: {{ .Release.Namespace }}
+  - kind: ServiceAccount
+    name: bmw-pki-issuer-controller-manager
+    namespace: bmw-pki-issuer-system
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{.Release.Name }}-proxy-rolebinding
+  labels:
+    app.kubernetes.io/component: kube-rbac-proxy
+    app.kubernetes.io/created-by: bmw-pki-issuer
+    app.kubernetes.io/instance: proxy-rolebinding
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: clusterrolebinding
+    app.kubernetes.io/part-of: bmw-pki-issuer
+  name: bmw-pki-issuer-proxy-rolebinding
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: wadtfy-issuer-proxy-role
+  name: bmw-pki-issuer-proxy-role
 subjects:
-- kind: ServiceAccount
-  name: {{ .Release.Namespace }}-sa
-  namespace: {{ .Release.Namespace }}
+  - kind: ServiceAccount
+    name: bmw-pki-issuer-controller-manager
+    namespace: bmw-pki-issuer-system

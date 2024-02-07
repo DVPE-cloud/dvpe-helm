@@ -1,49 +1,83 @@
-{{- $imageUrl := include "image.url" . -}}
-{{- $containerName := include "container.name" . -}}
-
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    control-plane: {{ .Values.issuercontroller.plane.name }}
-  name: {{ .Release.Name }}-issuer-controller
-  namespace: {{ .Release.Namespace }}
+    control-plane: controller-manager
+  name: bmw-pki-issuer-controller-manager
+  namespace: bmw-pki-issuer-system
 spec:
+  replicas: 1
   selector:
     matchLabels:
-      control-plane: {{ .Values.issuercontroller.plane.name }}
+      control-plane: controller-manager
   template:
     metadata:
+      annotations:
+        kubectl.kubernetes.io/default-container: manager
       labels:
-        control-plane: {{ .Values.issuercontroller.plane.name }}
+        control-plane: controller-manager
     spec:
-      serviceAccountName: {{ .Release.Namespace }}-sa
-      containers:
-      - args:
-        - --metrics-addr=127.0.0.1:8080
-        - --enable-leader-election
-        command:
-        - /manager
-        image: {{ $imageUrl }}
-        imagePullPolicy: {{ .Values.issuercontroller.spec.image.pullPolicy }}
-        name: {{ $containerName }}
-        resources:
-          limits:
-            memory: 100Mi
-          requests:
-            cpu: 20m
-            memory: 60Mi
-        terminationMessagePath: /dev/termination-log
-        terminationMessagePolicy: File
-        securityContext:
-          allowPrivilegeEscalation: false
-          capabilities:
-            drop:
-              - ALL
-          readOnlyRootFilesystem: true
-          runAsNonRoot: true
-          seccompProfile:
-            type: RuntimeDefault
       imagePullSecrets:
-      - name: docker-reg-secret
-      restartPolicy: Always
+        - name: github-container-reg-secret
+      containers:
+        - args:
+            - --secure-listen-address=0.0.0.0:8443
+            - --upstream=http://127.0.0.1:8080/
+            - --logtostderr=true
+            - --v=0
+          image: gcr.io/kubebuilder/kube-rbac-proxy:v0.14.1
+          name: kube-rbac-proxy
+          ports:
+            - containerPort: 8443
+              name: https
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 500m
+              memory: 128Mi
+            requests:
+              cpu: 5m
+              memory: 64Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+        - args:
+            - --health-probe-bind-address=:8081
+            - --metrics-bind-address=127.0.0.1:8080
+            - --leader-elect
+          command:
+            - /manager
+          image: containers.atc-github.azure.cloud.bmw/wadtfy/bmw-pki-issuer/dvpe-8331_create-cert-manager-external-issuer:v0.0.1
+          imagePullPolicy: Always
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8081
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          name: manager
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8081
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            limits:
+              cpu: 500m
+              memory: 128Mi
+            requests:
+              cpu: 10m
+              memory: 64Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+      securityContext:
+        runAsNonRoot: true
+      serviceAccountName: bmw-pki-issuer-controller-manager
+      terminationGracePeriodSeconds: 10
