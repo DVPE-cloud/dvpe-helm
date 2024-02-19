@@ -295,6 +295,25 @@ entries:
   dvpe-certificate-issuer-controller:
   - apiVersion: v2
     appVersion: 1.1.1
+    created: "2024-02-19T15:06:32.297870607Z"
+    description: Helm chart for deploying a custom certificate issuer controller.
+      The certificate issuer controller is a [cert-manager](https://cert-manager.io/docs/)
+      resource managing certificate requests in a private PKI.
+    digest: dabcddd3dec6b4c701b4a082449e3bf1f14ae7786f1dcad77c37cc5d4b03f39d
+    keywords:
+    - automation
+    - gitops
+    - issuer-controller
+    maintainers:
+    - name: mithie
+    - name: herrLierb
+    - name: crimbler2
+    name: dvpe-certificate-issuer-controller
+    urls:
+    - https://github.com/DVPE-cloud/dvpe-helm/releases/download/dvpe-certificate-issuer-controller-2.5.1/dvpe-certificate-issuer-controller-2.5.1.tgz
+    version: 2.5.1
+  - apiVersion: v2
+    appVersion: 1.1.1
     created: "2024-01-18T11:58:00.071502715Z"
     description: Helm chart for deploying a custom certificate issuer controller.
       The certificate issuer controller is a [cert-manager](https://cert-manager.io/docs/)
@@ -603,6 +622,17 @@ entries:
   dvpe-cluster-issuer:
   - apiVersion: v1
     appVersion: "1.1"
+    created: "2024-02-19T15:06:32.419444583Z"
+    description: Helm chart for installing cert-manager's ClusterIssuer resource,
+      to be used in Kubernetes automation scripts.
+    digest: 5838f3bcbfbdc6c850a4d93feb5a66a0e3edddaffe4a3b39cd1278cd63935991
+    home: https://github.com/dvpe-cloud/dvpe-helm
+    name: dvpe-cluster-issuer
+    urls:
+    - https://github.com/DVPE-cloud/dvpe-helm/releases/download/dvpe-cluster-issuer-0.4.1/dvpe-cluster-issuer-0.4.1.tgz
+    version: 0.4.1
+  - apiVersion: v1
+    appVersion: "1.1"
     created: "2024-01-18T09:09:04.805693703Z"
     description: Helm chart for installing cert-manager's ClusterIssuer resource,
       to be used in Kubernetes automation scripts.
@@ -725,6 +755,25 @@ entries:
     - https://github.com/DVPE-cloud/dvpe-helm/releases/download/dvpe-cluster-issuer-0.0.1/dvpe-cluster-issuer-0.0.1.tgz
     version: 0.0.1
   dvpe-deployment-gloo:
+  - apiVersion: v1
+    appVersion: "1.1"
+    created: "2024-02-19T15:06:32.549700948Z"
+    description: Helm chart for installing microservices as gloo enabled VirtualService
+      definitions.
+    digest: b1e3578325ba3c94e36f2a5ff45e6fe770ba260ffc9376cca27db00f1ae27c3e
+    home: https://github.com/dvpe-cloud/dvpe-helm
+    keywords:
+    - dvpe-helm
+    - automation
+    - gitops
+    maintainers:
+    - name: mithie
+    - name: herrLierb
+    - name: crimbler2
+    name: dvpe-deployment-gloo
+    urls:
+    - https://github.com/DVPE-cloud/dvpe-helm/releases/download/dvpe-deployment-gloo-4.9.2/dvpe-deployment-gloo-4.9.2.tgz
+    version: 4.9.2
   - apiVersion: v1
     appVersion: "1.1"
     created: "2024-01-24T13:58:54.054224962Z"
@@ -1912,6 +1961,16 @@ entries:
     version: 0.1.0
   dvpe-tenants:
   - apiVersion: v1
+    created: "2024-02-19T15:06:32.66397149Z"
+    description: Helm chart for creating the resources with information readable from
+      the the GitHub API. For the beginning, this includes only the ArgoCD resources.
+    digest: 4b6976f39ebb8233c5c26d6898a2f35d87f95f12a58a6ab9fa8c76be8d6474e7
+    home: https://github.com/dvpe-cloud/dvpe-helm
+    name: dvpe-tenants
+    urls:
+    - https://github.com/DVPE-cloud/dvpe-helm/releases/download/dvpe-tenants-0.2.0/dvpe-tenants-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v1
     created: "2024-01-15T14:21:06.60723202Z"
     description: Helm chart for creating the resources with information readable from
       the the GitHub API. For the beginning, this includes only the ArgoCD resources.
@@ -1921,4 +1980,4 @@ entries:
     urls:
     - https://github.com/DVPE-cloud/dvpe-helm/releases/download/dvpe-tenants-0.1.0/dvpe-tenants-0.1.0.tgz
     version: 0.1.0
-generated: "2024-01-24T13:58:54.054499616Z"
+generated: "2024-02-19T15:06:32.66440133Z"
