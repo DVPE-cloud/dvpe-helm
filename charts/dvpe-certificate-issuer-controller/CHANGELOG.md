@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.5.1]
+### Changed
+* Changed nothing. This version change is a workaround to fix the pipeline.
+
 ## [2.5.0]
 ### Added
 * `securityContext` in IssuerController deployment spec in order to be compliant with PSA (Pod Security Admission) rules.
