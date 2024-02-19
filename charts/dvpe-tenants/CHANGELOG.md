@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0]
+### Changed
+* Fixed missing document separator in rolebindings template
+
 ## [0.1.0]
 ### Changed
 * Initial version of tenant helm chart

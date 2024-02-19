@@ -15,5 +15,6 @@ subjects:
     kind: User
     name: {{ $.Values.oidcIssuerUrl }}#{{ $user }}
   {{- end }}
+---
 {{- end }}
 {{- end }}
