@@ -4,6 +4,8 @@ valueFiles: []
 
 oidcIssuerUrl: ""
 
+clusterRole: ""
+
 tenants: []
   # - name: jeremy-fragrance
   #   repoURL: https://github.com/jeremy/fragrance.git

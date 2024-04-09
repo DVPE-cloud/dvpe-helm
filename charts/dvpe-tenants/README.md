@@ -1,6 +1,6 @@
 # dvpe-tenants
 
-![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square)
+![Version: 0.3.0](https://img.shields.io/badge/Version-0.3.0-informational?style=flat-square)
 
 Helm chart for creating the resources with information readable from the the GitHub API. For the beginning, this includes only the ArgoCD resources.
 
@@ -30,6 +30,7 @@ The following table lists the configurable parameters of the chart and its defau
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| clusterRole | string | `""` |  |
 | oidcIssuerUrl | string | `""` |  |
 | tenants | list | `[]` |  |
 | valueFiles | list | `[]` |  |

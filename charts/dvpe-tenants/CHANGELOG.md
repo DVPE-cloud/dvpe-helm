@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0]
+### Changed
+* Add parameter to configure ClusterRole in RoleBinding
+* 
 ## [0.2.0]
 ### Changed
 * Fixed missing document separator in rolebindings template
@@ -16,3 +20,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Initial version of tenant helm chart
 
 [0.1.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-tenant-0.1.0/charts/dvpe-tenant
+[0.2.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-tenant-0.2.0/charts/dvpe-tenant
+[0.3.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-tenant-0.3.0/charts/dvpe-tenant

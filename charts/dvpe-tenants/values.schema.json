@@ -22,6 +22,9 @@
             ".git"
           ]
         },
+        "clusterRole": {
+          "type": "string"
+        },
         "tenants": {
           "type": "array",
           "items": {
