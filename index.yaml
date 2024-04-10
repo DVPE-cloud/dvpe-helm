@@ -1961,6 +1961,16 @@ entries:
     version: 0.1.0
   dvpe-tenants:
   - apiVersion: v1
+    created: "2024-04-10T10:08:52.930848749Z"
+    description: Helm chart for creating the resources with information readable from
+      the the GitHub API. For the beginning, this includes only the ArgoCD resources.
+    digest: 7c9ea5bf46d3c4b15ac72c433502b75dc3a39a92b44765864ef74202a95be86a
+    home: https://github.com/dvpe-cloud/dvpe-helm
+    name: dvpe-tenants
+    urls:
+    - https://github.com/DVPE-cloud/dvpe-helm/releases/download/dvpe-tenants-0.3.0/dvpe-tenants-0.3.0.tgz
+    version: 0.3.0
+  - apiVersion: v1
     created: "2024-02-19T15:06:32.66397149Z"
     description: Helm chart for creating the resources with information readable from
       the the GitHub API. For the beginning, this includes only the ArgoCD resources.
@@ -1980,4 +1990,4 @@ entries:
     urls:
     - https://github.com/DVPE-cloud/dvpe-helm/releases/download/dvpe-tenants-0.1.0/dvpe-tenants-0.1.0.tgz
     version: 0.1.0
-generated: "2024-02-19T15:06:32.66440133Z"
+generated: "2024-04-10T10:08:52.931013458Z"
