@@ -360,26 +360,28 @@ istio:
 # -------------------------------------#
 # Certificate value section            #
 # -------------------------------------#
+# certificate -- Defines details about the certificate. The domains for which the certificate will be issued are defined in the `gloo.virtualservice.spec.virtualHost.domains` field.
 certificate:
-      # certificate.useCustomIssuer -- DEPRECATED; use `customIssuer: none` instead of `useCustomIssuer: false`
-      useCustomIssuer: true
-      # certificate.customIssuer -- custom issuer; allowed values: internet, intranet, other (requires `customIssuerSelector`), none
-      customIssuer: intranet
-      # certificate.customIssuerSelector -- other custom issuer selector; ignored if `customIssuer` different from "other"
-      customIssuerSelector:
-        # certificate.customIssuerSelector.name -- name of the custom issuer to be used
-        name:
-      # certificate.organizations -- list of organization listed in created certificate details
-      organizations: []
-      # certificate.countries -- list of countries listed in created certificate details
-      countries: []
-       # certificate.localities -- list of localities listed in created certificate details
-      localities: []
-       # certificate.provinces -- list of provinces listed in created certificate details
-      provinces: []
-       # certificate.organizationalUnits -- list of organizationalUnits listed in created certificate details
-      organizationalUnits: []
-       # certificate.emailAddresses -- list of emailAddresses listed in created certificate details
-      emailAddresses: []
-       # certificate.dnsNames -- list of dnsNames listed in created certificate details
-      dnsNames: []
+  create: true
+  # certificate.issuerRef -- Reference to issuer to use for certificate creation. Defaults to wadtfy-cluster-issuer ClusterIssuer which does not define any default values.
+  issuerRef:
+    # certificate.issuerRef.name -- Name of the issuer to use for certificate creation.
+    name: wadtfy-cluster-issuer
+    # certificate.issuerRef.kind -- Kind of the issuer to use for certificate creation. Usually "Issuer" or "ClusterIssuer".
+    kind: ClusterIssuer
+  # certificate.cardsParameters -- Parameters needed by CARDS API for certificate creation. They may be optional if specified in the referenced Issuer.
+  cardsParameters:
+    # certificate.cardsParameters.userId -- User ID of the person requesting the certificate. Can also be a technical user.
+    userId:
+    # certificate.cardsParameters.userEmail -- User Email of the person requesting the certificate. Can be the same as teamEmail. Used to send notifications about the certificate to.
+    userEmail:
+    # certificate.cardsParameters.teamEmail -- Team Email. Used to send notifications about the certificate to.
+    teamEmail:
+    # certificate.cardsParameters.appdId -- Application Deployment ID. It's the one that starts with `APPD-`.
+    appdId:
+    # certificate.cardsParameters.itsmService -- ITSM Service. Used to identify the ITSM service the issued certificate belongs to.
+    itsmService:
+    # certificate.cardsParameters.department -- Department. Used to identify the department the issued certificate belongs to.
+    department:
+    # certificate.cardsParameters.caType -- CA Type. Possible values are `Internal` for internal certificates or `External` for global public certificates.
+    caType:

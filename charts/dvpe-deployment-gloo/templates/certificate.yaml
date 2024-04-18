@@ -1,61 +1,82 @@
-### only creates a certificate resource if custom issuer is different from "none" and a domain is provided
-{{- if and .Values.certificate.useCustomIssuer (ne .Values.certificate.customIssuer "none") .Values.gloo.virtualservice.spec.virtualHost.domains }}
+{{- /* only creates a certificate resource if a domain is provided and certificate.create is true */}}
+{{- if and .Values.certificate.create .Values.gloo.virtualservice.spec.virtualHost.domains }}
 
 {{- $serviceName := include "service.name" . -}}
 {{- $domains := include "gloo.virtualservice.spec.virtualHost.domains.as.list" . -}}
 {{- $firstDomain := include "gloo.virtualservice.spec.virtualHost.domains.first" . -}}
 
----
 {{- with .Values.certificate }}
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: {{$serviceName}}-certificate-by-issuer
+  namespace: {{ $.Release.Namespace}}
+  labels:
+    app.kubernetes.io/name: {{ $serviceName }}
+    app.kubernetes.io/component: ingress
+    app.kubernetes.io/part-of: {{ $.Release.Name }}
+  {{- with .cardsParameters }}
+  annotations:
+    {{- if .userId }}
+    cert-manager.pki.bmwgroup.net/userId: {{ .userId | quote }}
+    {{- end }}
+    {{- if .userEmail }}
+    cert-manager.pki.bmwgroup.net/userEmail: {{ .userEmail | quote }}
+    {{- end }}
+    {{- if .teamEmail }}
+    cert-manager.pki.bmwgroup.net/teamEmail: {{ .teamEmail | quote }}
+    {{- end }}
+    {{- if .appdId }}
+    cert-manager.pki.bmwgroup.net/appdId: {{ .appdId | quote }}
+    {{- end }}
+    {{- if .itsmService }}
+    cert-manager.pki.bmwgroup.net/itsmService: {{ .itsmService | quote }}
+    {{- end }}
+    {{- if .department }}
+    cert-manager.pki.bmwgroup.net/department: {{ .department | quote }}
+    {{- end }}
+    {{- if .caType }}
+    cert-manager.pki.bmwgroup.net/caType: {{ .caType | quote }}
+    {{- end }}
+  {{- end }}
 spec:
-  commonName: {{$firstDomain}}
-  secretName: {{$serviceName}}-private-tls-by-issuer
   issuerRef:
-    group: controller-manager.dvpe-cloud.github.io
-    {{- if eq .customIssuer "intranet" }}
-    name: wadtfy-intranet-cluster-issuer
-    kind: ClusterIssuer
-    {{- else if eq .customIssuer "internet" }}
-    name: wadtfy-internet-cluster-issuer
-    kind: ClusterIssuer
-    {{- else if eq .customIssuer "other" }}
-    name: {{ .customIssuerSelector.name }}
-    kind: Issuer
-    {{- end }}
-  subject:
-    organizations:
-    {{- range .organizations }}
-      - {{ . }}
-    {{- end }}
-    countries:
-    {{- range .countries }}
-      - {{ . }}
-    {{- end }}
-    localities:
-    {{- range .localities }}
-      - {{ . }}
-    {{- end }}
-    provinces:
-    {{- range .provinces }}
-      - {{ . }}
-    {{- end }}
-    organizationalUnits:
-    {{- range .organizationalUnits }}
-      - {{ . }}
-    {{- end }}
+    group: cert-manager.pki.bmwgroup.net {{- /* we only support our own issuers, no need to make this configurable */}}
+    name: {{ .issuerRef.name }}
+    kind: {{ .issuerRef.kind }}
+  commonName: {{ $firstDomain }}
   dnsNames:
-    {{-  $domains  -}}
-    {{- range .dnsNames }}
-      - {{ . }}
-    {{- end }}
-  emailAddresses:
-    {{- range .emailAddresses }}
-      - {{ . }}
-    {{- end }}
-
+    {{- $domains }}
+  secretName: {{ $serviceName }}-private-tls-by-issuer
+  secretTemplate:
+    annotations:
+      cert-manager.io/issuer: {{ .issuerRef.name }}
+      {{- with .cardsParameters }}
+      {{- if .userId }}
+      cert-manager.pki.bmwgroup.net/userId: {{ .userId | quote }}
+      {{- end }}
+      {{- if .userEmail }}
+      cert-manager.pki.bmwgroup.net/userEmail: {{ .userEmail | quote }}
+      {{- end }}
+      {{- if .teamEmail }}
+      cert-manager.pki.bmwgroup.net/teamEmail: {{ .teamEmail | quote }}
+      {{- end }}
+      {{- if .appdId }}
+      cert-manager.pki.bmwgroup.net/appdId: {{ .appdId | quote }}
+      {{- end }}
+      {{- if .itsmService }}
+      cert-manager.pki.bmwgroup.net/itsmService: {{ .itsmService | quote }}
+      {{- end }}
+      {{- if .department }}
+      cert-manager.pki.bmwgroup.net/department: {{ .department | quote }}
+      {{- end }}
+      {{- if .caType }}
+      cert-manager.pki.bmwgroup.net/caType: {{ .caType | quote }}
+      {{- end }}
+      {{- end }}
+    labels:
+      app.kubernetes.io/name: {{ $serviceName }}
+      app.kubernetes.io/component: ingress
+      app.kubernetes.io/part-of: {{ $.Release.Name }}
 {{- end }}
 {{- end }}

@@ -5,9 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased]
+
+## [5.0.0]
+### **Breaking Changes**
+The section in helm the helm values concerning certificates has been changed due to changes in the upstream API (migration from CLCM to CARDS).
+The new minimal configuration looks like this:
+```yaml
+...
+certificate:
+  cardsParameters:
+    userId: # User ID of the person requesting the certificate. Can also be a technical user.
+    userEmail: # User Email of the person requesting the certificate. Can be the same as teamEmail. Used to send notifications about the certificate to.
+    teamEmail: # Team Email. Used to send notifications about the certificate to.
+    appdId: # Application Deployment ID. It's the one that starts with `APPD-`.
+    itsmService: # ITSM Service. Used to identify the ITSM service the issued certificate belongs to.
+    department: # Department. Used to identify the department the issued certificate belongs to.
+    caType: # CA Type. Possible values are `Internal` for internal certificates or `External` for global public certificates. `External` induces additional costs.
+```
+As before, the domains to be used as common name and SANs are defined in the `gloo.virtualservice.spec.virtualHost.domains` array.
+_Unfortunately all the cardsParameters have to be set, they are required by CARDS API._
+
+For the full config (rarely needed) see the [README.md](./README.md).
+
+## Changed
+- Decommission of CLCM forces to use a new way to create Certificates via the new CARDS API. Since the CARDS API needs a
+  different set of parameters, we also have to change our API.
+
+  
 ## [4.9.2]
 ### Changed
-* Changed nothing. This version change is a workaround to fix the pipeline.
+- Changed nothing. This version change is a workaround to fix the pipeline.
 
 ## [4.9.1]
 ### Added
@@ -432,3 +459,5 @@ The ExternalSecretStore reference will be generated on Namespace generation by W
 [4.8.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-4.8.0/charts/dvpe-deployment-gloo
 [4.9.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-4.9.0/charts/dvpe-deployment-gloo
 [4.9.1]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-4.9.1/charts/dvpe-deployment-gloo
+[4.9.2]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-4.9.2/charts/dvpe-deployment-gloo
+[5.0.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-5.0.0/charts/dvpe-deployment-gloo
