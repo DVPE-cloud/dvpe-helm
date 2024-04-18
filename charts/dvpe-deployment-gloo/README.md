@@ -1,6 +1,6 @@
 # dvpe-deployment-gloo
 
-![Version: 4.9.2](https://img.shields.io/badge/Version-4.9.2-informational?style=flat-square)
+![Version: 5.0.0](https://img.shields.io/badge/Version-5.0.0-informational?style=flat-square)
 
 Helm chart for installing microservices as gloo enabled VirtualService definitions.
 
@@ -194,18 +194,18 @@ The following table lists the configurable parameters of the chart and its defau
 | autoscaling.metrics.resource.cpu.targetAverageUtilization | int | `100` | Defines cpu utilization threshold in % for the HPA to scale up new pods. |
 | autoscaling.metrics.resource.memory.targetAverageUtilization | string | `nil` | Defines memory utilization threshold in % for the HPA to scale up new pods. |
 | autoscaling.minReplicas | int | `1` | Defines `minReplicas` of Pods scaled automatically by Horizontal Pod Autoscaler (HPA). |
-| certificate | object | `{"countries":[],"customIssuer":"intranet","customIssuerSelector":{"name":null},"dnsNames":[],"emailAddresses":[],"localities":[],"organizationalUnits":[],"organizations":[],"provinces":[],"useCustomIssuer":true}` | -----------------------------------# |
-| certificate.countries | list | `[]` | list of countries listed in created certificate details |
-| certificate.customIssuer | string | `"intranet"` | custom issuer; allowed values: internet, intranet, other (requires `customIssuerSelector`), none |
-| certificate.customIssuerSelector | object | `{"name":null}` | other custom issuer selector; ignored if `customIssuer` different from "other" |
-| certificate.customIssuerSelector.name | string | `nil` | name of the custom issuer to be used |
-| certificate.dnsNames | list | `[]` | list of dnsNames listed in created certificate details |
-| certificate.emailAddresses | list | `[]` | list of emailAddresses listed in created certificate details |
-| certificate.localities | list | `[]` | list of localities listed in created certificate details |
-| certificate.organizationalUnits | list | `[]` | list of organizationalUnits listed in created certificate details |
-| certificate.organizations | list | `[]` | list of organization listed in created certificate details |
-| certificate.provinces | list | `[]` | list of provinces listed in created certificate details |
-| certificate.useCustomIssuer | bool | `true` | DEPRECATED; use `customIssuer: none` instead of `useCustomIssuer: false` |
+| certificate | object | `{"cardsParameters":{"appdId":null,"caType":null,"department":null,"itsmService":null,"teamEmail":null,"userEmail":null,"userId":null},"create":true,"issuerRef":{"kind":"ClusterIssuer","name":"wadtfy-cluster-issuer"}}` | Defines details about the certificate. The domains for which the certificate will be issued are defined in the `gloo.virtualservice.spec.virtualHost.domains` field. |
+| certificate.cardsParameters | object | `{"appdId":null,"caType":null,"department":null,"itsmService":null,"teamEmail":null,"userEmail":null,"userId":null}` | Parameters needed by CARDS API for certificate creation. They may be optional if specified in the referenced Issuer. |
+| certificate.cardsParameters.appdId | string | `nil` | Application Deployment ID. It's the one that starts with `APPD-`. |
+| certificate.cardsParameters.caType | string | `nil` | CA Type. Possible values are `Internal` for internal certificates or `External` for global public certificates. |
+| certificate.cardsParameters.department | string | `nil` | Department. Used to identify the department the issued certificate belongs to. |
+| certificate.cardsParameters.itsmService | string | `nil` | ITSM Service. Used to identify the ITSM service the issued certificate belongs to. |
+| certificate.cardsParameters.teamEmail | string | `nil` | Team Email. Used to send notifications about the certificate to. |
+| certificate.cardsParameters.userEmail | string | `nil` | User Email of the person requesting the certificate. Can be the same as teamEmail. Used to send notifications about the certificate to. |
+| certificate.cardsParameters.userId | string | `nil` | User ID of the person requesting the certificate. Can also be a technical user. |
+| certificate.issuerRef | object | `{"kind":"ClusterIssuer","name":"wadtfy-cluster-issuer"}` | Reference to issuer to use for certificate creation. Defaults to wadtfy-cluster-issuer ClusterIssuer which does not define any default values. |
+| certificate.issuerRef.kind | string | `"ClusterIssuer"` | Kind of the issuer to use for certificate creation. Usually "Issuer" or "ClusterIssuer". |
+| certificate.issuerRef.name | string | `"wadtfy-cluster-issuer"` | Name of the issuer to use for certificate creation. |
 | datadog | object | `{"enabled":true,"env":"none","logProcessingRules":null,"source":null,"team":null,"version":null}` | -----------------------------------# |
 | datadog.enabled | bool | `true` | When set to true Datadog is enabled and all logs, metrics and traces will be sent to Datadog. |
 | datadog.env | string | `"none"` | Label in Datadog for the target environment - e.g. test, int, prod or an abbreviated k8s cluster name. |

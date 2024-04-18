@@ -1,5 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema",
+  "title": "DVPE Deployment",
+  "description": "Deployment of an application into WADTFY",
+  "type": "object",
   "required": [
     "gloo"
   ],
@@ -29,61 +32,69 @@
       }
     },
     "certificate": {
-      "anyOf": [
-        {
-          "type": "object",
-          "properties": {
-            "customIssuer": {
-              "enum": [
-                "internet",
-                "intranet",
-                "other",
-                "none"
-              ]
-            }
-          },
-          "required": [
-            "customIssuer"
-          ],
-          "if": {
-            "properties": {
-              "customIssuer": {
-                "const": "other"
-              }
-            },
-            "required": [
-              "customIssuer"
-            ]
-          },
-          "then": {
-            "properties": {
-              "customIssuerSelector": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "name"
-                ]
-              }
-            },
-            "required": [
-              "customIssuerSelector"
-            ]
-          }
+      "type": "object",
+      "required": [
+        "create"
+      ],
+      "properties": {
+        "create": {
+          "type": "boolean"
         },
-        {
+        "cardsParameters": {
           "type": "object",
           "properties": {
-            "useCustomIssuer": {
-              "enum": [false]
+            "userId": {
+              "type": "string"
+            },
+            "userEmail": {
+              "type": "string"
+            },
+            "teamEmail": {
+              "type": "string"
+            },
+            "appdId": {
+              "type": "string"
+            },
+            "itsmService": {
+              "type": "string"
+            },
+            "department": {
+              "type": "string"
+            },
+            "caType": {
+              "type": "string"
             }
-          },
-          "required": ["useCustomIssuer"]
+          }
         }
-      ]
+      },
+      "if": {
+        "properties": {
+          "create": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "issuerRef"
+        ],
+        "properties": {
+          "issuerRef": {
+            "type": "object",
+            "required": [
+              "name", "kind"
+            ],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "kind": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
