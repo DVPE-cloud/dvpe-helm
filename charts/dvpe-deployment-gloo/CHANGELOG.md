@@ -30,6 +30,9 @@ For the full config (rarely needed) see the [README.md](./README.md).
 ## Changed
 - Decommission of CLCM forces to use a new way to create Certificates via the new CARDS API. Since the CARDS API needs a
   different set of parameters, we also have to change our API.
+- Names of Certificate Resources changed:
+  - `Secrets`' names now end with `-crt` instead of `-certificate-by-issuer`.
+  - `Certificate`'s names don't end with `-certificate-by-issuer` anymore.
 
   
 ## [4.9.2]
