@@ -50,7 +50,6 @@ spec:
   secretName: {{ $serviceName }}-private-tls-by-issuer
   secretTemplate:
     annotations:
-      cert-manager.io/issuer: {{ .issuerRef.name }}
       {{- with .cardsParameters }}
       {{- if .userId }}
       cert-manager.pki.bmwgroup.net/userId: {{ .userId | quote }}
