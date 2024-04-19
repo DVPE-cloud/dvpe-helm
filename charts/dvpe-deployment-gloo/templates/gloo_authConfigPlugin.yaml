@@ -79,18 +79,7 @@ spec:
         grpc:
           address: {{ .clientCredentialsPlugin.config.grpcAddress }}
         config:
-          cache:
-            disabled: {{ not .clientCredentialsPlugin.config.cache.enabled}}
-          clientId: {{ .clientCredentialsPlugin.config.clientId }}
-          clientSecretRef:
-            {{- if $.Values.externalSecrets.oauth2.key }}
-            name: {{ $serviceName }}-oauth2-client-credentials-secrets
-            namespace: {{ $.Release.Namespace }}
-            {{- else }}
-            name: {{ .clientCredentialsPlugin.config.clientSecretRef.name }}
-            namespace: {{ default $.Release.Namespace .clientCredentialsPlugin.config.clientSecretRef.namespace }}
-            {{- end }}
-          mode: {{ .clientCredentialsPlugin.config.mode }}
+          mode: VerifyAccessToken
           openIdConfigurationUrl: {{ .clientCredentialsPlugin.config.oidcUrl }}
           {{- if .clientCredentialsPlugin.config.allowedClientIds }}
           allowedClientIds:
