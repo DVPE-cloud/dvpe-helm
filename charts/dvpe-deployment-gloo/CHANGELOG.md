@@ -34,6 +34,18 @@ For the full config (rarely needed) see the [README.md](./README.md).
   - `Secrets`' names now end with `-crt` instead of `-certificate-by-issuer`.
   - `Certificate`'s names don't end with `-certificate-by-issuer` anymore.
 
+## Removed
+- Configuration of AuthPlugin _clientCredentialsPlugin_ was stripped to the basic functionality.
+  Within `gloo.authConfig.spec.configs.` the following fields have been removed:  
+  ```yaml
+  .clientCredentialsPlugin.name                     # unused
+  .clientCredentialsPlugin.config.cache             # cache is now always enabled
+  .clientCredentialsPlugin.config.mode              # Since only 'VerifyAccessToken' was supported
+  .clientCredentialsPlugin.config.clientId          # Not needed in 'VerifyAccessToken' mode
+  .clientCredentialsPlugin.config.clientSecretRef   # Not needed in 'VerifyAccessToken' mode
+  ```
+
+
   
 ## [4.9.2]
 ### Changed
