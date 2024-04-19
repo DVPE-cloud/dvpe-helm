@@ -2,7 +2,7 @@
 
 ![Version: 5.0.0](https://img.shields.io/badge/Version-5.0.0-informational?style=flat-square)
 
-Deprecated by Q$/24! Helm chart for installing microservices as gloo enabled VirtualService definitions.
+Deprecated by Q4/24! Helm chart for installing microservices as gloo enabled VirtualService definitions.
 
 ## Installation
 Installs a Microservice Project as [gloo](https://www.solo.io/products/gloo/) enabled VirtualService.

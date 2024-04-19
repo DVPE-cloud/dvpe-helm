@@ -1,8 +1,11 @@
+{{- /* only creates a vs resource if a domain is provided and gloo.enabled is true */}}
+
+{{- if and .Values.gloo.enabled .Values.gloo.virtualservice.spec.virtualHost.domains }}
+
 {{- $upstreamName := include "upstream.name" . -}}
 {{- $serviceName := include "service.name" . -}}
 {{- $domain := include "gloo.virtualservice.spec.virtualHost.domains" . -}}
 
-{{- if .Values.gloo.enabled }}
 
 ---
 apiVersion: gateway.solo.io/v1
@@ -17,18 +20,12 @@ spec:
     parameters:
       minimumProtocolVersion: {{ .Values.gloo.virtualservice.spec.sslConfig.minimumProtocolVersion }}
     secretRef:
-      {{- if .Values.certificate.useCustomIssuer }}
+      {{- if .Values.certificate.create }}
       name: {{$serviceName}}-crt
       namespace: {{ .Release.Namespace -}}
       {{ else if and .Values.gloo.virtualservice.spec.sslConfig.secretRef.name .Values.gloo.virtualservice.spec.sslConfig.secretRef.namespace }}
       name: {{ .Values.gloo.virtualservice.spec.sslConfig.secretRef.name }}
       namespace: {{ .Values.gloo.virtualservice.spec.sslConfig.secretRef.namespace -}}
-      {{ else if eq .Values.gloo.ingress.scope "public" }}
-      name: gloo-public-tls
-      namespace: gloo-system
-      {{ else }}
-      name: gloo-private-tls
-      namespace: gloo-system
       {{ end }}
     sniDomains: {{ $domain }}
   virtualHost:
