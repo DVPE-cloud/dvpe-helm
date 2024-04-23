@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased]
 
+## [5.1.0]
+### Added
+- Added `deployment.spec.labels`
+
 ## [5.0.0]
 ### **Breaking Changes**
 The section in helm the helm values concerning certificates has been changed due to changes in the upstream API (migration from CLCM to CARDS).
@@ -27,14 +31,14 @@ _Unfortunately all the cardsParameters have to be set, they are required by CARD
 
 For the full config (rarely needed) see the [README.md](./README.md).
 
-## Changed
+### Changed
 - Decommission of CLCM forces to use a new way to create Certificates via the new CARDS API. Since the CARDS API needs a
   different set of parameters, we also have to change our API.
 - Names of Certificate Resources changed:
   - `Secrets`' names now end with `-crt` instead of `-certificate-by-issuer`.
   - `Certificate`'s names don't end with `-certificate-by-issuer` anymore.
 
-## Removed
+### Removed
 - Configuration of AuthPlugin _clientCredentialsPlugin_ was stripped to the basic functionality.
   Within `gloo.authConfig.spec.configs.` the following fields have been removed:  
   ```yaml
@@ -476,3 +480,4 @@ The ExternalSecretStore reference will be generated on Namespace generation by W
 [4.9.1]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-4.9.1/charts/dvpe-deployment-gloo
 [4.9.2]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-4.9.2/charts/dvpe-deployment-gloo
 [5.0.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-5.0.0/charts/dvpe-deployment-gloo
+[5.1.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-deployment-gloo-5.1.0/charts/dvpe-deployment-gloo

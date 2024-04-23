@@ -23,6 +23,8 @@ deployment:
   # deployment.podAnnotations -- Object of additional `podAnnotations`.
   podAnnotations: {}
   spec:
+    # deployment.spec.labels -- Labels to be added to the deployment and the pods.
+    labels: {}
     securityContext:
       # deployment.spec.securityContext.userId -- The User ID number of process running inside the container.
       userId:
