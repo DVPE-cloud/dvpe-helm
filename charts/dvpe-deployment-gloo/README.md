@@ -1,6 +1,6 @@
 # dvpe-deployment-gloo
 
-![Version: 5.0.0](https://img.shields.io/badge/Version-5.0.0-informational?style=flat-square)
+![Version: 5.1.0](https://img.shields.io/badge/Version-5.1.0-informational?style=flat-square)
 
 Deprecated by Q4/24! Helm chart for installing microservices as gloo enabled VirtualService definitions.
 
@@ -212,7 +212,7 @@ The following table lists the configurable parameters of the chart and its defau
 | datadog.source | string | `nil` | Defines the source which creates log outputs. Source defines the log format and triggers Datadog parser pipelines |
 | datadog.team | string | `nil` | Label in Datadog for the responsible team |
 | datadog.version | string | `nil` | Label in Datadog for the service version. If undefined, the value of `deployment.spec.image.tag` is used. This value should not be set by ordinary deployments. It is intended for special cases (e.g. CI triggered deployments). |
-| deployment | object | `{"podAnnotations":{},"spec":{"containers":{"livenessProbe":{},"readinessProbe":{},"startupProbe":{}},"image":{"name":null,"pullPolicy":"IfNotPresent","repository":null,"tag":"latest"},"imagePullSecrets":"docker-reg-secret","replicas":1,"resources":{"limits":{"cpu":null,"memory":null},"requests":{"cpu":"150m","memory":"200M"}},"securityContext":{"groupId":null,"userId":null},"serviceAccountName":null}}` | -----------------------------# |
+| deployment | object | `{"podAnnotations":{},"spec":{"containers":{"livenessProbe":{},"readinessProbe":{},"startupProbe":{}},"image":{"name":null,"pullPolicy":"IfNotPresent","repository":null,"tag":"latest"},"imagePullSecrets":"docker-reg-secret","labels":{},"replicas":1,"resources":{"limits":{"cpu":null,"memory":null},"requests":{"cpu":"150m","memory":"200M"}},"securityContext":{"groupId":null,"userId":null},"serviceAccountName":null}}` | -----------------------------# |
 | deployment.podAnnotations | object | `{}` | Object of additional `podAnnotations`. |
 | deployment.spec.containers.livenessProbe | object | `{}` | Configuration of LivenessProbe as documented here: [Configure Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) |
 | deployment.spec.containers.readinessProbe | object | `{}` | Configuration of ReadinessProbe as documented here: [Configure Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) |
@@ -222,6 +222,7 @@ The following table lists the configurable parameters of the chart and its defau
 | deployment.spec.image.repository | string | `nil` | The docker repository to pull the service image from. |
 | deployment.spec.image.tag | string | `"latest"` | The image version to use. |
 | deployment.spec.imagePullSecrets | string | `"docker-reg-secret"` | Image Pull Secret to access docker registry. |
+| deployment.spec.labels | object | `{}` | Labels to be added to the deployment and the pods. |
 | deployment.spec.replicas | int | `1` | The number of service instances to deploy. Will be ignored when autoscaling.enabled is true |
 | deployment.spec.resources.limits.cpu | string | `nil` | Total amount of CPU time that a container can use every 100 ms. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage. |
 | deployment.spec.resources.limits.memory | string | `nil` | The memory limit for a Pod. See [Managing Compute Resources for Containers](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for a detailed description on resource usage. |
