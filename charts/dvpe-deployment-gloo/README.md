@@ -186,6 +186,7 @@ The following table lists the configurable parameters of the chart and its defau
 |-----|------|---------|-------------|
 | additionalparameters | object | `{"configMapApplied":false,"customConfigMapReference":null,"secrets":{},"yamlConfigFileApplied":false}` | -----------------------------------# |
 | additionalparameters.configMapApplied | bool | `false` | Set to `true` if you want to add a custom `ConfigMap` for your deployment. |
+| additionalparameters.customConfigMapReference | string | `nil` | Set name of a custom config-map from which additional values are injected as env-variables into container / deployments. If empty, nothin will be applied. |
 | additionalparameters.secrets | object | `{}` | Object in the format { <environmentVariable>: secretKeyRef: { name: "", key: "" }, <environmentVariable>: secretKeyRef: { nameRef: "", key: "" }, ...} to reference existing secrets and inject them as environment variables. The first secret name (given with "name") gets prefixed by "$Release.Name". The second secret name (given with "nameRef") will be used as is. |
 | additionalparameters.yamlConfigFileApplied | bool | `false` | Set to `true` if you want to add a custom yaml configuration for your deployment. |
 | autoscaling | object | `{"enabled":true,"maxReplicas":5,"metrics":{"resource":{"cpu":{"targetAverageUtilization":100},"memory":{"targetAverageUtilization":null}}},"minReplicas":1}` | ------------------------------# |
@@ -242,6 +243,7 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.authConfig.name | string | `"auth-plugin"` | Prefix of the `Auth Config Plugin`. Final name will be <prefix>-<service-name> |
 | gloo.authConfig.namespace | string | `nil` | Namespace where the `Auth Config Plugin` is located. If empty, release namespace is used. |
 | gloo.authConfig.spec.configs.additionalPlugins | string | `nil` | List of plugins which should be added to the plugin chain. Expected format is a valid yaml with the `pluginAuth`. See [gloo Plugin Auth](https://docs.solo.io/gloo/latest/guides/security/auth/extauth/plugin_auth/#create-an-authconfig-resource) for details |
+| gloo.authConfig.spec.configs.authExtensionPlugin.config | object | `{"enableAccessTokenForwarding":false,"enableJwtContentForwarding":false,"enableQAccountMatching":false,"enableSubjectForwarding":false,"enableUserInfoForwarding":false,"grpcAddress":"auth-passthrough-extension.gloo-system.svc.cluster.local:9001","oidcUrl":null}` | `Name` of the auth code flow extension plugin |
 | gloo.authConfig.spec.configs.authExtensionPlugin.config.enableAccessTokenForwarding | bool | `false` | `enableAccessTokenForwarding` is a flag which tells whether the access_token should be forwarded or not |
 | gloo.authConfig.spec.configs.authExtensionPlugin.config.enableJwtContentForwarding | bool | `false` | `enableJwtContentForwarding` is a flag which tells whether the user roles should be forwarded or not |
 | gloo.authConfig.spec.configs.authExtensionPlugin.config.enableQAccountMatching | bool | `false` | `enableQAccountMatching` is a flag which forwards the user id (q-number) to the upstream. Only relevant if the user is using a different user id (e.g. c-number) for logging |
@@ -268,6 +270,7 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.authConfig.spec.configs.oauth.sameSite | int | `0` | The `sameSite` cookie property for restricting the site context. The default is set to 0 and will be ignored. Users of this property can overwrite this setting with numeric values according to https://docs.solo.io/gloo-network/latest/reference/api/auth_config/#usersession-cookieoptions-samesite. |
 | gloo.authConfig.spec.configs.oauth.scopes | list | `[]` | List of OIDC scopes. `openid` is set per default by Gloo and must not be added here |
 | gloo.authConfig.spec.configs.oauth.strongAuthenticationLevel | string | `nil` | The strong authentication level. Possible values are: 4000, 7000. If not set, there is no strong authentication. |
+| gloo.authConfig.spec.configs.tokenValidationPlugin.config | object | `{"allowedClientIds":null,"grpcAddress":"auth-passthrough-token-validation.gloo-system.svc.cluster.local:9001","oidcUrl":null,"strongAuthenticationLevel":null}` | `Name` of the auth token validation plugin |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.config.allowedClientIds | string | `nil` | `allowedClientIds` **list (NOT string!)** of ids that are allowed by the plugin. If not given at all, all clients are allowed. If [], then no client is allowed. If [a, b], then a, b are allowed |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.config.oidcUrl | string | `nil` | `oidcUrl` where the access token can be verified at the IDP |
 | gloo.authConfig.spec.configs.tokenValidationPlugin.config.strongAuthenticationLevel | string | `nil` | The strong authentication level. Possible values are: 4000, 7000. If not set, there is no strong authentication. |
@@ -293,6 +296,7 @@ The following table lists the configurable parameters of the chart and its defau
 | gloo.virtualservice.spec.virtualHost.routes.additionalRoutes | list | `[]` | List of route configurations for this `VirtualService`. See [gloo VirtualService Specification](https://docs.solo.io/gloo-edge/latest/introduction/architecture/concepts/#virtual-services) for details |
 | gloo.virtualservice.spec.virtualHost.routes.appPath | string | `"/api"` | Path to `appUrl` where the service can be accessed. Pre-defined route in `VirtualService`. |
 | gloo.virtualservice.spec.virtualHost.routes.appPathRewrite | string | `nil` | `prefixRewrite` of the appPath. If empty no rewrite is set. |
+| gloo.virtualservice.spec.virtualHost.routes.appPathTimeout | string | `nil` | Custom timeout for requests to appPath. For example `60s`. |
 | gloo.virtualservice.spec.virtualHost.routes.appPathWithAuthConfig | bool | `true` | If set to `true` the app path is secured with the default authConfig. |
 | gloo.virtualservice.spec.virtualHost.routes.callbackUrlPath | string | `nil` | Path to `callbackUrl` which needs to be registered at the Identity Provider. Pre-defined route in `VirtualService`. |
 | gloo.virtualservice.spec.virtualHost.routes.rootPath.authConfigName | string | `nil` | Name of the `auth config` for the secured root path. If not set, default auth config will be used. |
