@@ -1,6 +1,6 @@
 # dvpe-deployment-gloo
 
-![Version: 5.1.0](https://img.shields.io/badge/Version-5.1.0-informational?style=flat-square)
+![Version: 5.2.0](https://img.shields.io/badge/Version-5.2.0-informational?style=flat-square)
 
 Deprecated by Q4/24! Helm chart for installing microservices as gloo enabled VirtualService definitions.
 
