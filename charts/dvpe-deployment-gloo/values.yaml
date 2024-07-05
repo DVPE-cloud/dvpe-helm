@@ -1,12 +1,15 @@
 # Values for default microservice projects
 
 # -------------------------------#
-# secret.yaml value section     #
+# secret.yaml value section      #
 # -------------------------------#
 externalSecrets:
   service:
-    # externalSecrets.service.key -- `Key` to AWS Secret Manager object where all sensitive application data should be stored. Each key in the Secret Manager Object should be named like your needed environment variable
-    key:
+    # externalSecrets.service.key -- DEPRECATED, Use Keys instead. Name of AWS Secret Manager object where all sensitive application data should be stored. Each key in the Secret Manager Object should be named like your needed environment variables.
+    key: ""
+
+    # externalSecrets.service.keys -- List of AWS Secret Manager Secret Names to fetch sensitive data from. Note: all data inside the secret will be fetched. Each key in the referenced Secret Manager Objects should be named like your needed environment variables.
+    keys: []
 
     # externalSecrets.service.refreshInterval -- `refreshInterval` set the sync time range from AWS Secret Manager. Default is set to 15m
     refreshInterval: 15m
@@ -14,7 +17,10 @@ externalSecrets:
   oauth2:
     # externalSecrets.oauth2.key -- `Key` to AWS Secret Manager object where the client secret for OAuth2 provider should be stored. The key in the Secret Manager Object has to be named as the given `gloo.authConfig.spec.configs.oauth2.clientId`. The value has to be formatted as `clientSecret: <secret>`.
     # **This definition is exclusive to `gloo.authConfig.spec.configs.oauth.clientSecretRef`. If defined, `gloo.authConfig.spec.configs.oauth.clientSecretRef` is ignored.**
-    key:
+    key: ""
+
+    # externalSecrets.oauth2.refreshInterval -- `refreshInterval` set the sync time range from AWS Secret Manager. Default is set to 15m
+    refreshInterval: 15m
 
 # -------------------------------#
 # deployment.yaml value section  #
