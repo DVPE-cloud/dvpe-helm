@@ -69,7 +69,7 @@ spec:
           imagePullPolicy: {{ .image.pullPolicy }}
           image: {{ $imageUrl }}
           envFrom:
-            {{- if $.Values.externalSecrets.service.key }}
+            {{- if or $.Values.externalSecrets.service.key $.Values.externalSecrets.service.keys }}
             - secretRef:
                 name: "{{ $serviceName }}-service-secrets"
             {{- end }}

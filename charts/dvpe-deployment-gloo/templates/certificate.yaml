@@ -48,6 +48,17 @@ spec:
   dnsNames:
     {{- $domains }}
   secretName: {{ $serviceName }}-crt
+  subject:
+    organizations:
+      - Bayerische Motoren Werke AG
+    organizationalUnits:
+      - PKI Services
+    countries:
+      - DE
+    provinces:
+      - Bavaria
+    localities:
+      - Munich
   secretTemplate:
     annotations:
       {{- with .cardsParameters }}

@@ -7,6 +7,50 @@
     "gloo"
   ],
   "properties": {
+    "externalSecrets": {
+      "type": "object",
+      "required": [],
+      "properties": {
+        "service": {
+          "type": "object",
+          "required": [],
+          "properties": {
+            "key": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "deprecated": true,
+              "deprecationMessage": "Please use 'keys' instead."
+            },
+            "keys": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "refreshInterval": {
+              "type": "string"
+            }
+          }
+        },
+        "oauth2": {
+          "type": "object",
+          "required": [],
+          "properties": {
+            "key": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "refreshInterval": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
     "gloo": {
       "type": "object",
       "required": [
@@ -82,7 +126,8 @@
           "issuerRef": {
             "type": "object",
             "required": [
-              "name", "kind"
+              "name",
+              "kind"
             ],
             "properties": {
               "name": {
