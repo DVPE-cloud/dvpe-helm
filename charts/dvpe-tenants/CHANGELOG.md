@@ -26,4 +26,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [0.1.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-tenant-0.1.0/charts/dvpe-tenant
 [0.2.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-tenant-0.2.0/charts/dvpe-tenant
 [0.3.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-tenant-0.3.0/charts/dvpe-tenant
-[0.3.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-tenant-0.4.0/charts/dvpe-tenant
+[0.4.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-tenant-0.4.0/charts/dvpe-tenant
