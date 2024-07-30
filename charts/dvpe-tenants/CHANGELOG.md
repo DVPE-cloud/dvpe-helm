@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.1]
+### Added
+* Secret containing the token of the ServiceAccount
+
 ## [0.4.0]
 ### Added
 * ServiceAccount for each tenant to be used in pipelines
@@ -27,3 +31,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [0.2.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-tenant-0.2.0/charts/dvpe-tenant
 [0.3.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-tenant-0.3.0/charts/dvpe-tenant
 [0.4.0]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-tenant-0.4.0/charts/dvpe-tenant
+[0.4.1]: https://github.com/DVPE-cloud/dvpe-helm/tree/dvpe-tenant-0.4.1/charts/dvpe-tenant
