@@ -1,3 +1,7 @@
+# Deprecated Project Notice
+
+> **⚠️ This project is deprecated!** Charts will no longer be updated
+
 # dvpe-helm
 
 Collection of DVPE Helm Charts
